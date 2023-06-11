@@ -27,15 +27,15 @@ namespace Moviewer.Core.Windows
         /// </summary>
         public WorkspaceViewModel Current
         {
-            get { return _Current; }
-            set { SetProperty(ref _Current, value, true); }
+            get => _Current;
+            set => SetProperty(ref _Current, value, true);
         }
         private WorkspaceViewModel _Current;
 
         public MenuMode MovieType
         {
-            get { return _MovieType; }
-            set { SetProperty(ref _MovieType, value); }
+            get => _MovieType;
+            set => SetProperty(ref _MovieType, value);
         }
         private MenuMode _MovieType = MenuMode.Niconico;
 

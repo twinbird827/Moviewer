@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
 using TBird.Core;
+using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
 {
-    public class NicoVideoModel : VideoModel
+    public class NicoVideoModel : BindableBase
     {
         public NicoVideoModel SetFromXml(XElement xml)
         {
@@ -25,8 +26,7 @@ namespace Moviewer.Nico.Core
             StartTime = DateTime.Parse(xml.ElementS("first_retrieve"));
             LengthSeconds = ToLengthSeconds(xml.ElementS("length"));
             Tags = xml.Descendants("tags").First().Descendants("tag").Select(tag => (string)tag).GetString(" ");
-            Userid = xml.ElementS("user_id");
-            Username = xml.ElementS("user_nickname", Userid);
+            UserInfo = new NicoUserModel(xml.ElementS("user_id"), xml.ElementS("user_nickname"));
 
             return this;
         }
@@ -35,19 +35,21 @@ namespace Moviewer.Nico.Core
         {
             try
             {
-                ContentId = VideoUtil.Url2Id(item.ElementS("link"));
-                Title = item.Element("title").Value;
-
                 // 明細部読み込み
                 var descriptionXml = GetDescriptionXml(item);
 
-                ViewCounter = ToCounter(descriptionXml, view);
-                MylistCounter = ToCounter(descriptionXml, mylist);
-                CommentCounter = ToCounter(descriptionXml, comment);
-                StartTime = ToRankingDatetime(descriptionXml, "nico-info-date");
-                ThumbnailUrl = descriptionXml.Descendants("img").First().AttributeS("src");
-                LengthSeconds = ToLengthSeconds(descriptionXml);
+                ContentId = VideoUtil.Url2Id(item.ElementS("link"));
+                Title = item.Element("title").Value;
                 Description = (string)descriptionXml.Descendants("p").FirstOrDefault(x => x.AttributeS("class") == "nico-description");
+                ThumbnailUrl = descriptionXml.Descendants("img").First().AttributeS("src");
+                ViewCounter = ToCounter(descriptionXml, view);
+                CommentCounter = ToCounter(descriptionXml, comment);
+                MylistCounter = ToCounter(descriptionXml, mylist);
+                StartTime = ToRankingDatetime(descriptionXml, "nico-info-date");
+                LengthSeconds = ToLengthSeconds(descriptionXml);
+                
+                // 取得できない項目は非同期で設定する。
+                SetFromVideo();
             }
             catch
             {
@@ -55,6 +57,18 @@ namespace Moviewer.Nico.Core
             }
 
             return this;
+        }
+
+        private async void SetFromVideo()
+        {
+            var video = await NicoUtil.GetVideo(ContentId);
+            if (video.Status == VideoStatus.Delete) return;
+
+            Title = CoreUtil.Nvl(Title, video.Title);
+            Description = CoreUtil.Nvl(Description, video.Description);
+            ThumbnailUrl = CoreUtil.Nvl(ThumbnailUrl, video.ThumbnailUrl);
+            Tags = CoreUtil.Nvl(Tags, video.Tags);
+            UserInfo = UserInfo ?? video.UserInfo;
         }
 
         private XElement GetDescriptionXml(XElement item)
@@ -121,6 +135,13 @@ namespace Moviewer.Nico.Core
             );
         }
 
+        public string ContentId
+        {
+            get => _ContentId;
+            set => SetProperty(ref _ContentId, value);
+        }
+        private string _ContentId;
+
         public string Title
         {
             get => _Title;
@@ -134,6 +155,13 @@ namespace Moviewer.Nico.Core
             set => SetProperty(ref _Description, HttpUtility.HtmlDecode(value));
         }
         private string _Description;
+
+        public string ThumbnailUrl
+        {
+            get => _ThumbnailUrl;
+            set => SetProperty(ref _ThumbnailUrl, value);
+        }
+        private string _ThumbnailUrl;
 
         public long ViewCounter
         {
@@ -177,19 +205,12 @@ namespace Moviewer.Nico.Core
         }
         private long _LengthSeconds;
 
-        public string Userid
+        public NicoUserModel UserInfo
         {
-            get { return _Userid; }
-            set { SetProperty(ref _Userid, value); }
+            get => _UserInfo;
+            set => SetProperty(ref _UserInfo, value);
         }
-        private string _Userid = null;
-
-        public string Username
-        {
-            get { return _Username; }
-            set { SetProperty(ref _Username, value); }
-        }
-        private string _Username = null;
+        private NicoUserModel _UserInfo;
 
         public VideoStatus Status
         {
@@ -200,8 +221,8 @@ namespace Moviewer.Nico.Core
 
         public string Tags
         {
-            get { return _Tags; }
-            set { SetProperty(ref _Tags, value); }
+            get => _Tags;
+            set => SetProperty(ref _Tags, value);
         }
         private string _Tags = null;
     }
