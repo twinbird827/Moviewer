@@ -1,4 +1,144 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf"
+                    xmlns:nicore="clr-namespace:Moviewer.Nico.Core">
+
+    <ResourceDictionary.MergedDictionaries>
+
+        <!--<ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/Thumbnail.xaml" />-->
+
+    </ResourceDictionary.MergedDictionaries>
+
+    <DataTemplate DataType="{x:Type nicore:NicoVideoViewModel}">
+        <DockPanel HorizontalAlignment="Stretch">
+
+            <!-- 最下段 -->
+            <DockPanel DockPanel.Dock="Bottom">
+
+                <!-- 最下段 右寄せ -->
+                <StackPanel DockPanel.Dock="Right">
+                    
+                </StackPanel>
+
+                <!-- 最下段 左寄せ -->
+                <StackPanel Style="">
+
+                    <TextBlock beha:FrameworkElementBehavior.Width="100"
+                               Text="{Binding Status, Converter={DynamicResource Enum2StringConverter}}" />
+
+                    <TextBlock beha:FrameworkElementBehavior.Width="100"
+                               Text="{Binding LengthToSeconds}" />
+
+                    <TextBlock beha:FrameworkElementBehavior.Width="100"
+                               Text="{Binding ViewCounter, StringFormat=View：{0:N0}}" />
+
+                    <TextBlock beha:FrameworkElementBehavior.Width="100"
+                               Text="{Binding MylistCounter, StringFormat=Mylist：{0:N0}}" />
+
+                    <TextBlock beha:FrameworkElementBehavior.Width="100"
+                               Text="{Binding CommentCounter, StringFormat=Comment：{0:N0}}" />
+
+                </StackPanel>
+                
+            </DockPanel>
+            
+            
+            <!--<Grid DockPanel.Dock="Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ContentPresenter Grid.Row="0" Grid.ColumnSpan="2"
+                                  ContentTemplate="{StaticResource Core.Thumbnail}"
+                                  Content="{Binding Thumbnail}" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Text="{Binding StatusString}" />
+
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           TextAlignment="Right"
+                           Text="{Binding LengthSpan}" />
+
+            </Grid>
+
+            <TextBlock DockPanel.Dock="Top"
+                       Text="{Binding VideoUrl}" />
+
+            <TextBlock DockPanel.Dock="Top"
+                       TextAlignment="Left"
+                       TextWrapping="Wrap"
+                       TextTrimming="CharacterEllipsis"
+                       FontSize="{StaticResource FontSize.M}"
+                       behavior:TextBlockBehavior.MaxLines="2"
+                       Text="{Binding Title}" />
+
+            <DockPanel DockPanel.Dock="Bottom">
+
+                <TextBlock DockPanel.Dock="Right"
+                           Text="{Binding StartTime, StringFormat={}{0:yy/MM/dd HH:mm:ss}}" 
+                           Foreground="DarkRed"/>
+
+                <TextBlock DockPanel.Dock="Right"
+                           Visibility="{Binding IsTemporary, Converter={StaticResource Boolean2VisibilityCollapsedConverter}}"
+                           Foreground="DarkBlue"
+                           Margin="5,0">
+                    <Run Text="(" />
+                    <Run Text="{Binding TempTime, StringFormat={}{0:yy/MM/dd HH:mm:ss}}" />
+                    <Run Text=")" />
+                </TextBlock>
+
+                <StackPanel Orientation="Horizontal">
+
+                    <TextBlock Width="100"
+                               Text="{Binding ViewCounter, StringFormat=View：{0:N0}}" />
+
+                    <TextBlock Width="100"
+                               Text="{Binding MylistCounter, StringFormat=Mylist：{0:N0}}" />
+
+                    <TextBlock Width="100"
+                               Text="{Binding CommentCounter, StringFormat=Comment：{0:N0}}" />
+
+                </StackPanel>
+
+            </DockPanel>
+
+            <DockPanel DockPanel.Dock="Bottom">
+
+                <design:LinkedTextBlock DockPanel.Dock="Right"
+                                        Command="{Binding OnMouseDownUsername}"
+                                        Text="{Binding Username}" />
+
+                <ItemsControl ItemsSource="{Binding TagCollection}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Style="{StaticResource HorizontalStackPanel}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <design:LinkedTextBlock Command="{Binding OnClickTag}"
+                                                    Text="{Binding Tag}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </DockPanel>
+
+            <TextBlock VerticalAlignment="Stretch"
+                       TextAlignment="Left"
+                       TextWrapping="Wrap"
+                       TextTrimming="CharacterEllipsis"
+                       Foreground="DarkGray"
+                       FontSize="{StaticResource FontSize.SS}"
+                       behavior:TextBlockBehavior.MaxLines="3"
+                       Text="{Binding Description}" />-->
+
+        </DockPanel>
+    </DataTemplate>
+
 </ResourceDictionary>

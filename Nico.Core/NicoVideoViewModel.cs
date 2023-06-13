@@ -66,7 +66,7 @@ namespace Moviewer.Nico.Core
 
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
-                LengthSeconds = m.LengthSeconds;
+                LengthToSeconds = TimeSpan.FromSeconds(m.LengthSeconds);
             }, nameof(m.LengthSeconds), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
@@ -145,12 +145,12 @@ namespace Moviewer.Nico.Core
         }
         private DateTime _TempTime;
 
-        public long LengthSeconds
+        public TimeSpan LengthToSeconds
         {
-            get => _LengthSeconds;
-            private set => SetProperty(ref _LengthSeconds, value);
+            get => _LengthToSeconds;
+            private set => SetProperty(ref _LengthToSeconds, value);
         }
-        private long _LengthSeconds;
+        private TimeSpan _LengthToSeconds;
 
         public NicoUserViewModel UserInfo
         {

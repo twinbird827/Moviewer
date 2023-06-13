@@ -3,11 +3,6 @@
                     xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:core="clr-namespace:Moviewer.Core.Styles">
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Parameters.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/TBird.Wpf;component/Styles/_Controls.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-
     <ControlTemplate x:Key="IconPacksButton.ControlTemplate" TargetType="{x:Type core:IconPacksButton}">
         <Button Command="{TemplateBinding Command}"
                 CommandParameter="{TemplateBinding CommandParameter}"
@@ -16,7 +11,7 @@
                 FontWeight="{TemplateBinding FontWeight}">
             <StackPanel>
                 <icon:PackIconMaterial Kind="{TemplateBinding Kind}"
-                                       Margin="{StaticResource Margin.Zero}"
+                                       Margin="{DynamicResource Margin.Zero}"
                                        HorizontalAlignment="Center" />
                 <TextBlock FontSize="{TemplateBinding FontSize}"
                            Text="{TemplateBinding Text}" />

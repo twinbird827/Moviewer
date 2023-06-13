@@ -5,7 +5,7 @@
     <ResourceDictionary.MergedDictionaries>
 
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/IconPacksButton.xaml" />
-        
+
     </ResourceDictionary.MergedDictionaries>
     
     <Style TargetType="{x:Type core:IconPacksButton}">
