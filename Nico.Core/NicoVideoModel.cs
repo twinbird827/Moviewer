@@ -1,4 +1,5 @@
 ﻿using Moviewer.Core;
+using Moviewer.Core.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,6 +58,23 @@ namespace Moviewer.Nico.Core
             }
 
             return this;
+        }
+
+        public void RefreshStatus()
+        {
+            // Temporaryの有無でﾌﾟﾛﾊﾟﾃｨを変更
+            if (NicoModel.Temporaries.FirstOrDefault(x => x.ContentId == ContentId) is NicoVideoHistoryModel tmp)
+            {
+                TempTime = tmp.RegistDate;
+            }
+
+            Status = NicoModel.Histories.Any(x => x.ContentId == ContentId)
+                ? VideoStatus.See
+                : NicoModel.Temporaries.Any(x => x.ContentId == ContentId && MainViewModel.Instance.StartupTime < x.RegistDate)
+                ? VideoStatus.New
+                : NicoModel.Temporaries.Any(x => x.ContentId == ContentId)
+                ? VideoStatus.Temporary
+                : Status;
         }
 
         private async void SetFromVideo()

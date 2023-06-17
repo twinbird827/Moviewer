@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using TBird.Wpf;
 
@@ -15,7 +16,7 @@ namespace Moviewer.Nico.Core
         public NicoUserViewModel(NicoUserModel m)
         {
             Userid = m.Userid;
-            Username = m.Username;
+            Username = m.Username ?? Userid;
             SetThumbnail(m.ThumbnailUrl);
         }
 
@@ -46,5 +47,12 @@ namespace Moviewer.Nico.Core
             set => SetProperty(ref _Thumbnail, value);
         }
         private BitmapImage _Thumbnail;
+
+        public ICommand OnClickUsername => _OnClickUsername = _OnClickUsername ?? RelayCommand.Create(_ =>
+        {
+            //MainViewModel.Instance.Current = new NicoSearchViewModel(Tag, NicoSearchModel.TagModel.Type);
+        });
+        private ICommand _OnClickUsername;
+
     }
 }

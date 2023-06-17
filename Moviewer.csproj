@@ -17,8 +17,4 @@
     <ProjectReference Include="..\TBird.Library\TBird.Wpf\TBird.Wpf.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Nico.Workspaces\" />
-  </ItemGroup>
-
 </Project>

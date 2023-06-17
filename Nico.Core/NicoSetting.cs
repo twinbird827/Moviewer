@@ -28,6 +28,20 @@ namespace Moviewer.Nico.Core
             }
         }
 
+        public string NicoRankingGenre
+        {
+            get => GetProperty(_NicoRankingGenre);
+            set => SetProperty(ref _NicoRankingGenre, value);
+        }
+        private string _NicoRankingGenre;
+
+        public string NicoRankingPeriod
+        {
+            get => GetProperty(_NicoRankingPeriod);
+            set => SetProperty(ref _NicoRankingPeriod, value);
+        }
+        private string _NicoRankingPeriod;
+
         public NicoVideoHistoryModel[] Temporaries
         {
             get => GetProperty(_Temporaries);

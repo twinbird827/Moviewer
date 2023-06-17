@@ -24,8 +24,6 @@
                 <Setter Property="ContentTemplate" Value="{StaticResource Core.Thumbnail.Hidden}" />
             </DataTrigger>
         </Style.Triggers>
-        <Setter Property="beha:FrameworkElementBehavior.Width" Value="160" />
-        <Setter Property="beha:FrameworkElementBehavior.Height" Value="120" />
     </Style>
 
     <DataTemplate x:Key="Core.Thumbnail" DataType="{x:Type BitmapImage}">

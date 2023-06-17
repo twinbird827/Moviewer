@@ -8,75 +8,119 @@ using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
 {
-    public class NicoModel : BindableBase
+    public static class NicoModel
     {
-        public NicoModel()
+        public static void Save()
         {
-            Temporaries = new ObservableCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Temporaries);
-
-            Histories = new ObservableCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Histories);
-        }
-
-        public void Save()
-        {
-            NicoSetting.Instance.Temporaries = Temporaries.ToArray();
-            NicoSetting.Instance.Histories = Histories.ToArray();
-            NicoSetting.Instance.Save();
+            Private.Instance.Save();
         }
 
         // **************************************************
         // Temporaries
 
-        public ObservableCollection<NicoVideoHistoryModel> Temporaries { get; private set; }
+        public static ObservableCollection<NicoVideoHistoryModel> Temporaries => Private.Instance.Temporaries;
 
-        public void AddTemporary(string contentid)
+        public static void AddTemporary(string contentid)
         {
-            var tmp = Temporaries.FirstOrDefault(x => x.ContentId == contentid);
-            if (tmp != null)
-            {
-                tmp.RegistDate = DateTime.Now;
-            }
-            else
-            {
-                Temporaries.Add(new NicoVideoHistoryModel(contentid));
-            }
+            Private.Instance.AddTemporary(contentid);
         }
 
-        public void DelTemporary(string contentid)
+        public static void DelTemporary(string contentid)
         {
-            var tmp = Temporaries.FirstOrDefault(x => x.ContentId == contentid);
-            if (tmp != null)
-            {
-                Temporaries.Remove(tmp);
-            }
+            Private.Instance.DelTemporary(contentid);
         }
 
         // **************************************************
         // Histories
 
-        public ObservableCollection<NicoVideoHistoryModel> Histories { get; private set; }
+        public static ObservableCollection<NicoVideoHistoryModel> Histories => Private.Instance.Histories;
 
-        public void AddHistory(string contentid)
+        public static void AddHistory(string contentid)
         {
-            var tmp = Histories.FirstOrDefault(x => x.ContentId == contentid);
-            if (tmp != null)
-            {
-                tmp.RegistDate = DateTime.Now;
-            }
-            else
-            {
-                Histories.Add(new NicoVideoHistoryModel(contentid));
-            }
+            Private.Instance.AddHistory(contentid);
         }
 
-        public void DelHistory(string contentid)
+        public static void DelHistory(string contentid)
         {
-            var tmp = Histories.FirstOrDefault(x => x.ContentId == contentid);
-            if (tmp != null)
-            {
-                Histories.Remove(tmp);
-            }
+            Private.Instance.DelHistory(contentid);
         }
 
+        public class Private : BindableBase
+        {
+            private Private()
+            {
+                Temporaries = new ObservableCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Temporaries);
+
+                Histories = new ObservableCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Histories);
+            }
+
+            public static Private Instance
+            {
+                get => _Instance = _Instance ?? new Private();
+            }
+            private static Private _Instance;
+
+            public void Save()
+            {
+                NicoSetting.Instance.Temporaries = Temporaries.ToArray();
+                NicoSetting.Instance.Histories = Histories.ToArray();
+                NicoSetting.Instance.Save();
+            }
+
+            // **************************************************
+            // Temporaries
+
+            public ObservableCollection<NicoVideoHistoryModel> Temporaries { get; private set; }
+
+            public void AddTemporary(string contentid)
+            {
+                var tmp = Temporaries.FirstOrDefault(x => x.ContentId == contentid);
+                if (tmp != null)
+                {
+                    tmp.RegistDate = DateTime.Now;
+                }
+                else
+                {
+                    Temporaries.Add(new NicoVideoHistoryModel(contentid));
+                }
+            }
+
+            public void DelTemporary(string contentid)
+            {
+                var tmp = Temporaries.FirstOrDefault(x => x.ContentId == contentid);
+                if (tmp != null)
+                {
+                    Temporaries.Remove(tmp);
+                }
+            }
+
+            // **************************************************
+            // Histories
+
+            public ObservableCollection<NicoVideoHistoryModel> Histories { get; private set; }
+
+            public void AddHistory(string contentid)
+            {
+                var tmp = Histories.FirstOrDefault(x => x.ContentId == contentid);
+                if (tmp != null)
+                {
+                    tmp.RegistDate = DateTime.Now;
+                }
+                else
+                {
+                    Histories.Add(new NicoVideoHistoryModel(contentid));
+                }
+            }
+
+            public void DelHistory(string contentid)
+            {
+                var tmp = Histories.FirstOrDefault(x => x.ContentId == contentid);
+                if (tmp != null)
+                {
+                    Histories.Remove(tmp);
+                }
+            }
+
+        }
     }
 }

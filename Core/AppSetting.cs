@@ -16,8 +16,17 @@ namespace Moviewer.Core
         {
             if (!Load())
             {
+                BrowserPath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
 
             }
         }
+
+        public string BrowserPath
+        {
+            get => GetProperty(_BrowserPath);
+            set => SetProperty(ref _BrowserPath, value);
+        }
+        private string _BrowserPath;
+
     }
 }

@@ -2,10 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using TBird.Core;
 using TBird.Wpf;
@@ -17,6 +20,8 @@ namespace Moviewer.Nico.Core
         public NicoVideoViewModel(NicoVideoModel m)
         {
             Source = m;
+
+            VideoUrl = $"http://nico.ms/{m.ContentId}";
 
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
@@ -62,6 +67,7 @@ namespace Moviewer.Nico.Core
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 TempTime = m.TempTime;
+                ExistTempTime = true;
             }, nameof(m.TempTime), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
@@ -88,6 +94,13 @@ namespace Moviewer.Nico.Core
         }
 
         public NicoVideoModel Source { get; private set; }
+
+        public string VideoUrl
+        {
+            get => _VideoUrl;
+            set => SetProperty(ref _VideoUrl, value);
+        }
+        private string _VideoUrl;
 
         public string Title
         {
@@ -145,6 +158,13 @@ namespace Moviewer.Nico.Core
         }
         private DateTime _TempTime;
 
+        public bool ExistTempTime
+        {
+            get => _ExistTempTime;
+            set => SetProperty(ref _ExistTempTime, value);
+        }
+        private bool _ExistTempTime;
+
         public TimeSpan LengthToSeconds
         {
             get => _LengthToSeconds;
@@ -172,6 +192,58 @@ namespace Moviewer.Nico.Core
             set => SetProperty(ref _Tags, value);
         }
         private ObservableCollection<NicoVideoTagViewModel> _Tags = null;
+
+        public ICommand OnDoubleClick => _OnDoubleClick = _OnDoubleClick ?? RelayCommand.Create(_ =>
+        {
+            // TODO 子画面出して追加するかどうかを決めたい
+            // TODO ﾘﾝｸも抽出したい
+            // TODO smだけじゃなくてsoとかも抽出したい
+            foreach (var videoid in Regex.Matches(Description, @"(?<id>sm[\d]+)").OfType<Match>()
+                    .Select(m => m.Groups["id"].Value)
+                    .Where(tmp => !NicoModel.Histories.Any(x => x.ContentId == tmp))
+                )
+            {
+                NicoModel.AddTemporary(videoid);
+            }
+
+            // 視聴ﾘｽﾄに追加
+            NicoModel.AddHistory(Source.ContentId);
+
+            // ｽﾃｰﾀｽ更新
+            Source.RefreshStatus();
+
+            // ﾌﾞﾗｳｻﾞ起動
+            Process.Start(AppSetting.Instance.BrowserPath, VideoUrl);
+        });
+        private ICommand _OnDoubleClick;
+
+        public ICommand OnKeyDown => _OnKeyDown = _OnKeyDown ?? RelayCommand.Create<KeyEventArgs>(e =>
+        {
+            if (e.Key == Key.Enter)
+            {
+                OnDoubleClick.Execute(null);
+            }
+        });
+        private ICommand _OnKeyDown;
+
+        public ICommand OnTemporaryAdd => _OnTemporaryAdd = _OnTemporaryAdd ?? RelayCommand.Create(_ =>
+        {
+            NicoModel.AddTemporary(Source.ContentId);
+        });
+        private ICommand _OnTemporaryAdd;
+
+        public ICommand OnTemporaryDel => _OnTemporaryDel = _OnTemporaryDel ?? RelayCommand.Create(_ =>
+        {
+            NicoModel.DelTemporary(Source.ContentId);
+        });
+        private ICommand _OnTemporaryDel;
+
+        public ICommand OnDownload => _OnDownload = _OnDownload ?? RelayCommand.Create(_ =>
+        {
+            MessageService.Info("OnDownload");
+//            NicoModel.AddTemporary(Source.ContentId);
+        });
+        private ICommand _OnDownload;
 
     }
 }

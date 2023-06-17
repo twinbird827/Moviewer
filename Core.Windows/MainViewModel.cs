@@ -1,4 +1,5 @@
 ﻿using Moviewer.Nico.Core;
+using Moviewer.Nico.Workspaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,12 +16,20 @@ namespace Moviewer.Core.Windows
 {
     public class MainViewModel : MainViewModelBase
     {
+        public static MainViewModel Instance { get; private set; }
+
         public MainViewModel()
         {
+            if (Instance != null) throw new ApplicationException();
+
+            Instance = this;
+
             Loaded.Add(DoLoading);
 
             Closing.Add(DoClosing);
         }
+
+        public DateTime StartupTime { get; } = DateTime.Now;
 
         /// <summary>
         /// ｶﾚﾝﾄﾜｰｸｽﾍﾟｰｽ
@@ -100,27 +109,27 @@ namespace Moviewer.Core.Windows
         {
             MessageService.Info(menu.GetLabel());
 
-            //var newtype = _menu[menu];
-            //if (Current != null && newtype == Current.GetType())
-            //{
-            //    return;
-            //}
-            //else
-            //{
-            //    Current = Activator.CreateInstance(newtype) as WorkspaceViewModel;
-            //}
+            var newtype = _menu[menu];
+            if (Current != null && newtype == Current.GetType())
+            {
+                return;
+            }
+            else
+            {
+                Current = Activator.CreateInstance(newtype) as WorkspaceViewModel;
+            }
 
         });
         private ICommand _OnClickMenu;
 
-        //private Dictionary<MenuType, Type> _menu = new Dictionary<MenuType, Type>()
-        //{
-        //    [MenuType.NicoRanking] = typeof(NicoRankingViewModel),
-        //    [MenuType.NicoTemporary] = typeof(NicoTemporaryViewModel),
-        //    [MenuType.NicoFavorite] = typeof(NicoFavoriteViewModel),
-        //    [MenuType.NicoHistory] = typeof(NicoHistoryViewModel),
-        //    [MenuType.NicoSearch] = typeof(NicoSearchViewModel),
-        //};
+        private Dictionary<MenuType, Type> _menu = new Dictionary<MenuType, Type>()
+        {
+            [MenuType.NicoRanking] = typeof(NicoRankingViewModel),
+            //[MenuType.NicoTemporary] = typeof(NicoTemporaryViewModel),
+            //[MenuType.NicoFavorite] = typeof(NicoFavoriteViewModel),
+            //[MenuType.NicoHistory] = typeof(NicoHistoryViewModel),
+            //[MenuType.NicoSearch] = typeof(NicoSearchViewModel),
+        };
 
     }
 }

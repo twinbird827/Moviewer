@@ -1,4 +1,19 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf"
+                    xmlns:mocore="clr-namespace:Moviewer.Core.Styles"
+                    xmlns:nicore="clr-namespace:Moviewer.Nico.Core">
+
+    <ResourceDictionary.MergedDictionaries>
+
+        <!--<ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/Thumbnail.xaml" />-->
+
+    </ResourceDictionary.MergedDictionaries>
+
+    <DataTemplate DataType="{x:Type nicore:NicoVideoTagViewModel}">
+        <mocore:LinkedTextBlock Margin="5,3"
+                                Command="{Binding OnClickTag}"
+                                Text="{Binding Tag}" />
+    </DataTemplate>
     
 </ResourceDictionary>
