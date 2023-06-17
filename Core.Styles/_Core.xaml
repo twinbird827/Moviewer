@@ -6,7 +6,7 @@
         
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="Core.VideoStyle" TargetType="ListBox" BasedOn="{DynamicResource MahApps.Styles.ListBox}">
+    <Style x:Key="Core.VideoStyle" TargetType="ListBox" BasedOn="{StaticResource MahApps.Styles.ListBox}">
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
         <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
         <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel" />

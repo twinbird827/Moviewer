@@ -8,6 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="lib\nico-combo-setting.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="lib\nico-combo-setting.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.9" />
   </ItemGroup>
 

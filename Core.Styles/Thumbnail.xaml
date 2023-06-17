@@ -3,7 +3,13 @@
                     xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
 
-    <DataTemplate x:Key="Core.Thumbnail.Visible" DataType="{x:Type BitmapImage}">
+    <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="pack://application:,,,/TBird.Wpf;component/Styles/_Converters.xaml" />
+
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--<DataTemplate x:Key="Core.Thumbnail.Visible" DataType="{x:Type BitmapImage}">
         <Image Margin="{DynamicResource Margin.Zero}"
                Focusable="False"
                VerticalAlignment="Stretch"
@@ -17,18 +23,28 @@
 
     <Style x:Key="Core.Thumbnail.ContentPresenter" TargetType="ContentPresenter">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding ., Converter={DynamicResource Null2BooleanConverter}}" Value="False">
+            <DataTrigger Binding="{Binding ., Converter={StaticResource Null2BooleanConverter}}" Value="False">
                 <Setter Property="ContentTemplate" Value="{StaticResource Core.Thumbnail.Visible}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding ., Converter={DynamicResource Null2BooleanConverter}}" Value="True">
+            <DataTrigger Binding="{Binding ., Converter={StaticResource Null2BooleanConverter}}" Value="True">
                 <Setter Property="ContentTemplate" Value="{StaticResource Core.Thumbnail.Hidden}" />
             </DataTrigger>
         </Style.Triggers>
-    </Style>
+    </Style>-->
 
     <DataTemplate x:Key="Core.Thumbnail" DataType="{x:Type BitmapImage}">
-        <ContentPresenter Style="{StaticResource Core.Thumbnail.ContentPresenter}"
-                          Content="{Binding}" />
+        <Grid Name="ROOT_Grid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Controls:ProgressRing Width="{Binding ElementName=ROOT_Grid, Path=ActualWidth}"
+                                   Height="{Binding ElementName=ROOT_Grid, Path=ActualHeight}"
+                                   Visibility="{Binding ., Converter={StaticResource Null2VisibilityCollapsedConverter}}" />
+            
+            <Image Margin="{DynamicResource Margin.Zero}"
+                   Width="{Binding ElementName=ROOT_Grid, Path=ActualWidth}"
+                   Height="{Binding ElementName=ROOT_Grid, Path=ActualHeight}"
+                   Focusable="False"
+                   Source="{Binding}" />
+
+        </Grid>
     </DataTemplate>
 
 </ResourceDictionary>

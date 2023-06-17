@@ -3,7 +3,13 @@
                     xmlns:core="clr-namespace:Moviewer.Core.Styles"
                     xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
 
-    <Style x:Key="LinkedTextBlock.Style" TargetType="{x:Type core:LinkedTextBlock}" BasedOn="{DynamicResource DefaultTextBlock}">
+    <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="pack://application:,,,/TBird.Wpf;component/Styles/TextBlock.xaml" />
+
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="LinkedTextBlock.Style" TargetType="{x:Type core:LinkedTextBlock}" BasedOn="{StaticResource DefaultTextBlock}">
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="beha:FrameworkElementBehavior.MouseDown" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command}" />
         <Setter Property="Foreground" Value="DarkBlue" />

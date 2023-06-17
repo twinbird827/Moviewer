@@ -77,7 +77,7 @@ namespace Moviewer.Nico.Core
 
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
-                UserInfo = new NicoUserViewModel(m.UserInfo);
+                if (m.UserInfo != null) UserInfo = new NicoUserViewModel(m.UserInfo);
             }, nameof(m.UserInfo), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
@@ -87,6 +87,8 @@ namespace Moviewer.Nico.Core
 
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
+                if (m.Tags == null) return;
+
                 Tags = new ObservableCollection<NicoVideoTagViewModel>(
                     m.Tags.Split(' ').Select(x => new NicoVideoTagViewModel(x))
                 );

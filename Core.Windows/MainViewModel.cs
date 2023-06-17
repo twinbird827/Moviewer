@@ -64,6 +64,8 @@ namespace Moviewer.Core.Windows
 
         private void DoLoading()
         {
+            NicoUtil.Initialize();
+
             //// 自動ﾀｲﾏｰ起動
             //CheckTimer = new DispatcherTimer();
             //CheckTimer.Interval = TimeSpan.FromMinutes(5);

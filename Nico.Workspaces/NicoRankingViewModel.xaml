@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:Moviewer.Nico.Workspaces"
                     xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
 
-    <Style TargetType="ComboBox" BasedOn="{DynamicResource DefaultComboBox}">
+    <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBox}">
         <Setter Property="Margin" Value="1" />
         <Setter Property="beha:FrameworkElementBehavior.Width" Value="150" />
     </Style>
@@ -23,7 +23,7 @@
                 
             </StackPanel>
 
-            <ListBox Style="{StaticResource Core.VideoStyle}"
+            <ListBox Style="{DynamicResource Core.VideoStyle}"
                      ItemsSource="{Binding Videos}"
                      ItemContainerStyle="{DynamicResource NicoVideoViewModel.ItemContainerStyle}" />
 

@@ -40,6 +40,7 @@ namespace Moviewer.Nico.Core
 
         private string GetThumbnailUrl(string value)
         {
+            if (value == null) return null;
             var url1 = "https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon";
             var url2 = 4 < value.Length ? value.Left(value.Length - 4) : "0";
             var url3 = value;

@@ -7,14 +7,16 @@
     <DataTemplate DataType="{x:Type nicore:NicoUserViewModel}">
         <StackPanel Style="{DynamicResource HorizontalStackPanel}">
 
-            <ContentPresenter Style="{DynamicResource Core.Thumbnail.ContentPresenter}"
-                              beha:FrameworkElementBehavior.Width="40"
-                              beha:FrameworkElementBehavior.Height="40"
-                              ToolTip="{Binding Userid}"
-                              Content="{Binding Thumbnail}" />
+            <Grid beha:FrameworkElementBehavior.Width="40"
+                  beha:FrameworkElementBehavior.Height="40"
+                  ToolTip="{Binding Userid}">
+                <ContentPresenter ContentTemplate="{DynamicResource Core.Thumbnail}"
+                                  Content="{Binding Thumbnail}" />
+            </Grid>
 
             <mocore:LinkedTextBlock Margin="5,3"
                                     Command="{Binding OnClickUsername}"
+                                    VerticalAlignment="Center"
                                     Text="{Binding Username}" />
             
         </StackPanel>
