@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TBird.Wpf;
 using TBird.Core;
+using TBird.Core.Stateful;
+using System.Threading;
 
 namespace Moviewer.Nico.Workspaces
 {
@@ -16,7 +18,12 @@ namespace Moviewer.Nico.Workspaces
     {
         public NicoRankingViewModel()
         {
-            Videos = new ObservableCollection<NicoVideoViewModel>();
+            Sources = new ObservableSynchronizedCollection<NicoVideoModel>();
+
+            Videos = Sources.ToSyncedSynchronizationContextCollection(
+                x => new NicoVideoViewModel(x),
+                SynchronizationContext.Current
+            );
 
             Genre = new ComboboxViewModel(
                 NicoUtil.Combos.Where(x => x.Group == "rank_genre").SelectMany(x => x.Items)
@@ -42,16 +49,16 @@ namespace Moviewer.Nico.Workspaces
 
         public ComboboxViewModel Period { get; private set; }
 
-        public ObservableCollection<NicoVideoViewModel> Videos { get; private set; }
+        public ObservableSynchronizedCollection<NicoVideoModel> Sources { get; private set; }
+
+        public SynchronizationContextCollection<NicoVideoViewModel> Videos { get; private set; }
 
         private async void Reload(object sender, PropertyChangedEventArgs e)
         {
-            var videos = await NicoUtil.GetVideosByRanking(Genre.SelectedItem.Value, "all", Period.SelectedItem.Value);
-
-            WpfUtil.ExecuteOnUI(() =>
+            await NicoUtil.GetVideosByRanking(Genre.SelectedItem.Value, "all", Period.SelectedItem.Value).ContinueOnUI(x =>
             {
-                Videos.Clear();
-                Videos.AddRange(videos.Select(x => new NicoVideoViewModel(x)));
+                Sources.Clear();
+                Sources.AddRange(x.Result);
             });
         }
     }

@@ -33,12 +33,14 @@
     <DataTemplate DataType="{x:Type nicore:NicoVideoViewModel}">
         <DockPanel HorizontalAlignment="Stretch" Name="ROOT_DockPanel">
 
+            <ContentPresenter DockPanel.Dock="Left"
+                              beha:FrameworkElementBehavior.Width="220"
+                              beha:FrameworkElementBehavior.Height="165"
+                              ContentTemplate="{DynamicResource Core.Thumbnail}"
+                              Content="{Binding Thumbnail}" />
+
             <!-- 最下段 -->
             <DockPanel DockPanel.Dock="Bottom">
-
-                <TextBlock DockPanel.Dock="Left"
-                           beha:FrameworkElementBehavior.Width="100"
-                           Text="{Binding Status, Converter={StaticResource Enum2StringConverter}}" />
 
                 <TextBlock DockPanel.Dock="Left"
                            beha:FrameworkElementBehavior.Width="100"
@@ -73,12 +75,6 @@
 
             </DockPanel>
 
-            <ContentPresenter DockPanel.Dock="Left"
-                              beha:FrameworkElementBehavior.Width="220"
-                              beha:FrameworkElementBehavior.Height="165"
-                              ContentTemplate="{DynamicResource Core.Thumbnail}"
-                              Content="{Binding Thumbnail}" />
-
             <DockPanel DockPanel.Dock="Bottom">
 
                 <ContentPresenter DockPanel.Dock="Right"
@@ -94,8 +90,17 @@
 
             </DockPanel>
 
-            <TextBlock DockPanel.Dock="Top"
+            <DockPanel DockPanel.Dock="Top">
+
+                <TextBlock DockPanel.Dock="Left"
+                           Text="{Binding Status, Converter={StaticResource Enum2StringConverter}}" />
+                
+                <TextBlock DockPanel.Dock="Right"
                        Text="{Binding VideoUrl}" />
+
+                <StackPanel />
+                
+            </DockPanel>
 
             <TextBlock DockPanel.Dock="Top"
                        TextWrapping="Wrap"
@@ -107,7 +112,7 @@
             <TextBlock TextWrapping="Wrap"
                        TextTrimming="CharacterEllipsis"
                        FontSize="{DynamicResource FontSize.SS}"
-                       Foreground="DarkGray"
+                       Foreground="DimGray"
                        beha:TextBlockBehavior.MaxLines="4"
                        beha:TextBlockBehavior.MaxText="{Binding Description}" />
 
