@@ -31,6 +31,13 @@ namespace Moviewer.Nico.Core
                 .ToArray();
         }
 
+        public static NicoVideoModel GetVideoBackground(string videoid)
+        {
+            var video = new NicoVideoModel();
+            GetVideo(videoid).ContinueWith(x => video.SetFromVideo(x.Result)).ConfigureAwait(false);
+            return video;
+        }
+
         public static async Task<NicoVideoModel> GetVideo(string videoid)
         {
             var video = new NicoVideoModel();

@@ -1,4 +1,5 @@
 ﻿using Moviewer.Core;
+using Moviewer.Core.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,8 +18,9 @@ namespace Moviewer.Nico.Core
 {
     public class NicoVideoViewModel : BindableBase
     {
-        public NicoVideoViewModel(NicoVideoModel m)
+        public NicoVideoViewModel(WorkspaceViewModel parent, NicoVideoModel m)
         {
+            Parent = parent;
             Source = m;
 
             VideoUrl = $"http://nico.ms/{m.ContentId}";
@@ -67,7 +69,7 @@ namespace Moviewer.Nico.Core
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 TempTime = m.TempTime;
-                ExistTempTime = true;
+                ExistTempTime = TempTime != default(DateTime);
             }, nameof(m.TempTime), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
@@ -94,6 +96,8 @@ namespace Moviewer.Nico.Core
                 );
             }, nameof(m.Tags), true);
         }
+
+        public WorkspaceViewModel Parent { get; private set; }
 
         public NicoVideoModel Source { get; private set; }
 
@@ -231,12 +235,14 @@ namespace Moviewer.Nico.Core
         public ICommand OnTemporaryAdd => _OnTemporaryAdd = _OnTemporaryAdd ?? RelayCommand.Create(_ =>
         {
             NicoModel.AddTemporary(Source.ContentId);
+            Source.RefreshStatus();
         });
         private ICommand _OnTemporaryAdd;
 
         public ICommand OnTemporaryDel => _OnTemporaryDel = _OnTemporaryDel ?? RelayCommand.Create(_ =>
         {
             NicoModel.DelTemporary(Source.ContentId);
+            Source.RefreshStatus();
         });
         private ICommand _OnTemporaryDel;
 

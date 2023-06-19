@@ -43,5 +43,17 @@ namespace Moviewer.Nico.Core
         }
         private DateTime _UpdateDate;
 
+        public NicoVideoModel GetVideo()
+        {
+            var video = new NicoVideoModel();
+            video.ContentId = ContentId;
+            video.TempTime = UpdateDate;
+            video.AddOnPropertyChanged(this, (sender, e) =>
+            {
+                UpdateDate = video.TempTime;
+            }, nameof(video.TempTime), false);
+            NicoUtil.GetVideo(ContentId).ContinueWith(x => video.SetFromVideo(x.Result)).ConfigureAwait(false);
+            return video;
+        }
     }
 }

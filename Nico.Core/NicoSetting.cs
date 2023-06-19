@@ -8,7 +8,7 @@ using TBird.Core;
 
 namespace Moviewer.Nico.Core
 {
-    internal class NicoSetting : JsonBase<NicoSetting>
+    public class NicoSetting : JsonBase<NicoSetting>
     {
         private const string _path = @"lib\nico-setting.json";
 

@@ -12,6 +12,7 @@
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Core/NicoVideoViewModel.xaml" />
 
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Workspaces/NicoRankingViewModel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Workspaces/NicoTemporaryViewModel.xaml" />
         
     </ResourceDictionary.MergedDictionaries>
 

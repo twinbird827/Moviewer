@@ -14,6 +14,24 @@ namespace Moviewer.Nico.Core
 {
     public class NicoVideoModel : BindableBase
     {
+        public NicoVideoModel SetFromVideo(NicoVideoModel m)
+        {
+            ContentId = m.ContentId;
+            Title = m.Title;
+            Description = m.Description;
+            ThumbnailUrl = m.ThumbnailUrl;
+            ViewCounter = m.ViewCounter;
+            CommentCounter = m.CommentCounter;
+            MylistCounter = m.MylistCounter;
+            StartTime = m.StartTime;
+            LengthSeconds = m.LengthSeconds;
+            Tags = m.Tags;
+            UserInfo = m.UserInfo;
+            RefreshStatus();
+
+            return this;
+        }
+
         public NicoVideoModel SetFromXml(XElement xml)
         {
             xml = xml.Descendants("thumb").First();
@@ -28,6 +46,7 @@ namespace Moviewer.Nico.Core
             LengthSeconds = ToLengthSeconds(xml.ElementS("length"));
             Tags = xml.Descendants("tags").First().Descendants("tag").Select(tag => (string)tag).GetString(" ");
             UserInfo = new NicoUserModel(xml.ElementS("user_id"), xml.ElementS("user_nickname"));
+            RefreshStatus();
 
             return this;
         }
@@ -48,7 +67,8 @@ namespace Moviewer.Nico.Core
                 MylistCounter = ToCounter(descriptionXml, mylist);
                 StartTime = ToRankingDatetime(descriptionXml, "nico-info-date");
                 LengthSeconds = ToLengthSeconds(descriptionXml);
-                
+                RefreshStatus();
+
                 // 取得できない項目は非同期で設定する。
                 SetFromVideo();
             }
@@ -63,14 +83,14 @@ namespace Moviewer.Nico.Core
         public void RefreshStatus()
         {
             // Temporaryの有無でﾌﾟﾛﾊﾟﾃｨを変更
-            if (NicoModel.Temporaries.FirstOrDefault(x => x.ContentId == ContentId) is NicoVideoHistoryModel tmp)
+            if (NicoModel.Temporaries.FirstOrDefault(x => x.ContentId == ContentId) is NicoVideoModel tmp)
             {
-                TempTime = tmp.RegistDate;
+                TempTime = tmp.TempTime;
             }
 
             Status = NicoModel.Histories.Any(x => x.ContentId == ContentId)
                 ? VideoStatus.See
-                : NicoModel.Temporaries.Any(x => x.ContentId == ContentId && MainViewModel.Instance.StartupTime < x.RegistDate)
+                : NicoModel.Temporaries.Any(x => x.ContentId == ContentId && MainViewModel.Instance.StartupTime < x.TempTime)
                 ? VideoStatus.New
                 : NicoModel.Temporaries.Any(x => x.ContentId == ContentId)
                 ? VideoStatus.Temporary

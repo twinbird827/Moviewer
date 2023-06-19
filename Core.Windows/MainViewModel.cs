@@ -109,8 +109,6 @@ namespace Moviewer.Core.Windows
 
         public ICommand OnClickMenu => _OnClickMenu = _OnClickMenu ?? RelayCommand.Create<MenuType>(menu =>
         {
-            MessageService.Info(menu.GetLabel());
-
             var newtype = _menu[menu];
             if (Current != null && newtype == Current.GetType())
             {
@@ -127,7 +125,7 @@ namespace Moviewer.Core.Windows
         private Dictionary<MenuType, Type> _menu = new Dictionary<MenuType, Type>()
         {
             [MenuType.NicoRanking] = typeof(NicoRankingViewModel),
-            //[MenuType.NicoTemporary] = typeof(NicoTemporaryViewModel),
+            [MenuType.NicoTemporary] = typeof(NicoTemporaryViewModel),
             //[MenuType.NicoFavorite] = typeof(NicoFavoriteViewModel),
             //[MenuType.NicoHistory] = typeof(NicoHistoryViewModel),
             //[MenuType.NicoSearch] = typeof(NicoSearchViewModel),

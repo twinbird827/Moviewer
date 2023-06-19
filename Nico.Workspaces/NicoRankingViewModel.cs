@@ -21,8 +21,8 @@ namespace Moviewer.Nico.Workspaces
             Sources = new ObservableSynchronizedCollection<NicoVideoModel>();
 
             Videos = Sources.ToSyncedSynchronizationContextCollection(
-                x => new NicoVideoViewModel(x),
-                SynchronizationContext.Current
+                x => new NicoVideoViewModel(this, x),
+                WpfUtil.GetContext()
             );
 
             Genre = new ComboboxViewModel(
@@ -42,6 +42,10 @@ namespace Moviewer.Nico.Workspaces
                 NicoSetting.Instance.NicoRankingGenre = Genre.SelectedItem.Value;
                 NicoSetting.Instance.NicoRankingPeriod = Period.SelectedItem.Value;
                 NicoSetting.Instance.Save();
+
+                Genre.Dispose();
+                Period.Dispose();
+                Videos.Dispose();
             });
         }
 

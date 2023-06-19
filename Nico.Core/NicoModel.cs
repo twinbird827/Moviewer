@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TBird.Core.Stateful;
 using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
@@ -18,7 +19,14 @@ namespace Moviewer.Nico.Core
         // **************************************************
         // Temporaries
 
-        public static ObservableCollection<NicoVideoHistoryModel> Temporaries => Private.Instance.Temporaries;
+        public static SynchronizationContextCollection<NicoVideoModel> Temporaries
+        {
+            get => _Temporaries = _Temporaries ?? Private.Instance.Temporaries.ToSyncedSynchronizationContextCollection(
+                x => x.GetVideo(),
+                WpfUtil.GetContext()
+            );
+        }
+        public static SynchronizationContextCollection<NicoVideoModel> _Temporaries;
 
         public static void AddTemporary(string contentid)
         {
@@ -49,7 +57,7 @@ namespace Moviewer.Nico.Core
         {
             private Private()
             {
-                Temporaries = new ObservableCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Temporaries);
+                Temporaries = new ObservableSynchronizedCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Temporaries);
 
                 Histories = new ObservableCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Histories);
             }
@@ -70,7 +78,7 @@ namespace Moviewer.Nico.Core
             // **************************************************
             // Temporaries
 
-            public ObservableCollection<NicoVideoHistoryModel> Temporaries { get; private set; }
+            public ObservableSynchronizedCollection<NicoVideoHistoryModel> Temporaries { get; private set; }
 
             public void AddTemporary(string contentid)
             {
