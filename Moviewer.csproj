@@ -27,4 +27,10 @@
     <ProjectReference Include="..\TBird.Library\TBird.Wpf\TBird.Wpf.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="lang\moviewer-language.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

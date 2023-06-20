@@ -51,6 +51,7 @@ namespace Moviewer.Nico.Core
             video.AddOnPropertyChanged(this, (sender, e) =>
             {
                 UpdateDate = video.TempTime;
+                video.RefreshStatus();
             }, nameof(video.TempTime), false);
             NicoUtil.GetVideo(ContentId).ContinueWith(x => video.SetFromVideo(x.Result)).ConfigureAwait(false);
             return video;

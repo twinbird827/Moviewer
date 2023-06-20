@@ -6,7 +6,16 @@
     <DataTemplate DataType="{x:Type local:NicoTemporaryViewModel}">
         <DockPanel>
 
+            <StackPanel DockPanel.Dock="Top"
+                        Style="{DynamicResource HorizontalStackPanel}">
+
+                <Button Content="追加"
+                        Command="{Binding OnTemporaryAdd}" />
+                
+            </StackPanel>
+            
             <ListBox Style="{DynamicResource Core.VideoStyle}"
+                     beha:FrameworkElementBehavior.DragDrop="{Binding OnDropInListbox}"
                      ItemsSource="{Binding Videos}"
                      ItemContainerStyle="{DynamicResource NicoVideoViewModel.ItemContainerStyle}" />
 
