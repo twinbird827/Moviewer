@@ -18,7 +18,9 @@ namespace Moviewer.Nico.Workspaces
     {
         public NicoTemporaryViewModel()
         {
-            Videos = NicoModel.Temporaries.ToSyncedSynchronizationContextCollection(
+            Videos = NicoModel.Temporaries
+                .ToSyncedSortedObservableCollection(x => x.TempTime, isDescending: true)
+                .ToSyncedSynchronizationContextCollection(
                 x => new NicoVideoViewModel(this, x),
                 WpfUtil.GetContext()
             );

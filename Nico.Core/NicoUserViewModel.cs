@@ -16,7 +16,12 @@ namespace Moviewer.Nico.Core
         public NicoUserViewModel(NicoUserModel m)
         {
             Userid = m.Userid;
-            Username = m.Username ?? Userid;
+
+            m.AddOnPropertyChanged(this, (sender, e) =>
+            {
+                Username = m.Username;
+            }, nameof(m.Username), true);
+
             SetThumbnail(m.ThumbnailUrl);
         }
 

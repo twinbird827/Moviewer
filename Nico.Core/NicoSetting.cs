@@ -42,6 +42,13 @@ namespace Moviewer.Nico.Core
         }
         private string _NicoRankingPeriod;
 
+        public string NicoSearchOrderby
+        {
+            get => GetProperty(_NicoSearchOrderby);
+            set => SetProperty(ref _NicoSearchOrderby, value);
+        }
+        private string _NicoSearchOrderby;
+
         public NicoVideoHistoryModel[] Temporaries
         {
             get => GetProperty(_Temporaries);

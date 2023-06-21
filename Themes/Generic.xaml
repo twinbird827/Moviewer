@@ -10,7 +10,14 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type core:IconPacksButton}">
-        <Setter Property="Template" Value="{StaticResource IconPacksButton.ControlTemplate}" />
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="Template" Value="{StaticResource IconPacksButton.ControlTemplate.Horizontal}" />
+            </Trigger>
+            <Trigger Property="Orientation" Value="Vertical">
+                <Setter Property="Template" Value="{StaticResource IconPacksButton.ControlTemplate.Vertical}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="{x:Type core:LinkedTextBlock}" BasedOn="{StaticResource LinkedTextBlock.Style}" />

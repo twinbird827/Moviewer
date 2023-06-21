@@ -109,7 +109,7 @@
                         Command="{Binding OnClickMenu}"
                         CommandParameter="{x:Static core:MenuType.NicoTemporary}"
                         Kind="Star"
-                        Text="{Binding NicoTemporaryString}"/>
+                        Text="{Binding NicoTemporaryCount, StringFormat=Temp[{0}]}"/>
 
                 <csty:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"

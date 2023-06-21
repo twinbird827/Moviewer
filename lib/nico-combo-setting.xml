@@ -48,7 +48,7 @@
         <item value="lengsec-"   display="再生時間(降順)" />
         <item value="lengsec+"   display="再生時間(昇順)" />
     </combo>
-    <combo group="oyder_by_default">
+    <combo group="oyder_by_apiv2">
         <item value="regdate-"   display="-startTime" />
         <item value="regdate+"   display="+startTime" />
         <item value="stadate-"   display="-startTime" />
@@ -65,20 +65,20 @@
         <item value="lengsec+"   display="+lengthSeconds" />
     </combo>
     <combo group="oyder_by_mylist">
-        <item value="regdate-"   display="1"    />
-        <item value="regdate+"   display="0"    />
-        <item value="stadate-"   display="6"    />
-        <item value="stadate+"   display="7"    />
-        <item value="viewcnt-"   display="8"    />
-        <item value="viewcnt+"   display="9"    />
-        <item value="commcnt-"   display="12"   />
-        <item value="commcnt+"   display="13"   />
-        <item value="listcnt-"   display="14"   />
-        <item value="listcnt+"   display="15"   />
+        <item value="regdate-"   display="1"  />
+        <item value="regdate+"   display="0"  />
+        <item value="stadate-"   display="6"  />
+        <item value="stadate+"   display="7"  />
+        <item value="viewcnt-"   display="8"  />
+        <item value="viewcnt+"   display="9"  />
+        <item value="commcnt-"   display="12" />
+        <item value="commcnt+"   display="13" />
+        <item value="listcnt-"   display="14" />
+        <item value="listcnt+"   display="15" />
         <item value="likecnt-"   display="14" />
         <item value="likecnt+"   display="15" />
-        <item value="lengsec-"   display="16"   />
-        <item value="lengsec+"   display="17"   />
+        <item value="lengsec-"   display="16" />
+        <item value="lengsec+"   display="17" />
     </combo>
     <combo group="oyder_by_user">
         <item value="regdate-"   display="registeredAt,desc" />

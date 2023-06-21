@@ -31,6 +31,16 @@ namespace Moviewer.Nico.Core
                 .ToArray();
         }
 
+        public static IEnumerable<ComboboxItemModel> GetCombos(string group)
+        {
+            return Combos.Where(x => x.Group == group).SelectMany(x => x.Items);
+        }
+
+        public static string GetComboDisplay(string group, string value)
+        {
+            return GetCombos(group).FirstOrDefault(x => x.Value == value)?.Display;
+        }
+
         public static NicoVideoModel GetVideoBackground(string videoid)
         {
             var video = new NicoVideoModel();
@@ -106,11 +116,47 @@ namespace Moviewer.Nico.Core
             );
         }
 
-        public static Task<IEnumerable<NicoVideoModel>> GetVideosByNicouser(string userid, string key, string order)
+        public static Task<IEnumerable<NicoVideoModel>> GetVideosByNicouser(string userid, string order)
+        {
+            var orderbyuser = GetComboDisplay("oyder_by_user", order).Split(',');
+            return GetVideosByNicouser(userid, orderbyuser[0], orderbyuser[1]);
+        }
+
+        private static Task<IEnumerable<NicoVideoModel>> GetVideosByNicouser(string userid, string key, string order)
         {
             var url = $"https://www.nicovideo.jp/user/{userid}/video?sortKey={key}&sortOrder={order}&rss=2.0";
 
             return GetVideosFromXmlUrl(url, null, null, null);
+        }
+
+        public static Task<IEnumerable<NicoVideoModel>> GetVideosByWord(string word, string order, int offset = 0, int limit = 50)
+        {
+            const string target = "title,description,tags";
+            return SearchApiV2(word, target, order, offset, limit);
+        }
+
+        public static Task<IEnumerable<NicoVideoModel>> GetVideosByTag(string word, string order, int offset = 0, int limit = 50)
+        {
+            const string target = "tagsExact";
+            return SearchApiV2(word, target, order, offset, limit);
+        }
+
+        private static async Task<IEnumerable<NicoVideoModel>> SearchApiV2(string word, string target, string order, int offset = 0, int limit = 50)
+        {
+            var context = CoreSetting.Instance.ApplicationKey;
+            var orderbyapiv2 = GetComboDisplay("oyder_by_apiv2", order);
+            var field = "contentId,title,description,userId,viewCounter,mylistCounter,lengthSeconds,thumbnailUrl,startTime,commentCounter,tags";
+            var url = $"https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search?q={word}&targets={target}&fields={field}&&_sort={orderbyapiv2}&_offset={offset}&_limit={limit}&_context={context}";
+
+            return SearchApiV2(await WebUtil.GetJsonAsync(url));
+        }
+
+        private static IEnumerable<NicoVideoModel> SearchApiV2(dynamic json)
+        {
+            foreach (var item in json.data)
+            {
+                yield return new NicoVideoModel().SetFromJson(item);
+            }
         }
     }
 }

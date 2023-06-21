@@ -3,18 +3,34 @@
                     xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:core="clr-namespace:Moviewer.Core.Styles">
 
-    <ControlTemplate x:Key="IconPacksButton.ControlTemplate" TargetType="{x:Type core:IconPacksButton}">
+    <ControlTemplate x:Key="IconPacksButton.ControlTemplate.Horizontal" TargetType="{x:Type core:IconPacksButton}">
+        <Button Command="{TemplateBinding Command}"
+                CommandParameter="{TemplateBinding CommandParameter}"
+                Padding="{TemplateBinding Padding}"
+                FontSize="{TemplateBinding FontSize}"
+                FontWeight="{TemplateBinding FontWeight}">
+            <StackPanel Orientation="Horizontal">
+                <icon:PackIconMaterial Kind="{Binding Kind}"
+                                       Margin="{DynamicResource Margin.Zero}"
+                                       HorizontalAlignment="Center" />
+                <TextBlock FontSize="{Binding FontSize}"
+                           Text="{Binding Text}" />
+            </StackPanel>
+        </Button>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="IconPacksButton.ControlTemplate.Vertical" TargetType="{x:Type core:IconPacksButton}">
         <Button Command="{TemplateBinding Command}"
                 CommandParameter="{TemplateBinding CommandParameter}"
                 Padding="{TemplateBinding Padding}"
                 FontSize="{TemplateBinding FontSize}"
                 FontWeight="{TemplateBinding FontWeight}">
             <StackPanel>
-                <icon:PackIconMaterial Kind="{TemplateBinding Kind}"
+                <icon:PackIconMaterial Kind="{Binding Kind}"
                                        Margin="{DynamicResource Margin.Zero}"
                                        HorizontalAlignment="Center" />
-                <TextBlock FontSize="{TemplateBinding FontSize}"
-                           Text="{TemplateBinding Text}" />
+                <TextBlock FontSize="{Binding FontSize}"
+                           Text="{Binding Text}" />
             </StackPanel>
         </Button>
     </ControlTemplate>

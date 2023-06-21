@@ -29,6 +29,17 @@ namespace Moviewer.Core.Styles
             BehaviorUtil.Register(nameof(Text), typeof(IconPacksButton), default(string), null);
 
         /// <summary>
+        /// ﾎﾞﾀﾝ構成の向き
+        /// </summary>
+        public Orientation Orientation
+        {
+            get => (Orientation)GetValue(OrientationProperty);
+            set => SetValue(OrientationProperty, value);
+        }
+        public static readonly DependencyProperty OrientationProperty =
+            BehaviorUtil.Register(nameof(Orientation), typeof(IconPacksButton), Orientation.Vertical, null);
+
+        /// <summary>
         /// ｱｲｺﾝの種類
         /// </summary>
         public PackIconMaterialKind Kind

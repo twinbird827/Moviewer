@@ -80,6 +80,31 @@ namespace Moviewer.Nico.Core
             return this;
         }
 
+        public NicoVideoModel SetFromJson(dynamic item)
+        {
+            try
+            {
+                ContentId = item["contentId"];
+                Title = item["title"];
+                Description = item["description"];
+                ThumbnailUrl = item["thumbnailUrl"];
+                ViewCounter = (long)item["viewCounter"];
+                CommentCounter = (long)item["commentCounter"];
+                MylistCounter = (long)item["mylistCounter"];
+                StartTime = DateTimeOffset.Parse(item["startTime"]).DateTime;
+                LengthSeconds = (long)item["lengthSeconds"];
+                Tags = item["tags"];
+                UserInfo = new NicoUserModel(item["userId"], null);
+                RefreshStatus();
+            }
+            catch
+            {
+                Status = VideoStatus.Delete;
+            }
+
+            return this;
+        }
+
         public void RefreshStatus()
         {
             // Temporaryの有無でﾌﾟﾛﾊﾟﾃｨを変更

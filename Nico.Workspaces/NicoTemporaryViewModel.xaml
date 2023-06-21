@@ -1,7 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Moviewer.Nico.Workspaces"
-                    xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
+                    xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf"
+                    xmlns:core="clr-namespace:Moviewer.Core"
+                    xmlns:corestyle="clr-namespace:Moviewer.Core.Styles">
 
     <DataTemplate DataType="{x:Type local:NicoTemporaryViewModel}">
         <DockPanel>
@@ -9,8 +11,10 @@
             <StackPanel DockPanel.Dock="Top"
                         Style="{DynamicResource HorizontalStackPanel}">
 
-                <Button Content="追加"
-                        Command="{Binding OnTemporaryAdd}" />
+                <corestyle:IconPacksButton Style="{StaticResource Core.HorizontalIconPackButton}"
+                                           Kind="BookmarkPlus"
+                                           Text="{x:Static core:AppConst.L_AddTemporary}"
+                                           Command="{Binding OnTemporaryAdd}" />
                 
             </StackPanel>
             

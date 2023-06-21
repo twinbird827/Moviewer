@@ -13,8 +13,9 @@ namespace Moviewer.Nico.Core
         public NicoUserModel(string userid, string username) 
         {
             Userid = userid;
-            Username = username ?? Userid;
+            Username = username;
             ThumbnailUrl = GetThumbnailUrl(Userid);
+            RefreshUsername();
         }
 
         public string Userid
@@ -46,6 +47,41 @@ namespace Moviewer.Nico.Core
             var url3 = value;
             return $"{url1}/{url2}/{url3}.jpg";
         }
+
+        private async void RefreshUsername()
+        {
+            if (string.IsNullOrEmpty(Userid) || !string.IsNullOrEmpty(Username)) return;
+
+            Username = await GetNickname(Userid);
+        }
+
+        private async Task<string> GetNickname(string userid)
+        {
+            if (_userids.ContainsKey(userid)) return _userids[userid];
+
+            try
+            {
+                var url = $"https://seiga.nicovideo.jp/api/user/info?id={userid}";
+                var xml = await WebUtil.GetXmlAsync(url);
+                return _userids[userid] = (string)xml.Descendants("user")
+                    .SelectMany(x => x.Descendants("nickname"))
+                    .FirstOrDefault();
+            }
+            catch
+            {
+                return userid;
+            }
+            /*
+            <?xml version="1.0" encoding="UTF-8"?>
+            <response>
+                <user>
+                    <id>1</id>
+                    <nickname>しんの</nickname>
+                </user>
+            </response>
+            */
+        }
+        private static Dictionary<string, string> _userids = new Dictionary<string, string>();
 
     }
 }

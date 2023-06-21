@@ -3,22 +3,18 @@
                     xmlns:local="clr-namespace:Moviewer.Nico.Workspaces"
                     xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
 
-    <Style TargetType="ComboBox" BasedOn="{StaticResource DefaultComboBox}">
-        <Setter Property="Margin" Value="1" />
-        <Setter Property="beha:FrameworkElementBehavior.Width" Value="150" />
-    </Style>
-    
-    
     <DataTemplate DataType="{x:Type local:NicoRankingViewModel}">
         <DockPanel>
 
             <StackPanel DockPanel.Dock="Top"
                         Style="{DynamicResource HorizontalStackPanel}">
 
-                <ComboBox ItemsSource="{Binding Genre.Items}"
+                <ComboBox Style="{StaticResource Core.HeaderComboBox}"
+                          ItemsSource="{Binding Genre.Items}"
                           SelectedItem="{Binding Genre.SelectedItem}" />
 
-                <ComboBox ItemsSource="{Binding Period.Items}"
+                <ComboBox Style="{StaticResource Core.HeaderComboBox}"
+                          ItemsSource="{Binding Period.Items}"
                           SelectedItem="{Binding Period.SelectedItem}" />
                 
             </StackPanel>

@@ -25,15 +25,11 @@ namespace Moviewer.Nico.Workspaces
                 WpfUtil.GetContext()
             );
 
-            Genre = new ComboboxViewModel(
-                NicoUtil.Combos.Where(x => x.Group == "rank_genre").SelectMany(x => x.Items)
-            );
+            Genre = new ComboboxViewModel(NicoUtil.GetCombos("rank_genre"));
             Genre.SelectedItem = Genre.GetItemNotNull(NicoSetting.Instance.NicoRankingGenre);
             Genre.AddOnPropertyChanged(this, Reload, nameof(Genre.SelectedItem), false);
 
-            Period = new ComboboxViewModel(
-                NicoUtil.Combos.Where(x => x.Group == "rank_period").SelectMany(x => x.Items)
-            );
+            Period = new ComboboxViewModel(NicoUtil.GetCombos("rank_period"));
             Period.SelectedItem = Period.GetItemNotNull(NicoSetting.Instance.NicoRankingPeriod);
             Period.AddOnPropertyChanged(this, Reload, nameof(Period.SelectedItem), true);
 

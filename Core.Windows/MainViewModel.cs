@@ -48,6 +48,8 @@ namespace Moviewer.Core.Windows
         }
         private MenuMode _MovieType = MenuMode.Niconico;
 
+        public int NicoTemporaryCount => NicoModel.Temporaries.Count;
+
         public string NicoTemporaryString => $"Temp (0)";
 
         /// <summary>
@@ -65,6 +67,11 @@ namespace Moviewer.Core.Windows
         private void DoLoading()
         {
             NicoUtil.Initialize();
+
+            AddCollectionChanged(NicoModel.Temporaries, (sender, e) =>
+            {
+                OnPropertyChanged(nameof(NicoTemporaryCount));
+            });
 
             //// 自動ﾀｲﾏｰ起動
             //CheckTimer = new DispatcherTimer();
@@ -128,7 +135,7 @@ namespace Moviewer.Core.Windows
             [MenuType.NicoTemporary] = typeof(NicoTemporaryViewModel),
             //[MenuType.NicoFavorite] = typeof(NicoFavoriteViewModel),
             //[MenuType.NicoHistory] = typeof(NicoHistoryViewModel),
-            //[MenuType.NicoSearch] = typeof(NicoSearchViewModel),
+            [MenuType.NicoSearch] = typeof(NicoSearchViewModel),
         };
 
     }
