@@ -5,7 +5,13 @@
                     xmlns:corestyle="clr-namespace:Moviewer.Core.Styles"
                     xmlns:nicocore="clr-namespace:Moviewer.Nico.Core">
 
-    <Style x:Key="IconPacksButton.SearchButton" TargetType="{x:Type corestyle:IconPacksButton}">
+    <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Core.xaml" />
+
+    </ResourceDictionary.MergedDictionaries>
+    
+    <Style x:Key="IconPacksButton.SearchButton" TargetType="{x:Type corestyle:IconPacksButton}" BasedOn="{StaticResource Core.HorizontalIconPackButton}">
         <Setter Property="Orientation" Value="Horizontal" />
         <Setter Property="Margin" Value="4,2" />
     </Style>
@@ -16,32 +22,32 @@
             <DockPanel DockPanel.Dock="Top">
 
                 <ComboBox DockPanel.Dock="Left"
-                          Style="{StaticResource Core.HeaderComboBox}"
+                          Style="{DynamicResource Core.HeaderComboBox}"
                           ItemsSource="{Binding Orderby.Items}"
                           SelectedItem="{Binding Orderby.SelectedItem}" />
 
                 <corestyle:IconPacksButton DockPanel.Dock="Right"
-                                           Style="{StaticResource IconPacksButton.SearchButton}"
+                                           Style="{DynamicResource IconPacksButton.SearchButton}"
                                            Kind="AccountSearch"
                                            Text="ﾕｰｻﾞ検索"
                                            Command="{Binding OnSearch}"
                                            CommandParameter="{x:Static nicocore:NicoSearchType.User}" />
 
                 <corestyle:IconPacksButton DockPanel.Dock="Right"
-                                           Style="{StaticResource IconPacksButton.SearchButton}"
+                                           Style="{DynamicResource IconPacksButton.SearchButton}"
                                            Kind="Tag"
                                            Text="ﾀｸﾞ検索"
                                            Command="{Binding OnSearch}"
                                            CommandParameter="{x:Static nicocore:NicoSearchType.Tag}" />
 
                 <corestyle:IconPacksButton DockPanel.Dock="Right"
-                                           Style="{StaticResource IconPacksButton.SearchButton}"
+                                           Style="{DynamicResource IconPacksButton.SearchButton}"
                                            Kind="Magnify"
                                            Text="ﾜｰﾄﾞ検索"
                                            Command="{Binding OnSearch}"
                                            CommandParameter="{x:Static nicocore:NicoSearchType.Word}" />
 
-                <TextBox Style="{StaticResource DefaultTextBox}"
+                <TextBox Style="{DynamicResource DefaultTextBox}"
                          Margin="4,2"
                          Text="{Binding Word}" />
                 

@@ -11,7 +11,7 @@
             <StackPanel DockPanel.Dock="Top"
                         Style="{DynamicResource HorizontalStackPanel}">
 
-                <corestyle:IconPacksButton Style="{StaticResource Core.HorizontalIconPackButton}"
+                <corestyle:IconPacksButton Style="{DynamicResource Core.HorizontalIconPackButton}"
                                            Kind="BookmarkPlus"
                                            Text="{x:Static core:AppConst.L_AddTemporary}"
                                            Command="{Binding OnTemporaryAdd}" />

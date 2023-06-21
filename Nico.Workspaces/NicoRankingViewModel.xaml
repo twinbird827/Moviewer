@@ -9,11 +9,11 @@
             <StackPanel DockPanel.Dock="Top"
                         Style="{DynamicResource HorizontalStackPanel}">
 
-                <ComboBox Style="{StaticResource Core.HeaderComboBox}"
+                <ComboBox Style="{DynamicResource Core.HeaderComboBox}"
                           ItemsSource="{Binding Genre.Items}"
                           SelectedItem="{Binding Genre.SelectedItem}" />
 
-                <ComboBox Style="{StaticResource Core.HeaderComboBox}"
+                <ComboBox Style="{DynamicResource Core.HeaderComboBox}"
                           ItemsSource="{Binding Period.Items}"
                           SelectedItem="{Binding Period.SelectedItem}" />
                 

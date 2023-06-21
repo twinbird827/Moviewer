@@ -22,6 +22,7 @@
             </DataTemplate>-->
 
             <Style x:Key="MenuIconpacksButton" TargetType="csty:IconPacksButton">
+                <Setter Property="Orientation" Value="Vertical" />
                 <Setter Property="Padding" Value="5" />
                 <Setter Property="Margin" Value="{StaticResource Margin.Header}" />
                 <Setter Property="MinWidth" Value="50" />

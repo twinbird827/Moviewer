@@ -8,14 +8,18 @@
                 CommandParameter="{TemplateBinding CommandParameter}"
                 Padding="{TemplateBinding Padding}"
                 FontSize="{TemplateBinding FontSize}"
-                FontWeight="{TemplateBinding FontWeight}">
-            <StackPanel Orientation="Horizontal">
-                <icon:PackIconMaterial Kind="{Binding Kind}"
+                FontWeight="{TemplateBinding FontWeight}"
+                HorizontalContentAlignment="Stretch">
+            <DockPanel>
+                <icon:PackIconMaterial DockPanel.Dock="Left"
+                                       Kind="{TemplateBinding Kind}"
                                        Margin="{DynamicResource Margin.Zero}"
                                        HorizontalAlignment="Center" />
+                
                 <TextBlock FontSize="{Binding FontSize}"
-                           Text="{Binding Text}" />
-            </StackPanel>
+                           TextAlignment="Center"
+                           Text="{TemplateBinding Text}" />
+            </DockPanel>
         </Button>
     </ControlTemplate>
 
@@ -26,11 +30,11 @@
                 FontSize="{TemplateBinding FontSize}"
                 FontWeight="{TemplateBinding FontWeight}">
             <StackPanel>
-                <icon:PackIconMaterial Kind="{Binding Kind}"
+                <icon:PackIconMaterial Kind="{TemplateBinding Kind}"
                                        Margin="{DynamicResource Margin.Zero}"
                                        HorizontalAlignment="Center" />
-                <TextBlock FontSize="{Binding FontSize}"
-                           Text="{Binding Text}" />
+                <TextBlock FontSize="{TemplateBinding FontSize}"
+                           Text="{TemplateBinding Text}" />
             </StackPanel>
         </Button>
     </ControlTemplate>
