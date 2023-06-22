@@ -39,30 +39,52 @@
         <Setter Property="Text" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag, Converter={StaticResource Enum2StringConverter}}" />
     </Style>
 
-    <DataTemplate x:Key="NicoSearchHistoryViewModel.Display" DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
+    <DataTemplate x:Key="NicoSearchHistoryViewModel.Display">
         <TextBlock Text="{Binding Display}"
                    FontSize="{DynamicResource FontSize.L}"
                    Foreground="DarkBlue"
                    TextDecorations="Underline" />
     </DataTemplate>
-    
+
+    <DataTemplate x:Key="NicoUserViewModel.M">
+        <StackPanel Style="{DynamicResource HorizontalStackPanel}">
+
+            <Grid beha:FrameworkElementBehavior.Width="50"
+                  beha:FrameworkElementBehavior.Height="50"
+                  ToolTip="{Binding Display.Userid}">
+                <ContentPresenter ContentTemplate="{DynamicResource Core.Thumbnail}"
+                                  Content="{Binding Display.Thumbnail}" />
+            </Grid>
+
+            <DockPanel>
+                <TextBlock Margin="4,2"
+                           DockPanel.Dock="Top"
+                           Text="{Binding Word}" />
+
+                <TextBlock Margin="4,2"
+                       VerticalAlignment="Center"
+                       Text="{Binding Display.Username}"
+                       FontSize="{DynamicResource FontSize.L}"
+                       Foreground="DarkBlue"
+                       TextDecorations="Underline" />
+
+            </DockPanel>
+        </StackPanel>
+    </DataTemplate>
+
     <Style x:Key="NicoSearchHistoryViewModel.Display.ContentPresenter" TargetType="ContentPresenter">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Type}" Value="User">
                 <Setter Property="ContentTemplate" Value="{DynamicResource NicoUserViewModel.M}" />
-                <Setter Property="Content" Value="{Binding Display}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Type}" Value="Tag">
                 <Setter Property="ContentTemplate" Value="{DynamicResource NicoSearchHistoryViewModel.Display}" />
-                <Setter Property="Content" Value="{Binding}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Type}" Value="Word">
                 <Setter Property="ContentTemplate" Value="{DynamicResource NicoSearchHistoryViewModel.Display}" />
-                <Setter Property="Content" Value="{Binding}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Type}" Value="Mylist">
                 <Setter Property="ContentTemplate" Value="{DynamicResource NicoSearchHistoryViewModel.Display}" />
-                <Setter Property="Content" Value="{Binding}" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -70,25 +92,37 @@
     <DataTemplate DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
         <DockPanel>
 
-            <DockPanel DockPanel.Dock="Top">
+            <DockPanel DockPanel.Dock="Right">
 
-                <TextBlock DockPanel.Dock="Left"
-                           Text="{Binding Word}" />
-
-                <Button DockPanel.Dock="Right"
-                        Content="{icon:Material Kind=Close}"
-                        Command="{Binding OnDelete}" />
+                <Button DockPanel.Dock="Top"
+                        Margin="2"
+                        Command="{Binding OnDelete}">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <icon:PackIconMaterial Kind="Close" />
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
 
                 <StackPanel />
             </DockPanel>
 
             <DockPanel DockPanel.Dock="Bottom">
 
-                <Grid DockPanel.Dock="Right">
-                    <corestyle:IconPacksButton Style="{StaticResource NicoSearchHistoryViewModel.IconPacksButton.TypeDisplay}"
-                                               Tag="{Binding Type}" />
-                    <StackPanel />
-                </Grid>
+                <DockPanel DockPanel.Dock="Right"
+                           beha:FrameworkElementBehavior.Width="100"
+                           beha:FrameworkElementBehavior.Height="25">
+                    <icon:PackIconMaterial DockPanel.Dock="Left"
+                                           Kind="{Binding Type, Converter={StaticResource NicoSearchTypeKindConverter}}"
+                                           Margin="{DynamicResource Margin.Zero}"
+                                           HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Stretch"/>
+
+                    <TextBlock FontSize="{DynamicResource FontSize.M}"
+                               TextAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{Binding Type, Converter={StaticResource Enum2StringConverter}}" />
+                </DockPanel>
 
                 <TextBlock DockPanel.Dock="Left"
                            Foreground="DarkRed"
@@ -97,8 +131,8 @@
             </DockPanel>
 
             <ContentPresenter Style="{StaticResource NicoSearchHistoryViewModel.Display.ContentPresenter}"
-                              Margin="10"
-                              DataContext="{Binding Display}" />
+                              Content="{Binding}"
+                              Margin="5" />
             
         </DockPanel>
     </DataTemplate>

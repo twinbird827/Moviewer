@@ -34,7 +34,11 @@
 
                 <corestyle:IconPacksButton DockPanel.Dock="Right"
                                            Style="{DynamicResource IconPacksButton.SearchButton}"
-                                           Tag="{x:Static nicocore:NicoSearchType.User}" />
+                                           Tag="{x:Static nicocore:NicoSearchType.Mylist}" />
+
+                <corestyle:IconPacksButton DockPanel.Dock="Right"
+                                           Style="{DynamicResource IconPacksButton.SearchButton}"
+                                           Tag="{x:Static nicocore:NicoSearchType.Tag}" />
 
                 <corestyle:IconPacksButton DockPanel.Dock="Right"
                                            Style="{DynamicResource IconPacksButton.SearchButton}"
@@ -42,11 +46,7 @@
 
                 <corestyle:IconPacksButton DockPanel.Dock="Right"
                                            Style="{DynamicResource IconPacksButton.SearchButton}"
-                                           Tag="{x:Static nicocore:NicoSearchType.User}" />
-
-                <corestyle:IconPacksButton DockPanel.Dock="Right"
-                                           Style="{DynamicResource IconPacksButton.SearchButton}"
-                                           Tag="{x:Static nicocore:NicoSearchType.User}" />
+                                           Tag="{x:Static nicocore:NicoSearchType.Word}" />
 
                 <TextBox Style="{DynamicResource DefaultTextBox}"
                          Margin="4,2"

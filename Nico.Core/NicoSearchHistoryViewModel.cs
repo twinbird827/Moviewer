@@ -21,6 +21,7 @@ namespace Moviewer.Nico.Core
             {
                 Type = m.Type;
                 Display = GetDisplay();
+                UserInfo = Display as NicoUserViewModel;
             }, nameof(Type), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
@@ -56,6 +57,13 @@ namespace Moviewer.Nico.Core
             set => SetProperty(ref _Display, value);
         }
         private object _Display;
+
+        public NicoUserViewModel UserInfo
+        {
+            get => _UserInfo;
+            set => SetProperty(ref _UserInfo, value);
+        }
+        private NicoUserViewModel _UserInfo;
 
         private object GetDisplay()
         {

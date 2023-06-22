@@ -94,7 +94,7 @@ namespace Moviewer.Nico.Core
                 StartTime = DateTimeOffset.Parse(item["startTime"]).DateTime;
                 LengthSeconds = (long)item["lengthSeconds"];
                 Tags = item["tags"];
-                UserInfo = new NicoUserModel(item["userId"], null);
+                UserInfo = new NicoUserModel($"{item["userId"]}", null);
                 RefreshStatus();
             }
             catch
