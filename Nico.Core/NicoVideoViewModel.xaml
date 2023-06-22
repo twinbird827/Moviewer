@@ -6,7 +6,7 @@
 
     <ResourceDictionary.MergedDictionaries>
 
-        <ResourceDictionary Source="pack://application:,,,/TBird.Wpf;component/Styles/_Converters.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Converters.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Core/NicoUserViewModel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Core/NicoVideoTagViewModel.xaml" />
 
@@ -79,7 +79,8 @@
             <DockPanel DockPanel.Dock="Bottom">
 
                 <ContentPresenter DockPanel.Dock="Right"
-                                  Content="{Binding UserInfo}" />
+                                  Content="{Binding UserInfo}"
+                                  ContentTemplate="{DynamicResource NicoUserViewModel.S}"/>
 
                 <ItemsControl ItemsSource="{Binding Tags}">
                     <ItemsControl.ItemsPanel>

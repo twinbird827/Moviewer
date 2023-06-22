@@ -25,6 +25,8 @@ namespace Moviewer.Nico.Core
                 Temporaries = new NicoVideoHistoryModel[] { };
 
                 Histories = new NicoVideoHistoryModel[] { };
+
+                SearchHistories = new NicoSearchHistoryModel[] { };
             }
         }
 
@@ -62,6 +64,13 @@ namespace Moviewer.Nico.Core
             set => SetProperty(ref _Histories, value);
         }
         private NicoVideoHistoryModel[] _Histories;
+
+        public NicoSearchHistoryModel[] SearchHistories
+        {
+            get => GetProperty(_SearchHistories);
+            set => SetProperty(ref _SearchHistories, value);
+        }
+        private NicoSearchHistoryModel[] _SearchHistories;
 
     }
 }

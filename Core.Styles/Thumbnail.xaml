@@ -5,7 +5,7 @@
 
     <ResourceDictionary.MergedDictionaries>
 
-        <ResourceDictionary Source="pack://application:,,,/TBird.Wpf;component/Styles/_Converters.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Converters.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 

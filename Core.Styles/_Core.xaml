@@ -22,6 +22,14 @@
         <Setter Property="HorizontalAlignment" Value="Stretch" />
     </Style>
 
+    <Style x:Key="Core.SeachHistoryStyle" TargetType="ListBox" BasedOn="{StaticResource MahApps.Styles.ListBox}">
+        <Setter Property="beha:FrameworkElementBehavior.Width" Value="350" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel" />
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+
     <Style x:Key="Core.HorizontalIconPackButton" TargetType="corestyle:IconPacksButton">
         <Setter Property="Orientation" Value="Horizontal" />
         <Setter Property="Padding" Value="5" />

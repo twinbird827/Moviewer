@@ -3,17 +3,23 @@
                     xmlns:local="clr-namespace:Moviewer.Nico.Workspaces"
                     xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf"
                     xmlns:corestyle="clr-namespace:Moviewer.Core.Styles"
+                    xmlns:core="clr-namespace:Moviewer.Core"
                     xmlns:nicocore="clr-namespace:Moviewer.Nico.Core">
 
     <ResourceDictionary.MergedDictionaries>
 
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Core.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Converters.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
     
     <Style x:Key="IconPacksButton.SearchButton" TargetType="{x:Type corestyle:IconPacksButton}" BasedOn="{StaticResource Core.HorizontalIconPackButton}">
         <Setter Property="Orientation" Value="Horizontal" />
         <Setter Property="Margin" Value="4,2" />
+        <Setter Property="Kind" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag, Converter={StaticResource NicoSearchTypeKindConverter}}" />
+        <Setter Property="Text" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag, Converter={StaticResource Enum2StringConverter}}" />
+        <Setter Property="Command" Value="{Binding OnSearch}" />
+        <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag}" />
     </Style>
     
     <DataTemplate DataType="{x:Type local:NicoSearchViewModel}">
@@ -28,30 +34,30 @@
 
                 <corestyle:IconPacksButton DockPanel.Dock="Right"
                                            Style="{DynamicResource IconPacksButton.SearchButton}"
-                                           Kind="AccountSearch"
-                                           Text="ﾕｰｻﾞ検索"
-                                           Command="{Binding OnSearch}"
-                                           CommandParameter="{x:Static nicocore:NicoSearchType.User}" />
+                                           Tag="{x:Static nicocore:NicoSearchType.User}" />
 
                 <corestyle:IconPacksButton DockPanel.Dock="Right"
                                            Style="{DynamicResource IconPacksButton.SearchButton}"
-                                           Kind="Tag"
-                                           Text="ﾀｸﾞ検索"
-                                           Command="{Binding OnSearch}"
-                                           CommandParameter="{x:Static nicocore:NicoSearchType.Tag}" />
+                                           Tag="{x:Static nicocore:NicoSearchType.User}" />
 
                 <corestyle:IconPacksButton DockPanel.Dock="Right"
                                            Style="{DynamicResource IconPacksButton.SearchButton}"
-                                           Kind="Magnify"
-                                           Text="ﾜｰﾄﾞ検索"
-                                           Command="{Binding OnSearch}"
-                                           CommandParameter="{x:Static nicocore:NicoSearchType.Word}" />
+                                           Tag="{x:Static nicocore:NicoSearchType.User}" />
+
+                <corestyle:IconPacksButton DockPanel.Dock="Right"
+                                           Style="{DynamicResource IconPacksButton.SearchButton}"
+                                           Tag="{x:Static nicocore:NicoSearchType.User}" />
 
                 <TextBox Style="{DynamicResource DefaultTextBox}"
                          Margin="4,2"
                          Text="{Binding Word}" />
                 
             </DockPanel>
+
+            <ListBox DockPanel.Dock="Left"
+                     Style="{DynamicResource Core.SeachHistoryStyle}"
+                     ItemsSource="{Binding Histories}"
+                     ItemContainerStyle="{DynamicResource NicoSearchHistoryViewModel.ItemContainerStyle}" />
 
             <ListBox Style="{DynamicResource Core.VideoStyle}"
                      ItemsSource="{Binding Videos}"

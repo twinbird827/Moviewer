@@ -12,6 +12,18 @@ namespace Moviewer.Core
         /// <summary>ﾃﾝﾎﾟﾗﾘ追加</summary>
         public static string L_AddTemporary { get; } = Lang.Instance.Get();
 
+        /// <summary>ﾏｲﾘｽﾄ検索</summary>
+        public static string L_SearchMylist { get; } = Lang.Instance.Get();
+
+        /// <summary>ﾀｸﾞ検索</summary>
+        public static string L_SearchTag { get; } = Lang.Instance.Get();
+
+        /// <summary>ﾕｰｻﾞ検索</summary>
+        public static string L_SearchUser { get; } = Lang.Instance.Get();
+
+        /// <summary>ﾜｰﾄﾞ検索</summary>
+        public static string L_SearchWord { get; } = Lang.Instance.Get();
+
         /// <summary>URL or ID</summary>
         public static string L_UrlOrId { get; } = Lang.Instance.Get();
 

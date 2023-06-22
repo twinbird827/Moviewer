@@ -19,14 +19,11 @@ namespace Moviewer.Nico.Core
         // **************************************************
         // Temporaries
 
-        public static SynchronizationContextCollection<NicoVideoModel> Temporaries
+        public static ObservableSynchronizedCollection<NicoVideoModel> Temporaries
         {
-            get => _Temporaries = _Temporaries ?? Private.Instance.Temporaries.ToSyncedSynchronizationContextCollection(
-                x => x.GetVideo(),
-                WpfUtil.GetContext()
-            );
+            get => _Temporaries = _Temporaries ?? Private.Instance.Temporaries.ToSyncedObservableSynchronizedCollection(x => x.GetVideo());
         }
-        public static SynchronizationContextCollection<NicoVideoModel> _Temporaries;
+        public static ObservableSynchronizedCollection<NicoVideoModel> _Temporaries;
 
         public static void AddTemporary(string contentid)
         {
@@ -53,6 +50,25 @@ namespace Moviewer.Nico.Core
             Private.Instance.DelHistory(contentid);
         }
 
+        // **************************************************
+        // Search Histories
+
+        public static ObservableSynchronizedCollection<NicoSearchHistoryModel> SearchHistories
+        {
+            get => _SearchHistories = _SearchHistories ?? Private.Instance.SearchHistories.ToSyncedObservableSynchronizedCollection(x => x);
+        }
+        private static ObservableSynchronizedCollection<NicoSearchHistoryModel> _SearchHistories;
+
+        public static void AddSearchHistory(string word, NicoSearchType type)
+        {
+            Private.Instance.AddSearchHistory(word, type);
+        }
+
+        public static void DelSearchHistory(string word, NicoSearchType type)
+        {
+            Private.Instance.DelSearchHistory(word, type);
+        }
+
         public class Private : BindableBase
         {
             private Private()
@@ -60,6 +76,8 @@ namespace Moviewer.Nico.Core
                 Temporaries = new ObservableSynchronizedCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Temporaries);
 
                 Histories = new ObservableCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Histories);
+
+                SearchHistories = new ObservableSynchronizedCollection<NicoSearchHistoryModel>(NicoSetting.Instance.SearchHistories);
             }
 
             public static Private Instance
@@ -72,6 +90,7 @@ namespace Moviewer.Nico.Core
             {
                 NicoSetting.Instance.Temporaries = Temporaries.ToArray();
                 NicoSetting.Instance.Histories = Histories.ToArray();
+                NicoSetting.Instance.SearchHistories = SearchHistories.ToArray();
                 NicoSetting.Instance.Save();
             }
 
@@ -103,7 +122,7 @@ namespace Moviewer.Nico.Core
             }
 
             // **************************************************
-            // Histories
+            // Video Histories
 
             public ObservableCollection<NicoVideoHistoryModel> Histories { get; private set; }
 
@@ -126,6 +145,33 @@ namespace Moviewer.Nico.Core
                 if (tmp != null)
                 {
                     Histories.Remove(tmp);
+                }
+            }
+
+            // **************************************************
+            // Search Histories
+
+            public ObservableSynchronizedCollection<NicoSearchHistoryModel> SearchHistories { get; private set; }
+
+            public void AddSearchHistory(string word, NicoSearchType type)
+            {
+                var tmp = SearchHistories.FirstOrDefault(x => x.Word == word && x.Type == type);
+                if (tmp != null)
+                {
+                    tmp.Date = DateTime.Now;
+                }
+                else
+                {
+                    SearchHistories.Add(new NicoSearchHistoryModel(word, type));
+                }
+            }
+
+            public void DelSearchHistory(string word, NicoSearchType type)
+            {
+                var tmp = SearchHistories.FirstOrDefault(x => x.Word == word && x.Type == type);
+                if (tmp != null)
+                {
+                    SearchHistories.Remove(tmp);
                 }
             }
 

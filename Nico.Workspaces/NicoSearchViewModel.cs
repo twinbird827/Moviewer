@@ -11,6 +11,7 @@ using System.Windows;
 using TBird.Core.Stateful;
 using TBird.Wpf;
 using TBird.Core;
+using System.Windows.Controls;
 
 namespace Moviewer.Nico.Workspaces
 {
@@ -27,6 +28,11 @@ namespace Moviewer.Nico.Workspaces
 
             Orderby = new ComboboxViewModel(NicoUtil.GetCombos("order_by"));
             Orderby.SelectedItem = Orderby.GetItemNotNull(NicoSetting.Instance.NicoSearchOrderby);
+
+            Histories = NicoModel.SearchHistories.ToSyncedSynchronizationContextCollection(
+                x => new NicoSearchHistoryViewModel(x),
+                WpfUtil.GetContext()
+            );
 
             AddDisposed((sender, e) =>
             {
@@ -51,6 +57,8 @@ namespace Moviewer.Nico.Workspaces
 
         public SynchronizationContextCollection<NicoVideoViewModel> Videos { get; private set; }
 
+        public SynchronizationContextCollection<NicoSearchHistoryViewModel> Histories { get; private set; }
+
         public ICommand OnSearch => _OnSearch = _OnSearch ?? RelayCommand.Create<NicoSearchType>(async t =>
         {
             await GetSources(t).ContinueOnUI(x =>
@@ -58,6 +66,8 @@ namespace Moviewer.Nico.Workspaces
                 Sources.Clear();
                 Sources.AddRange(x.Result);
             });
+
+            NicoModel.AddSearchHistory(Word, t);
         });
         private ICommand _OnSearch;
     
@@ -69,6 +79,8 @@ namespace Moviewer.Nico.Workspaces
                     return NicoUtil.GetVideosByNicouser(Word, Orderby.SelectedItem.Value);
                 case NicoSearchType.Tag:
                     return NicoUtil.GetVideosByTag(Word, Orderby.SelectedItem.Value);
+                case NicoSearchType.Mylist:
+                    return NicoUtil.GetVideosByMylist(Word, NicoUtil.GetComboDisplay("oyder_by_mylist", Orderby.SelectedItem.Value));
                 //case NicoSearchType.Word:
                 default:
                     return NicoUtil.GetVideosByWord(Word, Orderby.SelectedItem.Value);

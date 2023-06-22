@@ -4,7 +4,7 @@
                     xmlns:mocore="clr-namespace:Moviewer.Core.Styles"
                     xmlns:nicore="clr-namespace:Moviewer.Nico.Core">
 
-    <DataTemplate DataType="{x:Type nicore:NicoUserViewModel}">
+    <DataTemplate x:Key="NicoUserViewModel.S" DataType="{x:Type nicore:NicoUserViewModel}">
         <StackPanel Style="{DynamicResource HorizontalStackPanel}">
 
             <Grid beha:FrameworkElementBehavior.Width="35"
@@ -19,7 +19,26 @@
                                     Command="{Binding OnClickUsername}"
                                     VerticalAlignment="Center"
                                     Text="{Binding Username}" />
-            
+
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="NicoUserViewModel.M" DataType="{x:Type nicore:NicoUserViewModel}">
+        <StackPanel Style="{DynamicResource HorizontalStackPanel}">
+
+            <Grid beha:FrameworkElementBehavior.Width="50"
+                  beha:FrameworkElementBehavior.Height="50"
+                  ToolTip="{Binding Userid}">
+                <ContentPresenter ContentTemplate="{DynamicResource Core.Thumbnail}"
+                                  Content="{Binding Thumbnail}" />
+            </Grid>
+
+            <mocore:LinkedTextBlock Margin="5,3"
+                                    beha:FrameworkElementBehavior.Width="200"
+                                    VerticalAlignment="Center"
+                                    Text="{Binding Username}"
+                                    FontSize="{DynamicResource FontSize.LL}" />
+
         </StackPanel>
     </DataTemplate>
 
