@@ -5,22 +5,51 @@
                     xmlns:nicore="clr-namespace:Moviewer.Nico.Core">
 
     <DataTemplate x:Key="NicoUserViewModel.S" DataType="{x:Type nicore:NicoUserViewModel}">
-        <StackPanel Style="{DynamicResource HorizontalStackPanel}">
+        <DockPanel beha:FrameworkElementBehavior.Width="150">
 
-            <Grid beha:FrameworkElementBehavior.Width="35"
+            <Grid DockPanel.Dock="Left"
+                  beha:FrameworkElementBehavior.Width="35"
                   beha:FrameworkElementBehavior.Height="35"
                   ToolTip="{Binding Userid}">
                 <ContentPresenter ContentTemplate="{DynamicResource Core.Thumbnail}"
                                   Content="{Binding Thumbnail}" />
             </Grid>
 
-            <mocore:LinkedTextBlock Margin="5,3"
-                                    beha:FrameworkElementBehavior.Width="100"
+            <TextBlock DockPanel.Dock="Top"
+                       Margin="4,1"
+                       Text="{Binding Word}" />
+
+            <mocore:LinkedTextBlock Margin="4,3"
                                     Command="{Binding OnClickUsername}"
                                     VerticalAlignment="Center"
                                     Text="{Binding Username}" />
 
-        </StackPanel>
+        </DockPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="NicoUserViewModel.M" DataType="{x:Type nicore:NicoUserViewModel}">
+        <DockPanel>
+
+            <Grid DockPanel.Dock="Left"
+                  beha:FrameworkElementBehavior.Width="50"
+                  beha:FrameworkElementBehavior.Height="50"
+                  ToolTip="{Binding Userid}">
+                <ContentPresenter ContentTemplate="{DynamicResource Core.Thumbnail}"
+                                  Content="{Binding Thumbnail}" />
+            </Grid>
+
+            <TextBlock DockPanel.Dock="Top"
+                       Margin="4,1"
+                       Text="{Binding Word}" />
+
+            <TextBlock Margin="4,3"
+                       VerticalAlignment="Center"
+                       Text="{Binding Username}"
+                       FontSize="{DynamicResource FontSize.L}"
+                       Foreground="DarkBlue"
+                       TextDecorations="Underline" />
+            
+        </DockPanel>
     </DataTemplate>
 
 </ResourceDictionary>

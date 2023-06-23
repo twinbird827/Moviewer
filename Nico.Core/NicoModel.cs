@@ -9,45 +9,92 @@ using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
 {
-    public static class NicoModel
+    public class NicoModel
     {
+        private NicoModel()
+        {
+
+        }
+
+        private static NicoModel Instance
+        {
+            get => _Instance = _Instance ?? new NicoModel();
+        }
+        private static NicoModel _Instance;
+
         public static void Save()
         {
-            Private.Instance.Save();
+            NicoSetting.Instance.Temporaries = Temporaries.ToArray();
+            NicoSetting.Instance.Histories = Histories.ToArray();
+            NicoSetting.Instance.SearchHistories = SearchHistories.ToArray();
+            NicoSetting.Instance.SearchFavorites = SearchFavorites.ToArray();
+            NicoSetting.Instance.Save();
         }
 
         // **************************************************
         // Temporaries
 
-        public static ObservableSynchronizedCollection<NicoVideoModel> Temporaries
+        public static ObservableSynchronizedCollection<NicoVideoHistoryModel> Temporaries
         {
-            get => _Temporaries = _Temporaries ?? Private.Instance.Temporaries.ToSyncedObservableSynchronizedCollection(x => x.GetVideo());
+            get => Instance._Temporaries = Instance._Temporaries ?? new ObservableSynchronizedCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Temporaries);
         }
-        public static ObservableSynchronizedCollection<NicoVideoModel> _Temporaries;
+        private ObservableSynchronizedCollection<NicoVideoHistoryModel> _Temporaries;
 
         public static void AddTemporary(string contentid)
         {
-            Private.Instance.AddTemporary(contentid);
+            var tmp = Temporaries.FirstOrDefault(x => x.ContentId == contentid);
+            if (tmp != null)
+            {
+                tmp.RegistDate = DateTime.Now;
+            }
+            else
+            {
+                Temporaries.Add(new NicoVideoHistoryModel(contentid));
+                Save();
+            }
         }
 
         public static void DelTemporary(string contentid)
         {
-            Private.Instance.DelTemporary(contentid);
+            var tmp = Temporaries.FirstOrDefault(x => x.ContentId == contentid);
+            if (tmp != null)
+            {
+                Temporaries.Remove(tmp);
+                Save();
+            }
         }
 
         // **************************************************
         // Histories
 
-        public static ObservableCollection<NicoVideoHistoryModel> Histories => Private.Instance.Histories;
+        public static ObservableSynchronizedCollection<NicoVideoHistoryModel> Histories
+        {
+            get => Instance._Histories = Instance._Histories ?? new ObservableSynchronizedCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Histories);
+        }
+        private ObservableSynchronizedCollection<NicoVideoHistoryModel> _Histories;
 
         public static void AddHistory(string contentid)
         {
-            Private.Instance.AddHistory(contentid);
+            var tmp = Histories.FirstOrDefault(x => x.ContentId == contentid);
+            if (tmp != null)
+            {
+                tmp.RegistDate = DateTime.Now;
+            }
+            else
+            {
+                Histories.Add(new NicoVideoHistoryModel(contentid));
+                Save();
+            }
         }
 
         public static void DelHistory(string contentid)
         {
-            Private.Instance.DelHistory(contentid);
+            var tmp = Histories.FirstOrDefault(x => x.ContentId == contentid);
+            if (tmp != null)
+            {
+                Histories.Remove(tmp);
+                Save();
+            }
         }
 
         // **************************************************
@@ -55,126 +102,65 @@ namespace Moviewer.Nico.Core
 
         public static ObservableSynchronizedCollection<NicoSearchHistoryModel> SearchHistories
         {
-            get => _SearchHistories = _SearchHistories ?? Private.Instance.SearchHistories.ToSyncedObservableSynchronizedCollection(x => x);
+            get => Instance._SearchHistories = Instance._SearchHistories ?? new ObservableSynchronizedCollection<NicoSearchHistoryModel>(NicoSetting.Instance.SearchHistories);
         }
-        private static ObservableSynchronizedCollection<NicoSearchHistoryModel> _SearchHistories;
+        private ObservableSynchronizedCollection<NicoSearchHistoryModel> _SearchHistories;
 
         public static void AddSearchHistory(string word, NicoSearchType type)
         {
-            Private.Instance.AddSearchHistory(word, type);
+            var tmp = SearchHistories.FirstOrDefault(x => x.Word == word && x.Type == type);
+            if (tmp != null)
+            {
+                tmp.Date = DateTime.Now;
+            }
+            else
+            {
+                SearchHistories.Add(new NicoSearchHistoryModel(word, type));
+                Save();
+            }
         }
 
         public static void DelSearchHistory(string word, NicoSearchType type)
         {
-            Private.Instance.DelSearchHistory(word, type);
+            var tmp = SearchHistories.FirstOrDefault(x => x.Word == word && x.Type == type);
+            if (tmp != null)
+            {
+                SearchHistories.Remove(tmp);
+                Save();
+            }
         }
 
-        public class Private : BindableBase
+        // **************************************************
+        // SearchFavorites
+
+        public static ObservableSynchronizedCollection<NicoSearchHistoryModel> SearchFavorites
         {
-            private Private()
+            get => Instance._SearchFavorites = Instance._SearchFavorites ?? new ObservableSynchronizedCollection<NicoSearchHistoryModel>(NicoSetting.Instance.SearchFavorites);
+        }
+        private ObservableSynchronizedCollection<NicoSearchHistoryModel> _SearchFavorites;
+
+        public static void AddSearchFavorite(string word, NicoSearchType type)
+        {
+            var tmp = SearchFavorites.FirstOrDefault(x => x.Word == word && x.Type == type);
+            if (tmp != null)
             {
-                Temporaries = new ObservableSynchronizedCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Temporaries);
-
-                Histories = new ObservableCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Histories);
-
-                SearchHistories = new ObservableSynchronizedCollection<NicoSearchHistoryModel>(NicoSetting.Instance.SearchHistories);
+                tmp.Date = DateTime.Now;
             }
-
-            public static Private Instance
+            else
             {
-                get => _Instance = _Instance ?? new Private();
+                SearchFavorites.Add(new NicoSearchHistoryModel(word, type));
+                Save();
             }
-            private static Private _Instance;
+        }
 
-            public void Save()
+        public static void DelSearchFavorite(string word, NicoSearchType type)
+        {
+            var tmp = SearchFavorites.FirstOrDefault(x => x.Word == word && x.Type == type);
+            if (tmp != null)
             {
-                NicoSetting.Instance.Temporaries = Temporaries.ToArray();
-                NicoSetting.Instance.Histories = Histories.ToArray();
-                NicoSetting.Instance.SearchHistories = SearchHistories.ToArray();
-                NicoSetting.Instance.Save();
+                SearchFavorites.Remove(tmp);
+                Save();
             }
-
-            // **************************************************
-            // Temporaries
-
-            public ObservableSynchronizedCollection<NicoVideoHistoryModel> Temporaries { get; private set; }
-
-            public void AddTemporary(string contentid)
-            {
-                var tmp = Temporaries.FirstOrDefault(x => x.ContentId == contentid);
-                if (tmp != null)
-                {
-                    tmp.RegistDate = DateTime.Now;
-                }
-                else
-                {
-                    Temporaries.Add(new NicoVideoHistoryModel(contentid));
-                }
-            }
-
-            public void DelTemporary(string contentid)
-            {
-                var tmp = Temporaries.FirstOrDefault(x => x.ContentId == contentid);
-                if (tmp != null)
-                {
-                    Temporaries.Remove(tmp);
-                }
-            }
-
-            // **************************************************
-            // Video Histories
-
-            public ObservableCollection<NicoVideoHistoryModel> Histories { get; private set; }
-
-            public void AddHistory(string contentid)
-            {
-                var tmp = Histories.FirstOrDefault(x => x.ContentId == contentid);
-                if (tmp != null)
-                {
-                    tmp.RegistDate = DateTime.Now;
-                }
-                else
-                {
-                    Histories.Add(new NicoVideoHistoryModel(contentid));
-                }
-            }
-
-            public void DelHistory(string contentid)
-            {
-                var tmp = Histories.FirstOrDefault(x => x.ContentId == contentid);
-                if (tmp != null)
-                {
-                    Histories.Remove(tmp);
-                }
-            }
-
-            // **************************************************
-            // Search Histories
-
-            public ObservableSynchronizedCollection<NicoSearchHistoryModel> SearchHistories { get; private set; }
-
-            public void AddSearchHistory(string word, NicoSearchType type)
-            {
-                var tmp = SearchHistories.FirstOrDefault(x => x.Word == word && x.Type == type);
-                if (tmp != null)
-                {
-                    tmp.Date = DateTime.Now;
-                }
-                else
-                {
-                    SearchHistories.Add(new NicoSearchHistoryModel(word, type));
-                }
-            }
-
-            public void DelSearchHistory(string word, NicoSearchType type)
-            {
-                var tmp = SearchHistories.FirstOrDefault(x => x.Word == word && x.Type == type);
-                if (tmp != null)
-                {
-                    SearchHistories.Remove(tmp);
-                }
-            }
-
         }
     }
 }

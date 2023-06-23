@@ -10,8 +10,10 @@ namespace Moviewer.Nico.Core
 {
     public class NicoSearchHistoryViewModel : BindableBase
     {
-        public NicoSearchHistoryViewModel(NicoSearchHistoryModel m)
+        public NicoSearchHistoryViewModel(INicoSearchHistoryParentViewModel parent, NicoSearchHistoryModel m)
         {
+            Parent = parent;
+
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 Word = m.Word;
@@ -29,6 +31,8 @@ namespace Moviewer.Nico.Core
                 Date = m.Date;
             }, nameof(Date), true);
         }
+
+        public INicoSearchHistoryParentViewModel Parent { get; private set; }
 
         public string Word
         {
@@ -78,13 +82,13 @@ namespace Moviewer.Nico.Core
 
         public ICommand OnDelete => _OnDelete = _OnDelete ?? RelayCommand.Create(_ =>
         {
-            //MainViewModel.Instance.Current = new NicoSearchViewModel(Tag, NicoSearchModel.TagModel.Type);
+            NicoModel.DelSearchHistory(Word, Type);
         });
         private ICommand _OnDelete;
 
         public ICommand OnDoubleClick => _OnDoubleClick = _OnDoubleClick ?? RelayCommand.Create(_ =>
         {
-            //MainViewModel.Instance.Current = new NicoSearchViewModel(Tag, NicoSearchModel.TagModel.Type);
+            Parent.NicoSearchHistoryDoubleClick(this);
         });
         private ICommand _OnDoubleClick;
 
@@ -96,6 +100,18 @@ namespace Moviewer.Nico.Core
             }
         });
         private ICommand _OnKeyDown;
+
+        public ICommand OnFavoriteAdd => _OnFavoriteAdd = _OnFavoriteAdd ?? RelayCommand.Create(_ =>
+        {
+            NicoModel.AddSearchFavorite(Word, Type);
+        });
+        private ICommand _OnFavoriteAdd;
+
+        public ICommand OnFavoriteDel => _OnFavoriteDel = _OnFavoriteDel ?? RelayCommand.Create(_ =>
+        {
+            NicoModel.DelSearchFavorite(Word, Type);
+        });
+        private ICommand _OnFavoriteDel;
 
     }
 }

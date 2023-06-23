@@ -1,4 +1,6 @@
 ﻿using Moviewer.Core;
+using Moviewer.Core.Windows;
+using Moviewer.Nico.Workspaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +57,7 @@ namespace Moviewer.Nico.Core
 
         public ICommand OnClickUsername => _OnClickUsername = _OnClickUsername ?? RelayCommand.Create(_ =>
         {
-            //MainViewModel.Instance.Current = new NicoSearchViewModel(Tag, NicoSearchModel.TagModel.Type);
+            MainViewModel.Instance.Current = new NicoSearchViewModel(Userid, NicoSearchType.User);
         });
         private ICommand _OnClickUsername;
 

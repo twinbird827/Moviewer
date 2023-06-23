@@ -3,6 +3,7 @@
                     xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf"
                     xmlns:mocore="clr-namespace:Moviewer.Core.Styles"
                     xmlns:nicore="clr-namespace:Moviewer.Nico.Core"
+                    xmlns:niwork="clr-namespace:Moviewer.Nico.Workspaces"
                     xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:corestyle="clr-namespace:Moviewer.Core.Styles">
 
@@ -17,19 +18,18 @@
         <Setter Property="beha:FrameworkElementBehavior.LDoubleClick" Value="{Binding OnDoubleClick}" />
         <Setter Property="beha:FrameworkElementBehavior.KeyDown" Value="{Binding OnKeyDown}" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <!--<Setter Property="ContextMenu">
+        <Setter Property="ContextMenu">
             <Setter.Value>
                 <ContextMenu>
-                    <MenuItem Visibility="{Binding Parent, Converter={StaticResource Type2ReverseVisibilityCollapsedConverter}, ConverterParameter={x:Type niwork:NicoTemporaryViewModel}}"
+                    <MenuItem Visibility="{Binding Parent, Converter={StaticResource Type2ReverseVisibilityCollapsedConverter}, ConverterParameter={x:Type niwork:NicoFavoriteViewModel}}"
                               Header="追加"
-                              Command="{Binding OnTemporaryAdd}" />
-                    <MenuItem Header="削除" 
-                              Command="{Binding OnTemporaryDel}" />
-                    <MenuItem Header="ダウンロード" 
-                              Command="{Binding OnDownload}" />
+                              Command="{Binding OnFavoriteAdd}" />
+                    <MenuItem Visibility="{Binding Parent, Converter={StaticResource Type2VisibilityCollapsedConverter}, ConverterParameter={x:Type niwork:NicoFavoriteViewModel}}"
+                              Header="削除" 
+                              Command="{Binding OnFavoriteDel}" />
                 </ContextMenu>
             </Setter.Value>
-        </Setter>-->
+        </Setter>
     </Style>
 
     <Style x:Key="NicoSearchHistoryViewModel.IconPacksButton.TypeDisplay" TargetType="{x:Type corestyle:IconPacksButton}" BasedOn="{StaticResource Core.HorizontalIconPackButton}">
@@ -39,43 +39,22 @@
         <Setter Property="Text" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag, Converter={StaticResource Enum2StringConverter}}" />
     </Style>
 
-    <DataTemplate x:Key="NicoSearchHistoryViewModel.Display">
+    <DataTemplate x:Key="NicoSearchHistoryViewModel.Display" DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
         <TextBlock Text="{Binding Display}"
                    FontSize="{DynamicResource FontSize.L}"
                    Foreground="DarkBlue"
                    TextDecorations="Underline" />
     </DataTemplate>
 
-    <DataTemplate x:Key="NicoUserViewModel.M">
-        <StackPanel Style="{DynamicResource HorizontalStackPanel}">
-
-            <Grid beha:FrameworkElementBehavior.Width="50"
-                  beha:FrameworkElementBehavior.Height="50"
-                  ToolTip="{Binding Display.Userid}">
-                <ContentPresenter ContentTemplate="{DynamicResource Core.Thumbnail}"
-                                  Content="{Binding Display.Thumbnail}" />
-            </Grid>
-
-            <DockPanel>
-                <TextBlock Margin="4,2"
-                           DockPanel.Dock="Top"
-                           Text="{Binding Word}" />
-
-                <TextBlock Margin="4,2"
-                       VerticalAlignment="Center"
-                       Text="{Binding Display.Username}"
-                       FontSize="{DynamicResource FontSize.L}"
-                       Foreground="DarkBlue"
-                       TextDecorations="Underline" />
-
-            </DockPanel>
-        </StackPanel>
+    <DataTemplate x:Key="NicoSearchHistoryViewModel.Display.NicoUserViewModel" DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
+        <ContentPresenter Style="{DynamicResource NicoUserViewModel.M}"
+                          Content="{Binding Display}" />
     </DataTemplate>
 
     <Style x:Key="NicoSearchHistoryViewModel.Display.ContentPresenter" TargetType="ContentPresenter">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Type}" Value="User">
-                <Setter Property="ContentTemplate" Value="{DynamicResource NicoUserViewModel.M}" />
+                <Setter Property="ContentTemplate" Value="{DynamicResource NicoSearchHistoryViewModel.Display.NicoUserViewModel}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Type}" Value="Tag">
                 <Setter Property="ContentTemplate" Value="{DynamicResource NicoSearchHistoryViewModel.Display}" />
@@ -90,7 +69,7 @@
     </Style>
     
     <DataTemplate DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
-        <DockPanel>
+        <DockPanel beha:FrameworkElementBehavior.Height="60">
 
             <DockPanel DockPanel.Dock="Right">
 
@@ -99,7 +78,8 @@
                         Command="{Binding OnDelete}">
                     <Button.Template>
                         <ControlTemplate>
-                            <icon:PackIconMaterial Kind="Close" />
+                            <icon:PackIconMaterial Style="{DynamicResource Core.ButtonInnerPackIconMaterial}"
+                                                   Kind="Close" />
                         </ControlTemplate>
                     </Button.Template>
                 </Button>

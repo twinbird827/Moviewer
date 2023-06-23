@@ -19,7 +19,7 @@
             </StackPanel>
             
             <ListBox Style="{DynamicResource Core.VideoStyle}"
-                     beha:FrameworkElementBehavior.DragDrop="{Binding OnDropInListbox}"
+                     beha:FrameworkElementBehavior.DragDrop="{Binding OnDrop}"
                      ItemsSource="{Binding Videos}"
                      ItemContainerStyle="{DynamicResource NicoVideoViewModel.ItemContainerStyle}" />
 

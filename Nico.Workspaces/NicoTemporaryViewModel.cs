@@ -16,13 +16,16 @@ namespace Moviewer.Nico.Workspaces
 {
     public class NicoTemporaryViewModel : WorkspaceViewModel
     {
+        public override MenuType Type => MenuType.NicoTemporary;
+
         public NicoTemporaryViewModel()
         {
             Videos = NicoModel.Temporaries
+                .ToSyncedObservableSynchronizedCollection(x => x.GetVideo())
                 .ToSyncedSortedObservableCollection(x => x.TempTime, isDescending: true)
                 .ToSyncedSynchronizationContextCollection(
-                x => new NicoVideoViewModel(this, x),
-                WpfUtil.GetContext()
+                    x => new NicoVideoViewModel(this, x),
+                    WpfUtil.GetContext()
             );
 
             AddDisposed((sender, e) =>
@@ -56,7 +59,7 @@ namespace Moviewer.Nico.Workspaces
         });
         private ICommand _OnTemporaryAdd;
 
-        public ICommand OnDropInListbox => _OnDropInListbox = _OnDropInListbox ?? RelayCommand.Create<DragEventArgs>(async e =>
+        public ICommand OnDrop => _OnDrop = _OnDrop ?? RelayCommand.Create<DragEventArgs>(async e =>
         {
             if (e.Data.GetData(DataFormats.Text) is string url)
             {
@@ -67,7 +70,7 @@ namespace Moviewer.Nico.Workspaces
                 }
             }
         });
-        private ICommand _OnDropInListbox;
+        private ICommand _OnDrop;
 
     }
 }

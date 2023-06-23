@@ -1,5 +1,4 @@
-﻿using Moviewer.Core;
-using Moviewer.Core.Windows;
+﻿using Moviewer.Core.Windows;
 using Moviewer.Nico.Core;
 using System;
 using System.Collections.Generic;
@@ -7,25 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows;
 using TBird.Core.Stateful;
 using TBird.Wpf;
 using TBird.Core;
-using System.Windows.Controls;
+using Moviewer.Core;
 
 namespace Moviewer.Nico.Workspaces
 {
-    public class NicoSearchViewModel : WorkspaceViewModel, INicoSearchHistoryParentViewModel
+    public class NicoFavoriteViewModel : WorkspaceViewModel, INicoSearchHistoryParentViewModel
     {
-        public override MenuType Type => MenuType.NicoSearch;
+        public override MenuType Type => MenuType.NicoFavorite;
 
-        public NicoSearchViewModel(string word, NicoSearchType type) : this()
-        {
-            Word = word;
-            OnSearch.Execute(type);
-        }
-
-        public NicoSearchViewModel()
+        public NicoFavoriteViewModel()
         {
             Sources = new ObservableSynchronizedCollection<NicoVideoModel>();
 
@@ -35,16 +27,16 @@ namespace Moviewer.Nico.Workspaces
             );
 
             Orderby = new ComboboxViewModel(NicoUtil.GetCombos("order_by"));
-            Orderby.SelectedItem = Orderby.GetItemNotNull(NicoSetting.Instance.NicoSearchOrderby);
+            Orderby.SelectedItem = Orderby.GetItemNotNull(NicoSetting.Instance.NicoFavoriteOrderby);
 
-            Histories = NicoModel.SearchHistories
+            Histories = NicoModel.SearchFavorites
                 .ToSyncedSortedObservableCollection(x => x.Date, isDescending: true)
                 .ToSyncedObservableSynchronizedCollection(x => new NicoSearchHistoryViewModel(this, x))
                 .ToSyncedSynchronizationContextCollection(x => x, WpfUtil.GetContext());
 
             AddDisposed((sender, e) =>
             {
-                NicoSetting.Instance.NicoSearchOrderby = Orderby.SelectedItem.Value;
+                NicoSetting.Instance.NicoFavoriteOrderby = Orderby.SelectedItem.Value;
                 NicoSetting.Instance.Save();
 
                 Orderby.Dispose();
@@ -54,51 +46,43 @@ namespace Moviewer.Nico.Workspaces
 
         public ComboboxViewModel Orderby { get; private set; }
 
-        public string Word
-        {
-            get => _Word;
-            set => SetProperty(ref _Word, value);
-        }
-        public string _Word;
-
         public ObservableSynchronizedCollection<NicoVideoModel> Sources { get; private set; }
 
         public SynchronizationContextCollection<NicoVideoViewModel> Videos { get; private set; }
 
         public SynchronizationContextCollection<NicoSearchHistoryViewModel> Histories { get; private set; }
 
-        public ICommand OnSearch => _OnSearch = _OnSearch ?? RelayCommand.Create<NicoSearchType>(async t =>
+        public ICommand OnSearch => _OnSearch = _OnSearch ?? RelayCommand.Create<NicoSearchHistoryViewModel>(async vm =>
         {
-            await GetSources(t).ContinueOnUI(x =>
+            await GetSources(vm).ContinueOnUI(x =>
             {
                 Sources.Clear();
                 Sources.AddRange(x.Result);
             });
 
-            NicoModel.AddSearchHistory(Word, t);
+            NicoModel.AddSearchFavorite(vm.Word, vm.Type);
         });
         private ICommand _OnSearch;
-    
-        private Task<IEnumerable<NicoVideoModel>> GetSources(NicoSearchType t)
+
+        private Task<IEnumerable<NicoVideoModel>> GetSources(NicoSearchHistoryViewModel vm)
         {
-            switch (t)
+            switch (vm.Type)
             {
                 case NicoSearchType.User:
-                    return NicoUtil.GetVideosByNicouser(Word, Orderby.SelectedItem.Value);
+                    return NicoUtil.GetVideosByNicouser(vm.Word, Orderby.SelectedItem.Value);
                 case NicoSearchType.Tag:
-                    return NicoUtil.GetVideosByTag(Word, Orderby.SelectedItem.Value);
+                    return NicoUtil.GetVideosByTag(vm.Word, Orderby.SelectedItem.Value);
                 case NicoSearchType.Mylist:
-                    return NicoUtil.GetVideosByMylist(Word, NicoUtil.GetComboDisplay("oyder_by_mylist", Orderby.SelectedItem.Value));
+                    return NicoUtil.GetVideosByMylist(vm.Word, NicoUtil.GetComboDisplay("oyder_by_mylist", Orderby.SelectedItem.Value));
                 //case NicoSearchType.Word:
                 default:
-                    return NicoUtil.GetVideosByWord(Word, Orderby.SelectedItem.Value);
+                    return NicoUtil.GetVideosByWord(vm.Word, Orderby.SelectedItem.Value);
             }
         }
 
         public void NicoSearchHistoryDoubleClick(NicoSearchHistoryViewModel vm)
         {
-            Word = vm.Word;
-            OnSearch.Execute(vm.Type);
+            OnSearch.Execute(vm);
         }
     }
 }

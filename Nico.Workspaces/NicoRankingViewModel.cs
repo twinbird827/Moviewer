@@ -11,11 +11,14 @@ using TBird.Wpf;
 using TBird.Core;
 using TBird.Core.Stateful;
 using System.Threading;
+using Moviewer.Core;
 
 namespace Moviewer.Nico.Workspaces
 {
     public class NicoRankingViewModel : WorkspaceViewModel
     {
+        public override MenuType Type => MenuType.NicoRanking;
+
         public NicoRankingViewModel()
         {
             Sources = new ObservableSynchronizedCollection<NicoVideoModel>();

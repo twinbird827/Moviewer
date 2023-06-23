@@ -34,6 +34,18 @@
     <DataTemplate DataType="{x:Type nicore:NicoVideoViewModel}">
         <DockPanel HorizontalAlignment="Stretch" Name="ROOT_DockPanel">
 
+            <DockPanel DockPanel.Dock="Top">
+
+                <TextBlock DockPanel.Dock="Left"
+                           Text="{Binding Status, Converter={StaticResource Enum2StringConverter}}" />
+
+                <TextBlock DockPanel.Dock="Right"
+                       Text="{Binding VideoUrl}" />
+
+                <StackPanel />
+
+            </DockPanel>
+
             <ContentPresenter DockPanel.Dock="Left"
                               beha:FrameworkElementBehavior.Width="188"
                               beha:FrameworkElementBehavior.Height="141"
@@ -90,18 +102,6 @@
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
 
-            </DockPanel>
-
-            <DockPanel DockPanel.Dock="Top">
-
-                <TextBlock DockPanel.Dock="Left"
-                           Text="{Binding Status, Converter={StaticResource Enum2StringConverter}}" />
-                
-                <TextBlock DockPanel.Dock="Right"
-                       Text="{Binding VideoUrl}" />
-
-                <StackPanel />
-                
             </DockPanel>
 
             <TextBlock DockPanel.Dock="Top"

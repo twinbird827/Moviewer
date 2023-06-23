@@ -108,18 +108,18 @@ namespace Moviewer.Nico.Core
         public void RefreshStatus()
         {
             // Temporaryの有無でﾌﾟﾛﾊﾟﾃｨを変更
-            if (NicoModel.Temporaries.FirstOrDefault(x => x.ContentId == ContentId) is NicoVideoModel tmp)
+            if (NicoModel.Temporaries.FirstOrDefault(x => x.ContentId == ContentId) is NicoVideoHistoryModel tmp)
             {
-                TempTime = tmp.TempTime;
+                TempTime = tmp.UpdateDate;
             }
 
             Status = NicoModel.Histories.Any(x => x.ContentId == ContentId)
                 ? VideoStatus.See
-                : NicoModel.Temporaries.Any(x => x.ContentId == ContentId && MainViewModel.Instance.StartupTime < x.TempTime)
+                : NicoModel.Temporaries.Any(x => x.ContentId == ContentId && MainViewModel.Instance.StartupTime < x.UpdateDate)
                 ? VideoStatus.New
                 : NicoModel.Temporaries.Any(x => x.ContentId == ContentId)
                 ? VideoStatus.Temporary
-                : Status;
+                : VideoStatus.None;
         }
 
         private async void SetFromVideo()

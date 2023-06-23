@@ -8,8 +8,10 @@ using TBird.Wpf;
 
 namespace Moviewer.Core.Windows
 {
-    public class WorkspaceViewModel : BindableBase
+    public abstract class WorkspaceViewModel : BindableBase
     {
+        public abstract MenuType Type { get; }
+
         public ICommand OnLoaded => _OnLoaded = _OnLoaded ?? RelayCommand.Create(async _ =>
         {
             MainViewModel.Instance.ShowProgress = true;

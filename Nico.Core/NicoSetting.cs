@@ -51,6 +51,13 @@ namespace Moviewer.Nico.Core
         }
         private string _NicoSearchOrderby;
 
+        public string NicoFavoriteOrderby
+        {
+            get => GetProperty(_NicoFavoriteOrderby);
+            set => SetProperty(ref _NicoFavoriteOrderby, value);
+        }
+        private string _NicoFavoriteOrderby;
+
         public NicoVideoHistoryModel[] Temporaries
         {
             get => GetProperty(_Temporaries);
@@ -71,6 +78,13 @@ namespace Moviewer.Nico.Core
             set => SetProperty(ref _SearchHistories, value);
         }
         private NicoSearchHistoryModel[] _SearchHistories;
+
+        public NicoSearchHistoryModel[] SearchFavorites
+        {
+            get => GetProperty(_SearchFavorites);
+            set => SetProperty(ref _SearchFavorites, value);
+        }
+        private NicoSearchHistoryModel[] _SearchFavorites;
 
     }
 }
