@@ -9,15 +9,14 @@
 
             <Grid DockPanel.Dock="Left"
                   beha:FrameworkElementBehavior.Width="35"
-                  beha:FrameworkElementBehavior.Height="35"
-                  ToolTip="{Binding Userid}">
+                  beha:FrameworkElementBehavior.Height="35">
                 <ContentPresenter ContentTemplate="{DynamicResource Core.Thumbnail}"
                                   Content="{Binding Thumbnail}" />
             </Grid>
 
             <TextBlock DockPanel.Dock="Top"
                        Margin="4,1"
-                       Text="{Binding Word}" />
+                       Text="{Binding Userid}" />
 
             <mocore:LinkedTextBlock Margin="4,3"
                                     Command="{Binding OnClickUsername}"
@@ -32,17 +31,17 @@
 
             <Grid DockPanel.Dock="Left"
                   beha:FrameworkElementBehavior.Width="50"
-                  beha:FrameworkElementBehavior.Height="50"
-                  ToolTip="{Binding Userid}">
+                  beha:FrameworkElementBehavior.Height="50">
                 <ContentPresenter ContentTemplate="{DynamicResource Core.Thumbnail}"
                                   Content="{Binding Thumbnail}" />
             </Grid>
 
             <TextBlock DockPanel.Dock="Top"
-                       Margin="4,1"
-                       Text="{Binding Word}" />
+                       Margin="4,2"
+                       VerticalAlignment="Center"
+                       Text="{Binding Userid}" />
 
-            <TextBlock Margin="4,3"
+            <TextBlock Margin="4,2"
                        VerticalAlignment="Center"
                        Text="{Binding Username}"
                        FontSize="{DynamicResource FontSize.L}"

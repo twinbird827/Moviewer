@@ -19,7 +19,7 @@ namespace Moviewer.Nico.Core
         {
             ContentId = contentid;
             RegistDate = DateTime.Now;
-            UpdateDate = DateTime.MinValue;
+            UpdateDate = RegistDate;
         }
 
         public string ContentId

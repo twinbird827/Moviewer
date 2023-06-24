@@ -29,7 +29,7 @@ namespace Moviewer.Nico.Workspaces
             Orderby = new ComboboxViewModel(NicoUtil.GetCombos("order_by"));
             Orderby.SelectedItem = Orderby.GetItemNotNull(NicoSetting.Instance.NicoFavoriteOrderby);
 
-            Histories = NicoModel.SearchFavorites
+            Favorites = NicoModel.SearchFavorites
                 .ToSyncedSortedObservableCollection(x => x.Date, isDescending: true)
                 .ToSyncedObservableSynchronizedCollection(x => new NicoSearchHistoryViewModel(this, x))
                 .ToSyncedSynchronizationContextCollection(x => x, WpfUtil.GetContext());
@@ -50,7 +50,7 @@ namespace Moviewer.Nico.Workspaces
 
         public SynchronizationContextCollection<NicoVideoViewModel> Videos { get; private set; }
 
-        public SynchronizationContextCollection<NicoSearchHistoryViewModel> Histories { get; private set; }
+        public SynchronizationContextCollection<NicoSearchHistoryViewModel> Favorites { get; private set; }
 
         public ICommand OnSearch => _OnSearch = _OnSearch ?? RelayCommand.Create<NicoSearchHistoryViewModel>(async vm =>
         {

@@ -47,8 +47,30 @@
     </DataTemplate>
 
     <DataTemplate x:Key="NicoSearchHistoryViewModel.Display.NicoUserViewModel" DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
-        <ContentPresenter Style="{DynamicResource NicoUserViewModel.M}"
-                          Content="{Binding Display}" />
+        <ContentControl DataContext="{Binding Display}"
+                        Content="{Binding}"
+                        ContentTemplate="{DynamicResource NicoUserViewModel.M}"/>
+        <!--<DockPanel DataContext="{Binding Display}">
+
+            <Grid DockPanel.Dock="Left"
+                  beha:FrameworkElementBehavior.Width="50"
+                  beha:FrameworkElementBehavior.Height="50">
+                <ContentPresenter ContentTemplate="{DynamicResource Core.Thumbnail}"
+                                  Content="{Binding Thumbnail}" />
+            </Grid>
+
+            <TextBlock DockPanel.Dock="Top"
+                       Margin="4,1"
+                       Text="{Binding Word}" />
+
+            <TextBlock Margin="4,3"
+                       VerticalAlignment="Center"
+                       Text="{Binding Username}"
+                       FontSize="{DynamicResource FontSize.L}"
+                       Foreground="DarkBlue"
+                       TextDecorations="Underline" />
+
+        </DockPanel>-->
     </DataTemplate>
 
     <Style x:Key="NicoSearchHistoryViewModel.Display.ContentPresenter" TargetType="ContentPresenter">
@@ -69,11 +91,12 @@
     </Style>
     
     <DataTemplate DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
-        <DockPanel beha:FrameworkElementBehavior.Height="60">
+        <DockPanel beha:FrameworkElementBehavior.Height="80">
 
             <DockPanel DockPanel.Dock="Right">
 
                 <Button DockPanel.Dock="Top"
+                        HorizontalAlignment="Right"
                         Margin="2"
                         Command="{Binding OnDelete}">
                     <Button.Template>
@@ -84,12 +107,7 @@
                     </Button.Template>
                 </Button>
 
-                <StackPanel />
-            </DockPanel>
-
-            <DockPanel DockPanel.Dock="Bottom">
-
-                <DockPanel DockPanel.Dock="Right"
+                <DockPanel DockPanel.Dock="Bottom"
                            beha:FrameworkElementBehavior.Width="100"
                            beha:FrameworkElementBehavior.Height="25">
                     <icon:PackIconMaterial DockPanel.Dock="Left"
@@ -104,9 +122,17 @@
                                Text="{Binding Type, Converter={StaticResource Enum2StringConverter}}" />
                 </DockPanel>
 
+                <StackPanel />
+                
+            </DockPanel>
+
+            <DockPanel DockPanel.Dock="Bottom">
+
                 <TextBlock DockPanel.Dock="Left"
                            Foreground="DarkRed"
                            Text="{Binding Date, StringFormat={}{0:yy/MM/dd HH:mm:ss}}" />
+
+                <StackPanel />
 
             </DockPanel>
 

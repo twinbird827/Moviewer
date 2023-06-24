@@ -27,6 +27,8 @@ namespace Moviewer.Nico.Core
                 Histories = new NicoVideoHistoryModel[] { };
 
                 SearchHistories = new NicoSearchHistoryModel[] { };
+
+                SearchFavorites = new NicoSearchHistoryModel[] { };
             }
         }
 

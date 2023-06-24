@@ -133,7 +133,7 @@ namespace Moviewer.Core.Windows
         {
             [MenuType.NicoRanking] = typeof(NicoRankingViewModel),
             [MenuType.NicoTemporary] = typeof(NicoTemporaryViewModel),
-            //[MenuType.NicoFavorite] = typeof(NicoFavoriteViewModel),
+            [MenuType.NicoFavorite] = typeof(NicoFavoriteViewModel),
             //[MenuType.NicoHistory] = typeof(NicoHistoryViewModel),
             [MenuType.NicoSearch] = typeof(NicoSearchViewModel),
         };
