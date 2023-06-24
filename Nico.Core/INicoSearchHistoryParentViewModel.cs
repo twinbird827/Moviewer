@@ -8,6 +8,8 @@ namespace Moviewer.Nico.Core
 {
     public interface INicoSearchHistoryParentViewModel
     {
-        void NicoSearchHistoryDoubleClick(NicoSearchHistoryViewModel vm);
+        void NicoSearchHistoryOnDelete(NicoSearchHistoryViewModel vm);
+
+        void NicoSearchHistoryOnDoubleClick(NicoSearchHistoryViewModel vm);
     }
 }

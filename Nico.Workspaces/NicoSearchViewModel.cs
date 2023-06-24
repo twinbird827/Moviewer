@@ -69,7 +69,7 @@ namespace Moviewer.Nico.Workspaces
 
         public ICommand OnSearch => _OnSearch = _OnSearch ?? RelayCommand.Create<NicoSearchType>(async t =>
         {
-            await GetSources(t).ContinueOnUI(x =>
+            await NicoUtil.GetVideoBySearchType(Word, t, Orderby.SelectedItem.Value).ContinueOnUI(x =>
             {
                 Sources.Clear();
                 Sources.AddRange(x.Result);
@@ -79,26 +79,15 @@ namespace Moviewer.Nico.Workspaces
         });
         private ICommand _OnSearch;
     
-        private Task<IEnumerable<NicoVideoModel>> GetSources(NicoSearchType t)
-        {
-            switch (t)
-            {
-                case NicoSearchType.User:
-                    return NicoUtil.GetVideosByNicouser(Word, Orderby.SelectedItem.Value);
-                case NicoSearchType.Tag:
-                    return NicoUtil.GetVideosByTag(Word, Orderby.SelectedItem.Value);
-                case NicoSearchType.Mylist:
-                    return NicoUtil.GetVideosByMylist(Word, NicoUtil.GetComboDisplay("oyder_by_mylist", Orderby.SelectedItem.Value));
-                //case NicoSearchType.Word:
-                default:
-                    return NicoUtil.GetVideosByWord(Word, Orderby.SelectedItem.Value);
-            }
-        }
-
-        public void NicoSearchHistoryDoubleClick(NicoSearchHistoryViewModel vm)
+        public void NicoSearchHistoryOnDoubleClick(NicoSearchHistoryViewModel vm)
         {
             Word = vm.Word;
             OnSearch.Execute(vm.Type);
+        }
+
+        public void NicoSearchHistoryOnDelete(NicoSearchHistoryViewModel vm)
+        {
+            NicoModel.DelSearchHistory(vm.Word, vm.Type);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace Moviewer.Nico.Core
             var tmp = Temporaries.FirstOrDefault(x => x.ContentId == contentid);
             if (tmp != null)
             {
-                tmp.RegistDate = DateTime.Now;
+                tmp.Date = DateTime.Now;
             }
             else
             {
@@ -78,7 +78,7 @@ namespace Moviewer.Nico.Core
             var tmp = Histories.FirstOrDefault(x => x.ContentId == contentid);
             if (tmp != null)
             {
-                tmp.RegistDate = DateTime.Now;
+                tmp.Date = DateTime.Now;
             }
             else
             {

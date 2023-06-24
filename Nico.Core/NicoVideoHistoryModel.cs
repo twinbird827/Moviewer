@@ -18,8 +18,6 @@ namespace Moviewer.Nico.Core
         public NicoVideoHistoryModel(string contentid)
         {
             ContentId = contentid;
-            RegistDate = DateTime.Now;
-            UpdateDate = RegistDate;
         }
 
         public string ContentId
@@ -29,28 +27,21 @@ namespace Moviewer.Nico.Core
         }
         private string _ContentId = null;
 
-        public DateTime RegistDate
+        public DateTime Date
         {
-            get => _RegistDate;
-            set => SetProperty(ref _RegistDate, value);
+            get => _Date;
+            set => SetProperty(ref _Date, value);
         }
-        private DateTime _RegistDate;
-
-        public DateTime UpdateDate
-        {
-            get => _UpdateDate;
-            set => SetProperty(ref _UpdateDate, value);
-        }
-        private DateTime _UpdateDate;
+        private DateTime _Date;
 
         public NicoVideoModel GetVideo()
         {
             var video = new NicoVideoModel();
             video.ContentId = ContentId;
-            video.TempTime = UpdateDate;
+            video.TempTime = Date;
             video.AddOnPropertyChanged(this, (sender, e) =>
             {
-                UpdateDate = video.TempTime;
+                Date = video.TempTime;
                 video.RefreshStatus();
             }, nameof(video.TempTime), false);
             NicoUtil.GetVideo(ContentId).ContinueWith(x => video.SetFromVideo(x.Result)).ConfigureAwait(false);

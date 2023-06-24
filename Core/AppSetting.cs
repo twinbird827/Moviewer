@@ -17,7 +17,6 @@ namespace Moviewer.Core
             if (!Load())
             {
                 BrowserPath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
-
             }
         }
 

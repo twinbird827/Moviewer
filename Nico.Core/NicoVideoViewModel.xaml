@@ -34,23 +34,19 @@
     <DataTemplate DataType="{x:Type nicore:NicoVideoViewModel}">
         <DockPanel HorizontalAlignment="Stretch" Name="ROOT_DockPanel">
 
-            <DockPanel DockPanel.Dock="Top">
+            <DockPanel DockPanel.Dock="Left">
 
-                <TextBlock DockPanel.Dock="Left"
+                <TextBlock DockPanel.Dock="Bottom"
                            Text="{Binding Status, Converter={StaticResource Enum2StringConverter}}" />
 
-                <TextBlock DockPanel.Dock="Right"
-                       Text="{Binding VideoUrl}" />
-
-                <StackPanel />
+                <ContentPresenter DockPanel.Dock="Left"
+                                  beha:FrameworkElementBehavior.Width="188"
+                                  beha:FrameworkElementBehavior.Height="141"
+                                  ContentTemplate="{DynamicResource Core.Thumbnail}"
+                                  Content="{Binding Thumbnail}"
+                                  ToolTip="{Binding VideoUrl}" />
 
             </DockPanel>
-
-            <ContentPresenter DockPanel.Dock="Left"
-                              beha:FrameworkElementBehavior.Width="188"
-                              beha:FrameworkElementBehavior.Height="141"
-                              ContentTemplate="{DynamicResource Core.Thumbnail}"
-                              Content="{Binding Thumbnail}" />
 
             <!-- 最下段 -->
             <DockPanel DockPanel.Dock="Bottom">

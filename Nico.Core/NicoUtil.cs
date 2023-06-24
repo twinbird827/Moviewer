@@ -94,6 +94,22 @@ namespace Moviewer.Nico.Core
                 .Select(item => new NicoVideoModel().SetFromXml(item, view, mylist, comment));
         }
 
+        public static Task<IEnumerable<NicoVideoModel>> GetVideoBySearchType(string word, NicoSearchType type, string order)
+        {
+            switch (type)
+            {
+                case NicoSearchType.User:
+                    return GetVideosByNicouser(word, order);
+                case NicoSearchType.Tag:
+                    return GetVideosByTag(word, order);
+                case NicoSearchType.Mylist:
+                    return GetVideosByMylist(word, NicoUtil.GetComboDisplay("oyder_by_mylist", order));
+                //case NicoSearchType.Word:
+                default:
+                    return GetVideosByWord(word, order);
+            }
+        }
+
         public static Task<IEnumerable<NicoVideoModel>> GetVideosByRanking(string genre, string tag, string term)
         {
             var url = $"https://www.nicovideo.jp/ranking/genre/{genre}?video_ranking_menu?tag={tag}&term={term}&rss=2.0&lang=ja-jp";

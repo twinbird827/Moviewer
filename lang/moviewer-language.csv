@@ -1,5 +1,7 @@
 ﻿name,ja-JP,en-US
 L_AddTemporary,ﾃﾝﾎﾟﾗﾘ追加,
+L_AddFavorite,お気に入り追加,
+L_DelFavorite,お気に入り削除,
 L_UrlOrId,URL or ID,
 MH_AddTemporary,ﾃﾝﾎﾟﾗﾘに追加する情報を入力してください。,
 Moviewer_Core_VideoStatus_Delete,DEL,

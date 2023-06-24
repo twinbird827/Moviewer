@@ -71,15 +71,17 @@
 
                 <csty:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
-                        Visibility="{Binding MovieType, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
-                        Command="{Binding OnClickNiconico}"
+                        Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
+                        Command="{Binding OnClickMode}"
+                        CommandParameter="{x:Static core:MenuMode.Youtube}"
                         Kind="AppleFinder"
                         Text="Niconico" />
 
                 <csty:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
-                        Visibility="{Binding MovieType, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Youtube}"
-                        Command="{Binding OnClickYoutube}"
+                        Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Youtube}"
+                        Command="{Binding OnClickMode}"
+                        CommandParameter="{x:Static core:MenuMode.Niconico}"
                         Kind="Youtube"
                         Text="Youtube" />
 
@@ -90,7 +92,7 @@
 
                 <csty:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
-                        Visibility="{Binding MovieType, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
+                        Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
                         Command="{Binding OnClickMenu}"
                         CommandParameter="{x:Static core:MenuType.NicoSearch}"
                         Kind="Magnify"
@@ -98,7 +100,7 @@
 
                 <csty:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
-                        Visibility="{Binding MovieType, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
+                        Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
                         Command="{Binding OnClickMenu}"
                         CommandParameter="{x:Static core:MenuType.NicoRanking}"
                         Kind="Crown"
@@ -106,7 +108,7 @@
 
                 <csty:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
-                        Visibility="{Binding MovieType, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
+                        Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
                         Command="{Binding OnClickMenu}"
                         CommandParameter="{x:Static core:MenuType.NicoTemporary}"
                         Kind="Star"
@@ -114,7 +116,7 @@
 
                 <csty:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
-                        Visibility="{Binding MovieType, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
+                        Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
                         Command="{Binding OnClickMenu}"
                         CommandParameter="{x:Static core:MenuType.NicoFavorite}"
                         Kind="Archive"
@@ -122,7 +124,7 @@
 
                 <csty:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
-                        Visibility="{Binding MovieType, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
+                        Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
                         Command="{Binding OnClickMenu}"
                         CommandParameter="{x:Static core:MenuType.NicoHistory}"
                         Kind="History"

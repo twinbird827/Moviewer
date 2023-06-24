@@ -22,8 +22,7 @@ namespace Moviewer.Nico.Core
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 Type = m.Type;
-                Display = GetDisplay();
-                UserInfo = Display as NicoUserViewModel;
+                SetDisplay();
             }, nameof(Type), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
@@ -62,19 +61,18 @@ namespace Moviewer.Nico.Core
         }
         private object _Display;
 
-        public NicoUserViewModel UserInfo
+        private async void SetDisplay()
         {
-            get => _UserInfo;
-            set => SetProperty(ref _UserInfo, value);
+            Display = await GetDisplay();
         }
-        private NicoUserViewModel _UserInfo;
-
-        private object GetDisplay()
+        private async Task<object> GetDisplay()
         {
             switch (Type)
             {
                 case NicoSearchType.User:
                     return new NicoUserViewModel(new NicoUserModel(Word, null));
+                case NicoSearchType.Mylist:
+                    return new NicoMylistViewModel(await NicoMylistModel.GetNicoMylistModel(Word));
                 default:
                     return Word;
             }
@@ -82,13 +80,13 @@ namespace Moviewer.Nico.Core
 
         public ICommand OnDelete => _OnDelete = _OnDelete ?? RelayCommand.Create(_ =>
         {
-            NicoModel.DelSearchHistory(Word, Type);
+            Parent.NicoSearchHistoryOnDelete(this);
         });
         private ICommand _OnDelete;
 
         public ICommand OnDoubleClick => _OnDoubleClick = _OnDoubleClick ?? RelayCommand.Create(_ =>
         {
-            Parent.NicoSearchHistoryDoubleClick(this);
+            Parent.NicoSearchHistoryOnDoubleClick(this);
         });
         private ICommand _OnDoubleClick;
 

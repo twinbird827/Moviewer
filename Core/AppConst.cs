@@ -12,6 +12,12 @@ namespace Moviewer.Core
         /// <summary>ﾃﾝﾎﾟﾗﾘ追加</summary>
         public static string L_AddTemporary { get; } = Lang.Instance.Get();
 
+        /// <summary>お気に入り追加</summary>
+        public static string L_AddFavorite { get; } = Lang.Instance.Get();
+
+        /// <summary>お気に入り削除</summary>
+        public static string L_DelFavorite { get; } = Lang.Instance.Get();
+
         /// <summary>ﾏｲﾘｽﾄ検索</summary>
         public static string L_SearchMylist { get; } = Lang.Instance.Get();
 

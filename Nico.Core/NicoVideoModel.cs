@@ -110,12 +110,12 @@ namespace Moviewer.Nico.Core
             // Temporaryの有無でﾌﾟﾛﾊﾟﾃｨを変更
             if (NicoModel.Temporaries.FirstOrDefault(x => x.ContentId == ContentId) is NicoVideoHistoryModel tmp)
             {
-                TempTime = tmp.UpdateDate;
+                TempTime = tmp.Date;
             }
 
             Status = NicoModel.Histories.Any(x => x.ContentId == ContentId)
                 ? VideoStatus.See
-                : NicoModel.Temporaries.Any(x => x.ContentId == ContentId && MainViewModel.Instance.StartupTime < x.UpdateDate)
+                : NicoModel.Temporaries.Any(x => x.ContentId == ContentId && MainViewModel.Instance.StartupTime < x.Date)
                 ? VideoStatus.New
                 : NicoModel.Temporaries.Any(x => x.ContentId == ContentId)
                 ? VideoStatus.Temporary

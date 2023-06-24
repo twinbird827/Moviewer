@@ -41,21 +41,33 @@ namespace Moviewer.Core.Windows
         }
         private WorkspaceViewModel _Current;
 
-        public MenuMode MovieType
+        public MenuMode MenuMode
         {
-            get => _MovieType;
-            set => SetProperty(ref _MovieType, value);
+            get => _MenuMode;
+            set => SetProperty(ref _MenuMode, value);
         }
-        private MenuMode _MovieType = MenuMode.Niconico;
+        private MenuMode _MenuMode = MenuMode.Niconico;
 
         public int NicoTemporaryCount => NicoModel.Temporaries.Count;
 
-        public string NicoTemporaryString => $"Temp (0)";
-
         /// <summary>
-        /// ﾛｸﾞｵﾌﾀｲﾏｰ
+        /// お気に入り巡回ﾀｲﾏｰ
         /// </summary>
-        public DispatcherTimer CheckTimer { get; private set; }
+        public IntervalTimer FavoriteChecker { get; private set; }
+
+        private async Task PatrolFavorites()
+        {
+            foreach (var m in NicoModel.SearchFavorites)
+            {
+                var arr = await NicoUtil.GetVideoBySearchType(m.Word, m.Type, "regdate-");
+
+                if (arr.Any()) return;
+
+                arr.ForEach(x => NicoModel.AddTemporary(x.ContentId));
+
+                m.Date = arr.Max(x => x.StartTime);
+            }
+        }
 
         //public ObservableCollection<DownloadModel> Downloads
         //{
@@ -73,46 +85,32 @@ namespace Moviewer.Core.Windows
                 OnPropertyChanged(nameof(NicoTemporaryCount));
             });
 
-            //// 自動ﾀｲﾏｰ起動
-            //CheckTimer = new DispatcherTimer();
-            //CheckTimer.Interval = TimeSpan.FromMinutes(5);
-            //CheckTimer.Tick += async (sender, e) =>
-            //{
-            //    await NicoUtil.PatrolFavorites();
-            //};
-            //CheckTimer.Start();
-
-            //// TemporaryStringの更新ｲﾍﾞﾝﾄ関連付け
-            //NicoUtil.Temporaries.CollectionChanged += (sender, e) =>
-            //{
-            //    OnPropertyChanged(nameof(NicoTemporaryString));
-            //};
-            //OnPropertyChanged(nameof(NicoTemporaryString));
+            // お気に入り巡回ﾀｲﾏｰの起動
+            FavoriteChecker = new IntervalTimer(PatrolFavorites);
+            FavoriteChecker.Interval = TimeSpan.FromMinutes(10);
+            FavoriteChecker.Start();
 
             OnClickMenu.Execute(MenuType.NicoRanking);
         }
 
         private bool DoClosing()
         {
-            //// TODO 設定ﾌｧｲﾙを閉じる
-            //CheckTimer.Stop();
+            if (FavoriteChecker != null)
+            {
+                FavoriteChecker.Stop();
+                FavoriteChecker.Dispose();
+            }
 
-            //AppSetting.Instance.Save();
+            NicoModel.Save();
 
             return true;
         }
 
-        public ICommand OnClickNiconico => _OnClickNiconico = _OnClickNiconico ?? RelayCommand.Create(_ =>
+        public ICommand OnClickMode => _OnClickMode = _OnClickMode ?? RelayCommand.Create<MenuMode>(mode =>
         {
-            MovieType = MenuMode.Youtube;
+            MenuMode = mode;
         });
-        private ICommand _OnClickNiconico;
-
-        public ICommand OnClickYoutube => _OnClickYoutube = _OnClickYoutube ?? RelayCommand.Create(_ =>
-        {
-            MovieType = MenuMode.Niconico;
-        });
-        private ICommand _OnClickYoutube;
+        private ICommand _OnClickMode;
 
         public ICommand OnClickMenu => _OnClickMenu = _OnClickMenu ?? RelayCommand.Create<MenuType>(menu =>
         {

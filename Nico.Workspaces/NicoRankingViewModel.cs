@@ -60,8 +60,10 @@ namespace Moviewer.Nico.Workspaces
         {
             await NicoUtil.GetVideosByRanking(Genre.SelectedItem.Value, "all", Period.SelectedItem.Value).ContinueOnUI(x =>
             {
+                MainViewModel.Instance.ShowProgress = true;
                 Sources.Clear();
                 Sources.AddRange(x.Result);
+                MainViewModel.Instance.ShowProgress = false;
             });
         }
     }
