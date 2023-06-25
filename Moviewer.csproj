@@ -5,6 +5,7 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+    <ApplicationIcon>Core.Windows\cinema.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Core.Windows\cinema.ico" />
     <Content Include="lib\nico-combo-setting.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

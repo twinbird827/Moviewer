@@ -18,6 +18,7 @@ namespace Moviewer.Nico.Core
         public NicoVideoHistoryModel(string contentid)
         {
             ContentId = contentid;
+            Date = DateTime.Now; ;
         }
 
         public string ContentId
@@ -38,7 +39,10 @@ namespace Moviewer.Nico.Core
         {
             var video = new NicoVideoModel();
             video.ContentId = ContentId;
-            video.TempTime = Date;
+            AddOnPropertyChanged(video, (sender, e) =>
+            {
+                video.TempTime = Date;
+            }, nameof(Date), true);
             video.AddOnPropertyChanged(this, (sender, e) =>
             {
                 Date = video.TempTime;

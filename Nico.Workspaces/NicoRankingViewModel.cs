@@ -12,6 +12,7 @@ using TBird.Core;
 using TBird.Core.Stateful;
 using System.Threading;
 using Moviewer.Core;
+using TBird.Wpf.Collections;
 
 namespace Moviewer.Nico.Workspaces
 {
@@ -21,12 +22,11 @@ namespace Moviewer.Nico.Workspaces
 
         public NicoRankingViewModel()
         {
-            Sources = new ObservableSynchronizedCollection<NicoVideoModel>();
+            Sources = new BindableCollection<NicoVideoModel>();
 
-            Videos = Sources.ToSyncedSynchronizationContextCollection(
-                x => new NicoVideoViewModel(this, x),
-                WpfUtil.GetContext()
-            );
+            Videos = Sources
+                .ToBindableConvertCollection(x => new NicoVideoViewModel(this, x))
+                .ToBindableContextCollection();
 
             Genre = new ComboboxViewModel(NicoUtil.GetCombos("rank_genre"));
             Genre.SelectedItem = Genre.GetItemNotNull(NicoSetting.Instance.NicoRankingGenre);
@@ -52,18 +52,20 @@ namespace Moviewer.Nico.Workspaces
 
         public ComboboxViewModel Period { get; private set; }
 
-        public ObservableSynchronizedCollection<NicoVideoModel> Sources { get; private set; }
+        //public ObservableSynchronizedCollection<NicoVideoModel> Sources { get; private set; }
 
-        public SynchronizationContextCollection<NicoVideoViewModel> Videos { get; private set; }
+        //public SynchronizationContextCollection<NicoVideoViewModel> Videos { get; private set; }
+
+        public BindableCollection<NicoVideoModel> Sources { get; private set; }
+
+        public BindableContextCollection<NicoVideoViewModel> Videos { get; private set; }
 
         private async void Reload(object sender, PropertyChangedEventArgs e)
         {
-            await NicoUtil.GetVideosByRanking(Genre.SelectedItem.Value, "all", Period.SelectedItem.Value).ContinueOnUI(x =>
+            await NicoUtil.GetVideosByRanking(Genre.SelectedItem.Value, "all", Period.SelectedItem.Value).ContinueWith(x =>
             {
-                MainViewModel.Instance.ShowProgress = true;
                 Sources.Clear();
                 Sources.AddRange(x.Result);
-                MainViewModel.Instance.ShowProgress = false;
             });
         }
     }

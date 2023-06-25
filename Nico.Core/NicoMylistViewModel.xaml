@@ -11,13 +11,13 @@
                   beha:FrameworkElementBehavior.Width="50"
                   beha:FrameworkElementBehavior.Height="50">
                 <ContentPresenter ContentTemplate="{DynamicResource Core.Thumbnail}"
-                                  Content="{Binding UserInfo.Thumbnail}" />
+                                  Content="{Binding Thumbnail}" />
             </Grid>
 
             <TextBlock DockPanel.Dock="Top"
                        Margin="4,2"
                        VerticalAlignment="Center"
-                       Text="{Binding UserInfo.Username}" />
+                       Text="{Binding MylistUsername}" />
 
             <TextBlock Margin="4,2"
                        VerticalAlignment="Center"

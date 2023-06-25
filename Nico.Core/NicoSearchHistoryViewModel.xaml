@@ -12,6 +12,8 @@
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Core.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Converters.xaml" />
 
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Core/NicoUserViewModel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Core/NicoMylistViewModel.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="NicoSearchHistoryViewModel.ItemContainerStyle" TargetType="ListBoxItem" BasedOn="{StaticResource MahApps.Styles.ListBoxItem}">

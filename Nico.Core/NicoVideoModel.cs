@@ -45,7 +45,11 @@ namespace Moviewer.Nico.Core
             StartTime = DateTime.Parse(xml.ElementS("first_retrieve"));
             LengthSeconds = ToLengthSeconds(xml.ElementS("length"));
             Tags = xml.Descendants("tags").First().Descendants("tag").Select(tag => (string)tag).GetString(" ");
-            UserInfo = new NicoUserModel(xml.ElementS("user_id"), xml.ElementS("user_nickname"));
+            UserInfo = new NicoUserModel(
+                CoreUtil.Nvl(xml.ElementS("user_id"), "ch" + xml.ElementS("ch_id")),
+                CoreUtil.Nvl(xml.ElementS("user_nickname"), xml.ElementS("ch_name")),
+                xml.ElementS("ch_icon_url")
+            );
             RefreshStatus();
 
             return this;

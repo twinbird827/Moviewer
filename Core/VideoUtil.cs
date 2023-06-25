@@ -53,6 +53,6 @@ namespace Moviewer.Core
             return null;
         }
         private static Dictionary<string, BitmapImage> _dic = new Dictionary<string, BitmapImage>();
-
+        private static string _guid = Guid.NewGuid().ToString();
     }
 }

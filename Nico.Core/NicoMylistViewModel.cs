@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Moviewer.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,9 +31,12 @@ namespace Moviewer.Nico.Core
             }, nameof(MylistDate), true);
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
-                UserInfo = new NicoUserViewModel(m.UserInfo);
-            }, nameof(UserInfo), true);
-
+                SetThumbnail(m.ThumbnailUrl);
+            }, nameof(m.ThumbnailUrl), true);
+            m.UserInfo.AddOnPropertyChanged(this, (sender, e) =>
+            {
+                MylistUsername = m.UserInfo.Username;
+            }, nameof(m.UserInfo.Username), true);
         }
 
         public string MylistId
@@ -56,6 +60,13 @@ namespace Moviewer.Nico.Core
         }
         private string _MylistDescription = null;
 
+        public string MylistUsername
+        {
+            get => _MylistUsername;
+            set => SetProperty(ref _MylistUsername, value);
+        }
+        private string _MylistUsername = null;
+
         public DateTime MylistDate
         {
             get => _MylistDate;
@@ -63,12 +74,18 @@ namespace Moviewer.Nico.Core
         }
         private DateTime _MylistDate;
 
-        public NicoUserViewModel UserInfo
+        public BitmapImage Thumbnail
         {
-            get => _UserInfo;
-            set => SetProperty(ref _UserInfo, value);
+            get => _Thumbnail;
+            set => SetProperty(ref _Thumbnail, value);
         }
-        private NicoUserViewModel _UserInfo;
+        private BitmapImage _Thumbnail;
 
+        private async void SetThumbnail(string url)
+        {
+            await VideoUtil
+                .GetThumnailAsync(url)
+                .ContinueWith(x => Thumbnail = x.IsFaulted ? null : x.Result);
+        }
     }
 }

@@ -10,6 +10,7 @@ using TBird.Core.Stateful;
 using TBird.Wpf;
 using TBird.Core;
 using Moviewer.Core;
+using TBird.Wpf.Collections;
 
 namespace Moviewer.Nico.Workspaces
 {
@@ -19,20 +20,19 @@ namespace Moviewer.Nico.Workspaces
 
         public NicoFavoriteViewModel()
         {
-            Sources = new ObservableSynchronizedCollection<NicoVideoModel>();
+            Sources = new BindableCollection<NicoVideoModel>();
 
-            Videos = Sources.ToSyncedSynchronizationContextCollection(
-                x => new NicoVideoViewModel(this, x),
-                WpfUtil.GetContext()
-            );
+            Videos = Sources
+                .ToBindableConvertCollection(x => new NicoVideoViewModel(this, x))
+                .ToBindableContextCollection();
 
             Orderby = new ComboboxViewModel(NicoUtil.GetCombos("order_by"));
             Orderby.SelectedItem = Orderby.GetItemNotNull(NicoSetting.Instance.NicoFavoriteOrderby);
 
             Favorites = NicoModel.SearchFavorites
-                .ToSyncedSortedObservableCollection(x => x.Date, isDescending: true)
-                .ToSyncedObservableSynchronizedCollection(x => new NicoSearchHistoryViewModel(this, x))
-                .ToSyncedSynchronizationContextCollection(x => x, WpfUtil.GetContext());
+                .ToBindableSortedCollection(x => x.Date, true)
+                .ToBindableConvertCollection(x => new NicoSearchHistoryViewModel(this, x))
+                .ToBindableContextCollection();
 
             AddDisposed((sender, e) =>
             {
@@ -46,15 +46,15 @@ namespace Moviewer.Nico.Workspaces
 
         public ComboboxViewModel Orderby { get; private set; }
 
-        public ObservableSynchronizedCollection<NicoVideoModel> Sources { get; private set; }
+        public BindableCollection<NicoVideoModel> Sources { get; private set; }
 
-        public SynchronizationContextCollection<NicoVideoViewModel> Videos { get; private set; }
+        public BindableContextCollection<NicoVideoViewModel> Videos { get; private set; }
 
-        public SynchronizationContextCollection<NicoSearchHistoryViewModel> Favorites { get; private set; }
+        public BindableContextCollection<NicoSearchHistoryViewModel> Favorites { get; private set; }
 
         public ICommand OnSearch => _OnSearch = _OnSearch ?? RelayCommand.Create<NicoSearchHistoryViewModel>(async vm =>
         {
-            await NicoUtil.GetVideoBySearchType(vm.Word, vm.Type, Orderby.SelectedItem.Value).ContinueOnUI(x =>
+            await NicoUtil.GetVideoBySearchType(vm.Word, vm.Type, Orderby.SelectedItem.Value).ContinueWith(x =>
             {
                 Sources.Clear();
                 Sources.AddRange(x.Result);

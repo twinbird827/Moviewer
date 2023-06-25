@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TBird.Core.Stateful;
 using TBird.Wpf;
+using TBird.Wpf.Collections;
 
 namespace Moviewer.Nico.Core
 {
@@ -34,11 +35,11 @@ namespace Moviewer.Nico.Core
         // **************************************************
         // Temporaries
 
-        public static ObservableSynchronizedCollection<NicoVideoHistoryModel> Temporaries
+        public static BindableCollection<NicoVideoHistoryModel> Temporaries
         {
-            get => Instance._Temporaries = Instance._Temporaries ?? new ObservableSynchronizedCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Temporaries);
+            get => Instance._Temporaries = Instance._Temporaries ?? new BindableCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Temporaries);
         }
-        private ObservableSynchronizedCollection<NicoVideoHistoryModel> _Temporaries;
+        private BindableCollection<NicoVideoHistoryModel> _Temporaries;
 
         public static void AddTemporary(string contentid)
         {
@@ -67,11 +68,11 @@ namespace Moviewer.Nico.Core
         // **************************************************
         // Histories
 
-        public static ObservableSynchronizedCollection<NicoVideoHistoryModel> Histories
+        public static BindableCollection<NicoVideoHistoryModel> Histories
         {
-            get => Instance._Histories = Instance._Histories ?? new ObservableSynchronizedCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Histories);
+            get => Instance._Histories = Instance._Histories ?? new BindableCollection<NicoVideoHistoryModel>(NicoSetting.Instance.Histories);
         }
-        private ObservableSynchronizedCollection<NicoVideoHistoryModel> _Histories;
+        private BindableCollection<NicoVideoHistoryModel> _Histories;
 
         public static void AddHistory(string contentid)
         {
@@ -100,11 +101,11 @@ namespace Moviewer.Nico.Core
         // **************************************************
         // Search Histories
 
-        public static ObservableSynchronizedCollection<NicoSearchHistoryModel> SearchHistories
+        public static BindableCollection<NicoSearchHistoryModel> SearchHistories
         {
-            get => Instance._SearchHistories = Instance._SearchHistories ?? new ObservableSynchronizedCollection<NicoSearchHistoryModel>(NicoSetting.Instance.SearchHistories);
+            get => Instance._SearchHistories = Instance._SearchHistories ?? new BindableCollection<NicoSearchHistoryModel>(NicoSetting.Instance.SearchHistories);
         }
-        private ObservableSynchronizedCollection<NicoSearchHistoryModel> _SearchHistories;
+        private BindableCollection<NicoSearchHistoryModel> _SearchHistories;
 
         public static void AddSearchHistory(string word, NicoSearchType type)
         {
@@ -133,11 +134,11 @@ namespace Moviewer.Nico.Core
         // **************************************************
         // SearchFavorites
 
-        public static ObservableSynchronizedCollection<NicoSearchHistoryModel> SearchFavorites
+        public static BindableCollection<NicoSearchHistoryModel> SearchFavorites
         {
-            get => Instance._SearchFavorites = Instance._SearchFavorites ?? new ObservableSynchronizedCollection<NicoSearchHistoryModel>(NicoSetting.Instance.SearchFavorites);
+            get => Instance._SearchFavorites = Instance._SearchFavorites ?? new BindableCollection<NicoSearchHistoryModel>(NicoSetting.Instance.SearchFavorites);
         }
-        private ObservableSynchronizedCollection<NicoSearchHistoryModel> _SearchFavorites;
+        private BindableCollection<NicoSearchHistoryModel> _SearchFavorites;
 
         public static void AddSearchFavorite(string word, NicoSearchType type)
         {

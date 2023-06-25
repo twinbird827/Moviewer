@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Input;
 using TBird.Core.Stateful;
 using TBird.Wpf;
+using TBird.Wpf.Collections;
 using TBird.Wpf.Controls;
 
 namespace Moviewer.Nico.Workspaces
@@ -21,12 +22,10 @@ namespace Moviewer.Nico.Workspaces
         public NicoTemporaryViewModel()
         {
             Videos = NicoModel.Temporaries
-                .ToSyncedObservableSynchronizedCollection(x => x.GetVideo())
-                .ToSyncedSortedObservableCollection(x => x.TempTime, isDescending: true)
-                .ToSyncedSynchronizationContextCollection(
-                    x => new NicoVideoViewModel(this, x),
-                    WpfUtil.GetContext()
-            );
+                .ToBindableConvertCollection(x => x.GetVideo())
+                .ToBindableSortedCollection(x => x.TempTime, isDescending: true)
+                .ToBindableConvertCollection(x => new NicoVideoViewModel(this, x))
+                .ToBindableContextCollection();
 
             AddDisposed((sender, e) =>
             {
@@ -34,12 +33,12 @@ namespace Moviewer.Nico.Workspaces
             });
         }
 
-        public SynchronizationContextCollection<NicoVideoViewModel> Videos
+        public BindableContextCollection<NicoVideoViewModel> Videos
         {
             get => _Videos;
             set => SetProperty(ref _Videos, value);
         }
-        public SynchronizationContextCollection<NicoVideoViewModel> _Videos;
+        public BindableContextCollection<NicoVideoViewModel> _Videos;
 
         public ICommand OnTemporaryAdd => _OnTemporaryAdd = _OnTemporaryAdd ?? RelayCommand.Create(async _ =>
         {

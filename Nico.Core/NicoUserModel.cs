@@ -10,11 +10,11 @@ namespace Moviewer.Nico.Core
 {
     public class NicoUserModel : BindableBase
     {
-        public NicoUserModel(string userid, string username) 
+        public NicoUserModel(string userid, string username, string url = null) 
         {
             Userid = userid;
             Username = username;
-            ThumbnailUrl = GetThumbnailUrl(Userid);
+            ThumbnailUrl = CoreUtil.Nvl(url, GetThumbnailUrl(Userid));
             RefreshUsername();
         }
 
