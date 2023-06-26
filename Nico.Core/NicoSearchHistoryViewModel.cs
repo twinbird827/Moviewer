@@ -70,7 +70,7 @@ namespace Moviewer.Nico.Core
             switch (Type)
             {
                 case NicoSearchType.User:
-                    return new NicoUserViewModel(new NicoUserModel(Word, null));
+                    return new NicoUserViewModel(new NicoUserModel(Word, null, null, null, null));
                 case NicoSearchType.Mylist:
                     return new NicoMylistViewModel(await NicoMylistModel.GetNicoMylistModel(Word));
                 default:

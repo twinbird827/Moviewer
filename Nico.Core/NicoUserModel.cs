@@ -5,17 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using TBird.Wpf;
 using TBird.Core;
+using System.Security.Policy;
 
 namespace Moviewer.Nico.Core
 {
     public class NicoUserModel : BindableBase
     {
-        public NicoUserModel(string userid, string username, string url = null) 
+        public NicoUserModel(string userid, string username, string chid, string chname, string churl) 
         {
-            Userid = userid;
-            Username = username;
-            ThumbnailUrl = CoreUtil.Nvl(url, GetThumbnailUrl(Userid));
-            RefreshUsername();
+            if (!string.IsNullOrEmpty(userid))
+            {
+                Userid = userid;
+                Username = username;
+                ThumbnailUrl = GetThumbnailUrl(Userid);
+                RefreshUsername();
+            }
+            else
+            {
+                Userid = chid;
+                Username = chname;
+                ThumbnailUrl = churl;
+            }
         }
 
         public string Userid

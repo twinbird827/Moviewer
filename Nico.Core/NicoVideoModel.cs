@@ -46,8 +46,10 @@ namespace Moviewer.Nico.Core
             LengthSeconds = ToLengthSeconds(xml.ElementS("length"));
             Tags = xml.Descendants("tags").First().Descendants("tag").Select(tag => (string)tag).GetString(" ");
             UserInfo = new NicoUserModel(
-                CoreUtil.Nvl(xml.ElementS("user_id"), "ch" + xml.ElementS("ch_id")),
-                CoreUtil.Nvl(xml.ElementS("user_nickname"), xml.ElementS("ch_name")),
+                xml.ElementS("user_id"),
+                xml.ElementS("user_nickname"),
+                "ch" + xml.ElementS("ch_id"),
+                xml.ElementS("ch_name"),
                 xml.ElementS("ch_icon_url")
             );
             RefreshStatus();
@@ -98,7 +100,7 @@ namespace Moviewer.Nico.Core
                 StartTime = DateTimeOffset.Parse(item["startTime"]).DateTime;
                 LengthSeconds = (long)item["lengthSeconds"];
                 Tags = item["tags"];
-                UserInfo = new NicoUserModel($"{item["userId"]}", null);
+                UserInfo = new NicoUserModel($"{item["userId"]}", null, null, null, null);
                 RefreshStatus();
             }
             catch

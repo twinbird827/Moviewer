@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TBird.Core;
 using TBird.Wpf;
 
 namespace Moviewer.Core.Windows
@@ -24,5 +25,6 @@ namespace Moviewer.Core.Windows
 
         public BackgroundTaskManager Loaded { get; } = new BackgroundTaskManager();
 
+        public string Title => $"Moviewer [{Type.GetLabel()}]";
     }
 }
