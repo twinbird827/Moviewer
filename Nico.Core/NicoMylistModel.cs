@@ -29,7 +29,7 @@ namespace Moviewer.Nico.Core
             UserInfo = new NicoUserModel(
                 Regex.Match(xml.ElementS("link"), @"(?<=user\/)[\d]+").Value,          // user id
                 xml.ElementS(XName.Get("creator", "http://purl.org/dc/elements/1.1/")) // creator name
-            );
+            , null, null, null);
 
             UserInfo.AddOnPropertyChanged(this, (sender, e) =>
             {

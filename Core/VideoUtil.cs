@@ -17,36 +17,39 @@ namespace Moviewer.Core
         }
 
         public static async Task<BitmapImage> GetThumnailAsync(params string[] urls)
-        {
-            foreach (var url in urls)
+        {//https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon/defaults/blank.jpg
+            using (await Locker.LockAsync(_guid))
             {
-                if (string.IsNullOrEmpty(url))
+                foreach (var url in urls)
                 {
-                    continue;
-                }
-                else if (_dic.ContainsKey(url))
-                {
-                    return _dic[url];
-                }
-
-                var bytes = await WebUtil.GetThumnailBytes(url);
-
-                if (bytes == null) continue;
-
-                using (WrappingStream stream = new WrappingStream(new MemoryStream(bytes)))
-                {
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.StreamSource = stream;
-                    //bitmap.DecodePixelWidth = 160 + 48 * 0;
-                    //bitmap.DecodePixelHeight = 120 + 36 * 0;
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.EndInit();
-                    if (bitmap.CanFreeze)
+                    if (string.IsNullOrEmpty(url))
                     {
-                        bitmap.Freeze();
+                        continue;
                     }
-                    return _dic[url] = bitmap;
+                    else if (_dic.ContainsKey(url))
+                    {
+                        return _dic[url];
+                    }
+
+                    var bytes = await WebUtil.GetThumnailBytes(url);
+
+                    if (bytes == null) continue;
+
+                    using (WrappingStream stream = new WrappingStream(new MemoryStream(bytes)))
+                    {
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.StreamSource = stream;
+                        //bitmap.DecodePixelWidth = 160 + 48 * 0;
+                        //bitmap.DecodePixelHeight = 120 + 36 * 0;
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.EndInit();
+                        if (bitmap.CanFreeze)
+                        {
+                            bitmap.Freeze();
+                        }
+                        return _dic[url] = bitmap;
+                    }
                 }
             }
 
