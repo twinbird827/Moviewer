@@ -15,7 +15,7 @@ using TBird.Wpf.Controls;
 
 namespace Moviewer.Nico.Workspaces
 {
-    public class NicoTemporaryViewModel : WorkspaceViewModel
+    public class NicoTemporaryViewModel : WorkspaceViewModel, INicoVideoParentViewModel
     {
         public override MenuType Type => MenuType.NicoTemporary;
 
@@ -71,5 +71,9 @@ namespace Moviewer.Nico.Workspaces
         });
         private ICommand _OnDrop;
 
+        public void NicoVideoOnDelete(NicoVideoViewModel vm)
+        {
+            NicoModel.DelTemporary(vm.Source.ContentId);
+        }
     }
 }

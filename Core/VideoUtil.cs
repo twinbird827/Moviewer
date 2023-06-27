@@ -17,7 +17,7 @@ namespace Moviewer.Core
         }
 
         public static async Task<BitmapImage> GetThumnailAsync(params string[] urls)
-        {//https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon/defaults/blank.jpg
+        {
             using (await Locker.LockAsync(_guid))
             {
                 foreach (var url in urls)
@@ -26,36 +26,56 @@ namespace Moviewer.Core
                     {
                         continue;
                     }
-                    else if (_dic.ContainsKey(url))
-                    {
-                        return _dic[url];
-                    }
 
-                    var bytes = await WebUtil.GetThumnailBytes(url);
+                    var bytes = GetThumnailFromFileAsync(url) ?? await WebUtil.GetThumnailBytes(url);
 
                     if (bytes == null) continue;
+
+                    SaveFileBytes(url, bytes);
 
                     using (WrappingStream stream = new WrappingStream(new MemoryStream(bytes)))
                     {
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
                         bitmap.StreamSource = stream;
-                        //bitmap.DecodePixelWidth = 160 + 48 * 0;
-                        //bitmap.DecodePixelHeight = 120 + 36 * 0;
                         bitmap.CacheOption = BitmapCacheOption.OnLoad;
                         bitmap.EndInit();
                         if (bitmap.CanFreeze)
                         {
                             bitmap.Freeze();
                         }
-                        return _dic[url] = bitmap;
+                        return bitmap;
                     }
                 }
             }
 
             return null;
         }
-        private static Dictionary<string, BitmapImage> _dic = new Dictionary<string, BitmapImage>();
         private static string _guid = Guid.NewGuid().ToString();
+
+        private static void SaveFileBytes(string url, byte[] bytes)
+        {
+            Directory.CreateDirectory(_path);
+
+            var urlpath = Path.Combine(_path, Url2Id(url));
+
+            if (File.Exists(urlpath)) return;
+
+            File.WriteAllBytes(urlpath, bytes);
+        }
+
+        private static byte[] GetThumnailFromFileAsync(string url)
+        {
+            Directory.CreateDirectory(_path);
+
+            var urlpath = Path.Combine(_path, Url2Id(url));
+
+            if (!File.Exists(urlpath)) return null;
+
+            return File.ReadAllBytes(urlpath);
+        }
+        private const string _path = @"bytes\";
+
+        private static Dictionary<string, BitmapImage> _dic = new Dictionary<string, BitmapImage>();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Moviewer.Core;
 using Moviewer.Core.Windows;
+using Moviewer.Nico.Workspaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,7 +17,7 @@ using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
 {
-    public class NicoVideoViewModel : BindableBase
+    public class NicoVideoViewModel : NicoViewModel
     {
         public NicoVideoViewModel(WorkspaceViewModel parent, NicoVideoModel m)
         {
@@ -34,17 +35,6 @@ namespace Moviewer.Nico.Core
             {
                 Description = m.Description;
             }, nameof(m.Description), true);
-
-            m.AddOnPropertyChanged(this, async (sender, e) =>
-            {
-                var urls = Arr(".L", ".M", "")
-                    .Select(x => $"{m.ThumbnailUrl}{x}")
-                    .ToArray();
-
-                await VideoUtil
-                    .GetThumnailAsync(urls)
-                    .ContinueWith(x => Thumbnail = x.IsFaulted ? null : x.Result);
-            }, nameof(m.ThumbnailUrl), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
@@ -95,6 +85,24 @@ namespace Moviewer.Nico.Core
                     m.Tags.Split(' ').Select(x => new NicoVideoTagViewModel(x))
                 );
             }, nameof(m.Tags), true);
+
+            AddDisposed((sender, e) =>
+            {
+                UserInfo.Dispose();
+
+                Tags.ForEach(x => x.Dispose());
+                Tags.Clear();
+
+                Loaded.Dispose();
+                OnDoubleClick.TryDispose();
+                OnDownload.TryDispose();
+                OnKeyDown.TryDispose();
+                OnTemporaryAdd.TryDispose();
+                OnTemporaryDel.TryDispose();
+
+                Source = null;
+                Parent = null;
+            });
         }
 
         public WorkspaceViewModel Parent { get; private set; }
@@ -229,6 +237,10 @@ namespace Moviewer.Nico.Core
             {
                 OnDoubleClick.Execute(null);
             }
+            else if (e.Key == Key.Delete && Parent is INicoVideoParentViewModel parent)
+            {
+                parent.NicoVideoOnDelete(this);
+            }
         });
         private ICommand _OnKeyDown;
 
@@ -253,5 +265,32 @@ namespace Moviewer.Nico.Core
         });
         private ICommand _OnDownload;
 
+        public override IRelayCommand Loaded => RelayCommand.Create(async async =>
+        {
+            await Source.RefreshProperties();
+
+            if (!string.IsNullOrEmpty(Source.ThumbnailUrl))
+            {
+                await SetThumnailAsync(Source.ThumbnailUrl);
+            }
+            else
+            {
+                Source.AddOnPropertyChanged(this, async (sender, e) =>
+                {
+                    await SetThumnailAsync(Source.ThumbnailUrl);
+                }, nameof(Source.ThumbnailUrl), true);
+            }
+        });
+
+        private async Task SetThumnailAsync(string url)
+        {
+            var urls = Arr(".L", ".M", "")
+                .Select(x => $"url{x}")
+                .ToArray();
+
+            await VideoUtil
+                .GetThumnailAsync(urls)
+                .ContinueWith(x => Thumbnail = x.IsFaulted ? null : x.Result);
+        }
     }
 }

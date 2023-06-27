@@ -58,6 +58,14 @@ namespace Moviewer.Nico.Core
             return $"{url1}/{url2}/{url3}.jpg";
         }
 
+        public NicoUserModel SetUserInfo(NicoUserModel m)
+        {
+            Userid = m.Userid;
+            Username = m.Username;
+            ThumbnailUrl = m.ThumbnailUrl;
+            return this;
+        }
+
         private async void RefreshUsername()
         {
             if (string.IsNullOrEmpty(Userid) || !string.IsNullOrEmpty(Username)) return;

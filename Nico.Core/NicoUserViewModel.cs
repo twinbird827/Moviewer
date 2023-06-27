@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using TBird.Core;
 using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
@@ -25,12 +26,18 @@ namespace Moviewer.Nico.Core
             }, nameof(m.Username), true);
 
             SetThumbnail(m.ThumbnailUrl);
+
+            AddDisposed((sender, e) =>
+            {
+                Thumbnail = null;
+                OnClickUsername.TryDispose();
+            });
         }
 
         private async void SetThumbnail(string url)
         {
             await VideoUtil
-                .GetThumnailAsync(url)
+                .GetThumnailAsync(url, $"https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon/defaults/blank.jpg")
                 .ContinueWith(x => Thumbnail = x.IsFaulted ? null : x.Result);
         }
 

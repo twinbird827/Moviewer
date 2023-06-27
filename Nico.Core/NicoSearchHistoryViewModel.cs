@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TBird.Core;
 using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
 {
-    public class NicoSearchHistoryViewModel : BindableBase
+    public class NicoSearchHistoryViewModel : NicoViewModel
     {
         public NicoSearchHistoryViewModel(INicoSearchHistoryParentViewModel parent, NicoSearchHistoryModel m)
         {
@@ -22,13 +23,29 @@ namespace Moviewer.Nico.Core
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 Type = m.Type;
-                SetDisplay();
             }, nameof(Type), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 Date = m.Date;
             }, nameof(Date), true);
+
+            Loaded = RelayCommand.Create(async _ =>
+            {
+                Display = await GetDisplay();
+            });
+
+            AddDisposed((sender, e) =>
+            {
+                Loaded.Dispose();
+                OnDelete.TryDispose();
+                OnDoubleClick.TryDispose();
+                OnFavoriteAdd.TryDispose();
+                OnFavoriteDel.TryDispose();
+                OnKeyDown.TryDispose();
+
+                Display.TryDispose();
+            });
         }
 
         public INicoSearchHistoryParentViewModel Parent { get; private set; }
@@ -61,10 +78,6 @@ namespace Moviewer.Nico.Core
         }
         private object _Display;
 
-        private async void SetDisplay()
-        {
-            Display = await GetDisplay();
-        }
         private async Task<object> GetDisplay()
         {
             switch (Type)
@@ -110,6 +123,8 @@ namespace Moviewer.Nico.Core
             NicoModel.DelSearchFavorite(Word, Type);
         });
         private ICommand _OnFavoriteDel;
+
+        public override IRelayCommand Loaded { get; }
 
     }
 }

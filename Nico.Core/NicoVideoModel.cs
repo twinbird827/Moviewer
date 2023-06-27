@@ -14,21 +14,12 @@ namespace Moviewer.Nico.Core
 {
     public class NicoVideoModel : BindableBase
     {
-        public NicoVideoModel SetFromVideo(NicoVideoModel m)
+        public NicoVideoModel SetFromContentId(string contentid)
         {
-            ContentId = m.ContentId;
-            Title = m.Title;
-            Description = m.Description;
-            ThumbnailUrl = m.ThumbnailUrl;
-            ViewCounter = m.ViewCounter;
-            CommentCounter = m.CommentCounter;
-            MylistCounter = m.MylistCounter;
-            StartTime = m.StartTime;
-            LengthSeconds = m.LengthSeconds;
-            Tags = m.Tags;
-            UserInfo = m.UserInfo;
-            RefreshStatus();
+            ContentId = contentid;
+            Status = VideoStatus.Delete;
 
+            _isinitialize = true;
             return this;
         }
 
@@ -54,6 +45,7 @@ namespace Moviewer.Nico.Core
             );
             RefreshStatus();
 
+            _isinitialize = false;
             return this;
         }
 
@@ -75,8 +67,7 @@ namespace Moviewer.Nico.Core
                 LengthSeconds = ToLengthSeconds(descriptionXml);
                 RefreshStatus();
 
-                // 取得できない項目は非同期で設定する。
-                SetFromVideo();
+                _isinitialize = true;
             }
             catch
             {
@@ -100,8 +91,10 @@ namespace Moviewer.Nico.Core
                 StartTime = DateTimeOffset.Parse(item["startTime"]).DateTime;
                 LengthSeconds = (long)item["lengthSeconds"];
                 Tags = item["tags"];
-                UserInfo = new NicoUserModel($"{item["userId"]}", null, null, null, null);
+                UserInfo = new NicoUserModel($"{item["userId"]}", null, $"ch{item["channelId"]}", null, $"{item["thumbnailUrl"]}");
                 RefreshStatus();
+
+                _isinitialize = false;
             }
             catch
             {
@@ -203,6 +196,28 @@ namespace Moviewer.Nico.Core
                 System.Globalization.DateTimeStyles.None
             );
         }
+
+        public async Task RefreshProperties()
+        {
+            if (!_isinitialize) return;
+
+            var m = await NicoUtil.GetVideo(ContentId);
+            if (m.Status == VideoStatus.Delete) return;
+
+            ContentId = CoreUtil.Nvl(m.ContentId, ContentId);
+            Title = CoreUtil.Nvl(m.Title, Title);
+            Description = CoreUtil.Nvl(m.Description, Description);
+            ThumbnailUrl = CoreUtil.Nvl(m.ThumbnailUrl, ThumbnailUrl);
+            ViewCounter = Arr(m.ViewCounter, ViewCounter).Max();
+            CommentCounter = Arr(m.CommentCounter, CommentCounter).Max();
+            MylistCounter = Arr(m.MylistCounter, MylistCounter).Max();
+            StartTime = Arr(m.StartTime, StartTime).Max();
+            LengthSeconds = Arr(m.LengthSeconds, LengthSeconds).Max();
+            Tags = CoreUtil.Nvl(m.Tags, Tags);
+            UserInfo = UserInfo != null ? UserInfo.SetUserInfo(m.UserInfo) : m.UserInfo;
+            RefreshStatus();
+        }
+        private bool _isinitialize = false;
 
         public string ContentId
         {

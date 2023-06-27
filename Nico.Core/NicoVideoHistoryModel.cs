@@ -37,8 +37,8 @@ namespace Moviewer.Nico.Core
 
         public NicoVideoModel GetVideo()
         {
-            var video = new NicoVideoModel();
-            video.ContentId = ContentId;
+            var video = new NicoVideoModel().SetFromContentId(ContentId);
+
             AddOnPropertyChanged(video, (sender, e) =>
             {
                 video.TempTime = Date;
@@ -48,7 +48,7 @@ namespace Moviewer.Nico.Core
                 Date = video.TempTime;
                 video.RefreshStatus();
             }, nameof(video.TempTime), false);
-            NicoUtil.GetVideo(ContentId).ContinueWith(x => video.SetFromVideo(x.Result)).ConfigureAwait(false);
+
             return video;
         }
     }

@@ -34,8 +34,8 @@
 
     <DataTemplate x:Key="Core.Thumbnail" DataType="{x:Type BitmapImage}">
         <Grid Name="ROOT_Grid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Controls:ProgressRing Width="{Binding ElementName=ROOT_Grid, Path=ActualWidth}"
-                                   Height="{Binding ElementName=ROOT_Grid, Path=ActualHeight}"
+            <Controls:ProgressRing MaxWidth="{Binding ElementName=ROOT_Grid, Path=ActualWidth}"
+                                   MaxHeight="{Binding ElementName=ROOT_Grid, Path=ActualHeight}"
                                    Visibility="{Binding ., Converter={StaticResource Null2VisibilityCollapsedConverter}}" />
             
             <Image Margin="{DynamicResource Margin.Zero}"

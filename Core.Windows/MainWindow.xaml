@@ -8,6 +8,7 @@
                       xmlns:core="clr-namespace:Moviewer.Core"
                       xmlns:corestyle="clr-namespace:Moviewer.Core.Styles"
                       Style="{StaticResource DefaultWindow}"
+                      Icon="/Moviewer;component/Core.Windows/cinema.ico"
                       mc:Ignorable="d">
     
     <Controls:MetroWindow.DataContext>

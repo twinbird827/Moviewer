@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TBird.Core;
 using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
@@ -15,6 +16,11 @@ namespace Moviewer.Nico.Core
         public NicoVideoTagViewModel(string tag)
         {
             Tag = tag;
+
+            AddDisposed((sender, e) =>
+            {
+                OnClickTag.TryDispose();
+            });
         }
 
         public string Tag { get; private set; }
