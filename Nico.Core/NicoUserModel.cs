@@ -11,7 +11,7 @@ namespace Moviewer.Nico.Core
 {
     public class NicoUserModel : BindableBase
     {
-        public NicoUserModel(string userid, string username, string chid, string chname, string churl) 
+        public NicoUserModel(string userid, string username, string chid, string chname) 
         {
             if (!string.IsNullOrEmpty(userid))
             {
@@ -23,8 +23,8 @@ namespace Moviewer.Nico.Core
             else
             {
                 Userid = chid;
-                Username = chname;
-                ThumbnailUrl = churl;
+                Username = chname ?? chid;
+                ThumbnailUrl = $"https://secure-dcdn.cdn.nimg.jp/comch/channel-icon/128x128/{chid}.jpg";
             }
         }
 
@@ -75,19 +75,22 @@ namespace Moviewer.Nico.Core
 
         private async Task<string> GetNickname(string userid)
         {
-            if (_userids.ContainsKey(userid)) return _userids[userid];
+            using (await this.LockAsync())
+            {
+                if (_userids.ContainsKey(userid)) return _userids[userid];
 
-            try
-            {
-                var url = $"https://seiga.nicovideo.jp/api/user/info?id={userid}";
-                var xml = await WebUtil.GetXmlAsync(url);
-                return _userids[userid] = (string)xml.Descendants("user")
-                    .SelectMany(x => x.Descendants("nickname"))
-                    .FirstOrDefault();
-            }
-            catch
-            {
-                return userid;
+                try
+                {
+                    var url = $"https://seiga.nicovideo.jp/api/user/info?id={userid}";
+                    var xml = await WebUtil.GetXmlAsync(url);
+                    return _userids[userid] = (string)xml.Descendants("user")
+                        .SelectMany(x => x.Descendants("nickname"))
+                        .FirstOrDefault();
+                }
+                catch
+                {
+                    return userid;
+                }
             }
             /*
             <?xml version="1.0" encoding="UTF-8"?>

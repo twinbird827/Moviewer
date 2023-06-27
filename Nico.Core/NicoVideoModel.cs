@@ -40,8 +40,7 @@ namespace Moviewer.Nico.Core
                 xml.ElementS("user_id"),
                 xml.ElementS("user_nickname"),
                 "ch" + xml.ElementS("ch_id"),
-                xml.ElementS("ch_name"),
-                xml.ElementS("ch_icon_url")
+                xml.ElementS("ch_name")
             );
             RefreshStatus();
 
@@ -91,10 +90,10 @@ namespace Moviewer.Nico.Core
                 StartTime = DateTimeOffset.Parse(item["startTime"]).DateTime;
                 LengthSeconds = (long)item["lengthSeconds"];
                 Tags = item["tags"];
-                UserInfo = new NicoUserModel($"{item["userId"]}", null, $"ch{item["channelId"]}", null, $"{item["thumbnailUrl"]}");
+                UserInfo = new NicoUserModel($"{item["userId"]}", null, $"ch{item["channelId"]}", null);
                 RefreshStatus();
 
-                _isinitialize = false;
+                _isinitialize = true;
             }
             catch
             {
@@ -119,18 +118,6 @@ namespace Moviewer.Nico.Core
                 : NicoModel.Temporaries.Any(x => x.ContentId == ContentId)
                 ? VideoStatus.Temporary
                 : VideoStatus.None;
-        }
-
-        private async void SetFromVideo()
-        {
-            var video = await NicoUtil.GetVideo(ContentId);
-            if (video.Status == VideoStatus.Delete) return;
-
-            Title = CoreUtil.Nvl(Title, video.Title);
-            Description = CoreUtil.Nvl(Description, video.Description);
-            ThumbnailUrl = CoreUtil.Nvl(ThumbnailUrl, video.ThumbnailUrl);
-            Tags = CoreUtil.Nvl(Tags, video.Tags);
-            UserInfo = UserInfo ?? video.UserInfo;
         }
 
         private XElement GetDescriptionXml(XElement item)
@@ -204,16 +191,16 @@ namespace Moviewer.Nico.Core
             var m = await NicoUtil.GetVideo(ContentId);
             if (m.Status == VideoStatus.Delete) return;
 
-            ContentId = CoreUtil.Nvl(m.ContentId, ContentId);
-            Title = CoreUtil.Nvl(m.Title, Title);
+            ContentId = CoreUtil.Nvl(ContentId, m.ContentId);
+            Title = CoreUtil.Nvl(Title, m.Title);
             Description = CoreUtil.Nvl(m.Description, Description);
-            ThumbnailUrl = CoreUtil.Nvl(m.ThumbnailUrl, ThumbnailUrl);
-            ViewCounter = Arr(m.ViewCounter, ViewCounter).Max();
-            CommentCounter = Arr(m.CommentCounter, CommentCounter).Max();
-            MylistCounter = Arr(m.MylistCounter, MylistCounter).Max();
-            StartTime = Arr(m.StartTime, StartTime).Max();
-            LengthSeconds = Arr(m.LengthSeconds, LengthSeconds).Max();
-            Tags = CoreUtil.Nvl(m.Tags, Tags);
+            ThumbnailUrl = CoreUtil.Nvl(ThumbnailUrl, m.ThumbnailUrl);
+            ViewCounter = Arr(ViewCounter, m.ViewCounter).Max();
+            CommentCounter = Arr(CommentCounter, m.CommentCounter).Max();
+            MylistCounter = Arr(MylistCounter, m.MylistCounter).Max();
+            StartTime = Arr(StartTime, m.StartTime).Max();
+            LengthSeconds = Arr(LengthSeconds, m.LengthSeconds).Max();
+            Tags = CoreUtil.Nvl(Tags, m.Tags);
             UserInfo = UserInfo != null ? UserInfo.SetUserInfo(m.UserInfo) : m.UserInfo;
             RefreshStatus();
         }

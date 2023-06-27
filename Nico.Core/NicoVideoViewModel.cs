@@ -88,12 +88,15 @@ namespace Moviewer.Nico.Core
 
             AddDisposed((sender, e) =>
             {
-                UserInfo.Dispose();
+                UserInfo.TryDispose();
 
-                Tags.ForEach(x => x.Dispose());
-                Tags.Clear();
+                if (Tags != null)
+                {
+                    Tags.ForEach(x => x.Dispose());
+                    Tags.Clear();
+                }
 
-                Loaded.Dispose();
+                Loaded.TryDispose();
                 OnDoubleClick.TryDispose();
                 OnDownload.TryDispose();
                 OnKeyDown.TryDispose();
@@ -285,7 +288,7 @@ namespace Moviewer.Nico.Core
         private async Task SetThumnailAsync(string url)
         {
             var urls = Arr(".L", ".M", "")
-                .Select(x => $"url{x}")
+                .Select(x => $"{url}{x}")
                 .ToArray();
 
             await VideoUtil
