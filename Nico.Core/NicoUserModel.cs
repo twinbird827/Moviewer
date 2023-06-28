@@ -11,7 +11,7 @@ namespace Moviewer.Nico.Core
 {
     public class NicoUserModel : BindableBase
     {
-        public NicoUserModel(string userid, string username, string chid, string chname) 
+        public NicoUserModel(string userid, string username, string chid, string chname)
         {
             if (!string.IsNullOrEmpty(userid))
             {
@@ -75,7 +75,7 @@ namespace Moviewer.Nico.Core
 
         private async Task<string> GetNickname(string userid)
         {
-            using (await this.LockAsync())
+            using (await Locker.LockAsync(Lock))
             {
                 if (_userids.ContainsKey(userid)) return _userids[userid];
 
@@ -102,6 +102,7 @@ namespace Moviewer.Nico.Core
             </response>
             */
         }
+
         private static Dictionary<string, string> _userids = new Dictionary<string, string>();
 
     }

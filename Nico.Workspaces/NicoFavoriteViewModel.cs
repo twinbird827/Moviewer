@@ -23,7 +23,7 @@ namespace Moviewer.Nico.Workspaces
             Sources = new BindableCollection<NicoVideoModel>();
 
             Videos = Sources
-                .ToBindableConvertCollection(x => new NicoVideoViewModel(this, x))
+                .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x))
                 .ToBindableContextCollection();
 
             Orderby = new ComboboxViewModel(NicoUtil.GetCombos("order_by"));
@@ -31,7 +31,7 @@ namespace Moviewer.Nico.Workspaces
 
             Favorites = NicoModel.SearchFavorites
                 .ToBindableSortedCollection(x => x.Date, true)
-                .ToBindableConvertCollection(x => new NicoSearchHistoryViewModel(this, x))
+                .ToBindableSelectCollection(x => new NicoSearchHistoryViewModel(this, x))
                 .ToBindableContextCollection();
 
             AddDisposed((sender, e) =>

@@ -6,3 +6,4 @@
 ・ch_icon_urlの軽量な取得方法
 ・ch_icon_urlをch_idから作成する方法
 ・Temporaryで抽出条件＝ユーザとか視聴済とか
+・Mylist thumnailがnullになる

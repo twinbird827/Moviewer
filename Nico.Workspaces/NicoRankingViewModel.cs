@@ -25,7 +25,7 @@ namespace Moviewer.Nico.Workspaces
             Sources = new BindableCollection<NicoVideoModel>();
 
             Videos = Sources
-                .ToBindableConvertCollection(x => new NicoVideoViewModel(this, x))
+                .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x))
                 .ToBindableContextCollection();
 
             Genre = new ComboboxViewModel(NicoUtil.GetCombos("rank_genre"));

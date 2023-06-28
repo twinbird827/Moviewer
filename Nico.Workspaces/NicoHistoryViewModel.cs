@@ -17,9 +17,9 @@ namespace Moviewer.Nico.Workspaces
         public NicoHistoryViewModel()
         {
             Videos = NicoModel.Histories
-                .ToBindableConvertCollection(x => x.GetVideo())
+                .ToBindableSelectCollection(x => x.GetVideo())
                 .ToBindableSortedCollection(x => x.TempTime, isDescending: true)
-                .ToBindableConvertCollection(x => new NicoVideoViewModel(this, x))
+                .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x))
                 .ToBindableContextCollection();
 
             AddDisposed((sender, e) =>
