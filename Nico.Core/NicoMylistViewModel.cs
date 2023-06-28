@@ -84,7 +84,7 @@ namespace Moviewer.Nico.Core
         private async void SetThumbnail(string url)
         {
             await VideoUtil
-                .GetThumnailAsync(url)
+                .GetThumnailAsync(url, $"https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon/defaults/blank.jpg")
                 .ContinueWith(x => Thumbnail = x.IsFaulted ? null : x.Result);
         }
     }
