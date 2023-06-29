@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using TBird.Wpf;
 using TBird.Core;
-using System.Security.Policy;
+using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
 {

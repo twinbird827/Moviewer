@@ -1,11 +1,6 @@
 ﻿using Moviewer.Core;
 using Moviewer.Core.Windows;
 using Moviewer.Nico.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TBird.Wpf.Collections;
 
 namespace Moviewer.Nico.Workspaces
@@ -27,6 +22,7 @@ namespace Moviewer.Nico.Workspaces
                 Videos.Dispose();
             });
         }
+
         public BindableContextCollection<NicoVideoViewModel> Videos
         {
             get => _Videos;

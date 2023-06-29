@@ -2,7 +2,7 @@
 <xml>
     <combo group="mylist_title_removes">
         <item value="0"   display="‐ニコニコ動画" />
-        <item value="1"   display="マイリスト "  />
+        <item value="1"   display="マイリスト " />
     </combo>
     <combo group="rank_genre">
         <item value="all"                   display="全ジャンル" />
@@ -65,12 +65,12 @@
         <item value="lengsec+"   display="+lengthSeconds" />
     </combo>
     <combo group="oyder_by_mylist">
-        <item value="regdate-"   display="1"  />
-        <item value="regdate+"   display="0"  />
-        <item value="stadate-"   display="6"  />
-        <item value="stadate+"   display="7"  />
-        <item value="viewcnt-"   display="8"  />
-        <item value="viewcnt+"   display="9"  />
+        <item value="regdate-"   display="1" />
+        <item value="regdate+"   display="0" />
+        <item value="stadate-"   display="6" />
+        <item value="stadate+"   display="7" />
+        <item value="viewcnt-"   display="8" />
+        <item value="viewcnt+"   display="9" />
         <item value="commcnt-"   display="12" />
         <item value="commcnt+"   display="13" />
         <item value="listcnt-"   display="14" />
@@ -82,18 +82,18 @@
     </combo>
     <combo group="oyder_by_user">
         <item value="regdate-"   display="registeredAt,desc" />
-        <item value="regdate+"   display="registeredAt,asc"  />
+        <item value="regdate+"   display="registeredAt,asc" />
         <item value="stadate-"   display="registeredAt,desc" />
-        <item value="stadate+"   display="registeredAt,asc"  />
+        <item value="stadate+"   display="registeredAt,asc" />
         <item value="viewcnt-"   display="viewCount,desc" />
-        <item value="viewcnt+"   display="viewCount,asc"  />
+        <item value="viewcnt+"   display="viewCount,asc" />
         <item value="commcnt-"   display="commentCount,desc" />
-        <item value="commcnt+"   display="commentCount,asc"  />
+        <item value="commcnt+"   display="commentCount,asc" />
         <item value="listcnt-"   display="mylistCount,desc" />
-        <item value="listcnt+"   display="mylistCount,asc"  />
+        <item value="listcnt+"   display="mylistCount,asc" />
         <item value="likecnt-"   display="likeCount,desc" />
-        <item value="likecnt+"   display="likeCount,asc"  />
+        <item value="likecnt+"   display="likeCount,asc" />
         <item value="lengsec-"   display="duration,desc" />
-        <item value="lengsec+"   display="duration,asc"  />
+        <item value="lengsec+"   display="duration,asc" />
     </combo>
 </xml>

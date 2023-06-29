@@ -1,7 +1,6 @@
 ﻿using Moviewer.Core;
 using Moviewer.Core.Windows;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -191,6 +190,7 @@ namespace Moviewer.Nico.Core
             var m = await NicoUtil.GetVideo(ContentId);
             if (m.Status == VideoStatus.Delete) return;
 
+            _isinitialize = false;
             ContentId = CoreUtil.Nvl(ContentId, m.ContentId);
             Title = CoreUtil.Nvl(Title, m.Title);
             Description = CoreUtil.Nvl(m.Description, Description);
@@ -204,6 +204,7 @@ namespace Moviewer.Nico.Core
             UserInfo = UserInfo != null ? UserInfo.SetUserInfo(m.UserInfo) : m.UserInfo;
             RefreshStatus();
         }
+
         private bool _isinitialize = false;
 
         public string ContentId

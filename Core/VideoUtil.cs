@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using TBird.Core;
@@ -51,6 +50,7 @@ namespace Moviewer.Core
 
             return null;
         }
+
         private static string _guid = Guid.NewGuid().ToString();
 
         private static void SaveFileBytes(string url, byte[] bytes)
@@ -74,6 +74,7 @@ namespace Moviewer.Core
 
             return File.ReadAllBytes(urlpath);
         }
+
         private const string _path = @"bytes\";
 
         private static Dictionary<string, BitmapImage> _dic = new Dictionary<string, BitmapImage>();

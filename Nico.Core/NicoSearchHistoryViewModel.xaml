@@ -1,11 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf"
                     xmlns:mocore="clr-namespace:Moviewer.Core"
+                    xmlns:corestyle="clr-namespace:Moviewer.Core.Styles"
                     xmlns:nicore="clr-namespace:Moviewer.Nico.Core"
                     xmlns:niwork="clr-namespace:Moviewer.Nico.Workspaces"
-                    xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                    xmlns:corestyle="clr-namespace:Moviewer.Core.Styles">
+                    xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
 
     <ResourceDictionary.MergedDictionaries>
 
@@ -51,13 +51,13 @@
     <DataTemplate x:Key="NicoSearchHistoryViewModel.Display.NicoUserViewModel" DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
         <ContentControl DataContext="{Binding Display}"
                         Content="{Binding}"
-                        ContentTemplate="{DynamicResource NicoUserViewModel.M}"/>
+                        ContentTemplate="{DynamicResource NicoUserViewModel.M}" />
     </DataTemplate>
 
     <DataTemplate x:Key="NicoSearchHistoryViewModel.Display.NicoMylistViewModel" DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
         <ContentControl DataContext="{Binding Display}"
                         Content="{Binding}"
-                        ContentTemplate="{DynamicResource NicoMylistViewModel.M}"/>
+                        ContentTemplate="{DynamicResource NicoMylistViewModel.M}" />
     </DataTemplate>
 
     <Style x:Key="NicoSearchHistoryViewModel.Display.ContentPresenter" TargetType="ContentPresenter">
@@ -76,7 +76,7 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-    
+
     <DataTemplate DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
         <DockPanel beha:FrameworkElementBehavior.Height="80" beha:FrameworkElementBehavior.Loaded="{Binding Loaded}">
 
@@ -101,7 +101,7 @@
                                            Kind="{Binding Type, Converter={StaticResource NicoSearchTypeKindConverter}}"
                                            Margin="{DynamicResource Margin.Zero}"
                                            HorizontalAlignment="Stretch"
-                                           VerticalAlignment="Stretch"/>
+                                           VerticalAlignment="Stretch" />
 
                     <TextBlock FontSize="{DynamicResource FontSize.M}"
                                TextAlignment="Center"
@@ -110,7 +110,6 @@
                 </DockPanel>
 
                 <StackPanel />
-                
             </DockPanel>
 
             <DockPanel DockPanel.Dock="Bottom">
@@ -120,14 +119,11 @@
                            Text="{Binding Date, StringFormat={}{0:yy/MM/dd HH:mm:ss}}" />
 
                 <StackPanel />
-
             </DockPanel>
 
             <ContentPresenter Style="{StaticResource NicoSearchHistoryViewModel.Display.ContentPresenter}"
                               Content="{Binding}"
                               Margin="5" />
-            
         </DockPanel>
     </DataTemplate>
-
 </ResourceDictionary>

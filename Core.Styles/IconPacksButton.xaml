@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:core="clr-namespace:Moviewer.Core.Styles">
 
     <ControlTemplate x:Key="IconPacksButton.ControlTemplate.Horizontal" TargetType="{x:Type core:IconPacksButton}">
@@ -15,7 +15,7 @@
                                        Kind="{TemplateBinding Kind}"
                                        Margin="{DynamicResource Margin.Zero}"
                                        HorizontalAlignment="Center" />
-                
+
                 <TextBlock FontSize="{Binding FontSize}"
                            TextAlignment="Center"
                            Text="{TemplateBinding Text}" />
@@ -38,5 +38,4 @@
             </StackPanel>
         </Button>
     </ControlTemplate>
-
 </ResourceDictionary>

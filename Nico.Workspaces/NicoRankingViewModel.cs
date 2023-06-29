@@ -1,17 +1,9 @@
-﻿using Moviewer.Core.Windows;
+﻿using Moviewer.Core;
+using Moviewer.Core.Windows;
 using Moviewer.Nico.Core;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TBird.Wpf;
 using TBird.Core;
-using TBird.Core.Stateful;
-using System.Threading;
-using Moviewer.Core;
+using TBird.Wpf;
 using TBird.Wpf.Collections;
 
 namespace Moviewer.Nico.Workspaces

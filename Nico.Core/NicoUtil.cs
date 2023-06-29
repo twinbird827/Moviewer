@@ -1,9 +1,6 @@
 ﻿using Moviewer.Core;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TBird.Core;
@@ -13,6 +10,8 @@ namespace Moviewer.Nico.Core
 {
     public static class NicoUtil
     {
+        public const string NicoBlankUserUrl = "https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon/defaults/blank.jpg";
+
         private const string NicoComboPath = @"lib\nico-combo-setting.xml";
 
         public static ComboboxModel[] Combos { get; private set; }
@@ -23,8 +22,8 @@ namespace Moviewer.Nico.Core
                 .Root
                 .Descendants("combo")
                 .Select(x => new ComboboxModel(
-                    x.AttributeS("group"), 
-                    x.Descendants("item").Select(i => 
+                    x.AttributeS("group"),
+                    x.Descendants("item").Select(i =>
                         new ComboboxItemModel(i.AttributeS("value"), i.AttributeS("display"))
                     )
                 ))

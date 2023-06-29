@@ -1,9 +1,5 @@
 ﻿using Moviewer.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using TBird.Wpf;
 
@@ -84,7 +80,7 @@ namespace Moviewer.Nico.Core
         private async void SetThumbnail(string url)
         {
             await VideoUtil
-                .GetThumnailAsync(url, $"https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon/defaults/blank.jpg")
+                .GetThumnailAsync(url, NicoUtil.NicoBlankUserUrl)
                 .ContinueWith(x => Thumbnail = x.IsFaulted ? null : x.Result);
         }
     }

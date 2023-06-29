@@ -2,12 +2,9 @@
 using Moviewer.Nico.Workspaces;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Threading;
 using TBird.Core;
 using TBird.Wpf;
 using TBird.Wpf.Controls;

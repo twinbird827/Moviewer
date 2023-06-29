@@ -5,9 +5,7 @@
     <ResourceDictionary.MergedDictionaries>
 
         <ResourceDictionary Source="pack://application:,,,/TBird.Wpf;component/Styles/_Converters.xaml" />
-
     </ResourceDictionary.MergedDictionaries>
 
     <nicocore:NicoSearchTypeKindConverter x:Key="NicoSearchTypeKindConverter" />
-    
 </ResourceDictionary>

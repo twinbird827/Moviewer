@@ -1,9 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Moviewer.Nico.Workspaces"
-                    xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf"
-                    xmlns:core="clr-namespace:Moviewer.Core"
-                    xmlns:corestyle="clr-namespace:Moviewer.Core.Styles">
+                    xmlns:local="clr-namespace:Moviewer.Nico.Workspaces">
 
     <DataTemplate DataType="{x:Type local:NicoHistoryViewModel}">
         <DockPanel>
@@ -11,8 +8,6 @@
             <ListBox Style="{DynamicResource Core.VideoStyle}"
                      ItemsSource="{Binding Videos}"
                      ItemContainerStyle="{DynamicResource NicoVideoViewModel.ItemContainerStyle}" />
-
         </DockPanel>
     </DataTemplate>
-
 </ResourceDictionary>

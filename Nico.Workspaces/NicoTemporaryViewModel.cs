@@ -1,14 +1,8 @@
 ﻿using Moviewer.Core;
 using Moviewer.Core.Windows;
 using Moviewer.Nico.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using TBird.Core.Stateful;
 using TBird.Wpf;
 using TBird.Wpf.Collections;
 using TBird.Wpf.Controls;

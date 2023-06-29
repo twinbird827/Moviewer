@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Moviewer.Nico.Workspaces"
-                    xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
+                    xmlns:local="clr-namespace:Moviewer.Nico.Workspaces">
 
     <DataTemplate DataType="{x:Type local:NicoRankingViewModel}">
         <DockPanel>
@@ -16,14 +15,11 @@
                 <ComboBox Style="{DynamicResource Core.HeaderComboBox}"
                           ItemsSource="{Binding Period.Items}"
                           SelectedItem="{Binding Period.SelectedItem}" />
-                
             </StackPanel>
 
             <ListBox Style="{DynamicResource Core.VideoStyle}"
                      ItemsSource="{Binding Videos}"
                      ItemContainerStyle="{DynamicResource NicoVideoViewModel.ItemContainerStyle}" />
-
         </DockPanel>
     </DataTemplate>
-    
 </ResourceDictionary>

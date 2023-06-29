@@ -1,9 +1,4 @@
-﻿using MahApps.Metro.IconPacks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -28,6 +23,7 @@ namespace Moviewer.Core.Styles
             get => (ICommand)GetValue(CommandProperty);
             set => SetValue(CommandProperty, value);
         }
+
         public static readonly DependencyProperty CommandProperty =
             BehaviorUtil.Register(nameof(Command), Owner, default(ICommand), null);
 

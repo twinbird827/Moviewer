@@ -1,15 +1,11 @@
 ﻿using Moviewer.Core;
 using Moviewer.Core.Windows;
-using Moviewer.Nico.Workspaces;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Web;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using TBird.Core;
@@ -264,13 +260,15 @@ namespace Moviewer.Nico.Core
         public ICommand OnDownload => _OnDownload = _OnDownload ?? RelayCommand.Create(_ =>
         {
             MessageService.Info("OnDownload");
-//            NicoModel.AddTemporary(Source.ContentId);
+            //            NicoModel.AddTemporary(Source.ContentId);
         });
         private ICommand _OnDownload;
 
         public override IRelayCommand Loaded => RelayCommand.Create(async async =>
         {
             await Source.RefreshProperties();
+
+            if (Thumbnail != null) return;
 
             if (!string.IsNullOrEmpty(Source.ThumbnailUrl))
             {

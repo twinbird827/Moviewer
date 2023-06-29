@@ -6,7 +6,6 @@
 
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/IconPacksButton.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/LinkedTextBlock.xaml" />
-
     </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="{x:Type core:IconPacksButton}">
@@ -21,5 +20,4 @@
     </Style>
 
     <Style TargetType="{x:Type core:LinkedTextBlock}" BasedOn="{StaticResource LinkedTextBlock.Style}" />
-
 </ResourceDictionary>

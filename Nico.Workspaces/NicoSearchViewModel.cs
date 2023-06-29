@@ -1,17 +1,9 @@
 ﻿using Moviewer.Core;
 using Moviewer.Core.Windows;
 using Moviewer.Nico.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows;
-using TBird.Core.Stateful;
-using TBird.Wpf;
 using TBird.Core;
-using System.Windows.Controls;
+using TBird.Wpf;
 using TBird.Wpf.Collections;
 
 namespace Moviewer.Nico.Workspaces
@@ -78,7 +70,7 @@ namespace Moviewer.Nico.Workspaces
             NicoModel.AddSearchHistory(Word, t);
         });
         private ICommand _OnSearch;
-    
+
         public void NicoSearchHistoryOnDoubleClick(NicoSearchHistoryViewModel vm)
         {
             Word = vm.Word;
