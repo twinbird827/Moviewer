@@ -21,6 +21,8 @@
                           ItemsSource="{Binding Users}"
                           ItemTemplate="{DynamicResource NicoUserViewModel.S}"
                           SelectedItem="{Binding SelectedUser}" />
+
+                <StackPanel />
             </DockPanel>
 
             <ListBox Style="{DynamicResource Core.VideoStyle}"

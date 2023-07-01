@@ -63,9 +63,10 @@ namespace Moviewer.Nico.Core
                 LengthToSeconds = TimeSpan.FromSeconds(m.LengthSeconds);
             }, nameof(m.LengthSeconds), true);
 
+            UserInfo = new NicoUserViewModel();
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
-                if (m.UserInfo != null) UserInfo = new NicoUserViewModel(m.UserInfo);
+                if (m.UserInfo != null) UserInfo.SetModel(m.UserInfo);
             }, nameof(m.UserInfo), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>

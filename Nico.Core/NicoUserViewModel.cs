@@ -10,7 +10,17 @@ namespace Moviewer.Nico.Core
 {
     public class NicoUserViewModel : BindableBase
     {
+        public NicoUserViewModel()
+        {
+
+        }
+
         public NicoUserViewModel(NicoUserModel m)
+        {
+            SetModel(m);
+        }
+
+        public void SetModel(NicoUserModel m)
         {
             Userid = m.Userid;
 
