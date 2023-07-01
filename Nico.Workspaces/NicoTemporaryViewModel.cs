@@ -15,10 +15,18 @@ namespace Moviewer.Nico.Workspaces
 
         public NicoTemporaryViewModel()
         {
-            Videos = NicoModel.Temporaries
+            Sources = new BindableCollection<NicoVideoViewModel>(NicoModel.Temporaries
                 .ToBindableSelectCollection(x => x.GetVideo())
-                .ToBindableSortedCollection(x => x.TempTime, isDescending: true)
-                .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x))
+                .ToBindableSortedCollection(x => x.TempTime, true)
+                .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x)), true);
+
+            Users = Sources
+                .ToBindableSelectCollection(x => x.UserInfo)
+                .ToBindableContextCollection();
+
+            Videos = Sources
+                .ToBindableWhereCollection(x => SelectedUser == null || x.UserInfo.Userid == SelectedUser.Userid)
+                .AddOnRefreshCollection(this, nameof(SelectedUser))
                 .ToBindableContextCollection();
 
             AddDisposed((sender, e) =>
@@ -26,6 +34,27 @@ namespace Moviewer.Nico.Workspaces
                 Videos.Dispose();
             });
         }
+
+        public BindableChildCollection<NicoUserViewModel> Users
+        {
+            get => _Users;
+            set => SetProperty(ref _Users, value);
+        }
+        public BindableChildCollection<NicoUserViewModel> _Users;
+
+        public NicoUserViewModel SelectedUser
+        {
+            get => _SelectedUser;
+            set => SetProperty(ref _SelectedUser, value);
+        }
+        public NicoUserViewModel _SelectedUser;
+
+        public BindableCollection<NicoVideoViewModel> Sources
+        {
+            get => _Sources;
+            set => SetProperty(ref _Sources, value);
+        }
+        public BindableCollection<NicoVideoViewModel> _Sources;
 
         public BindableContextCollection<NicoVideoViewModel> Videos
         {

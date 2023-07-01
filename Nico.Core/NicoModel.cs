@@ -35,7 +35,7 @@ namespace Moviewer.Nico.Core
         }
         private BindableCollection<NicoVideoHistoryModel> _Temporaries;
 
-        public static void AddTemporary(string contentid)
+        public static void AddTemporary(string contentid, bool issave = true)
         {
             var tmp = Temporaries.FirstOrDefault(x => x.ContentId == contentid);
             if (tmp != null)
@@ -45,17 +45,17 @@ namespace Moviewer.Nico.Core
             else
             {
                 Temporaries.Add(new NicoVideoHistoryModel(contentid));
-                Save();
             }
+            if (issave) Save();
         }
 
-        public static void DelTemporary(string contentid)
+        public static void DelTemporary(string contentid, bool issave = true)
         {
             var tmp = Temporaries.FirstOrDefault(x => x.ContentId == contentid);
             if (tmp != null)
             {
                 Temporaries.Remove(tmp);
-                Save();
+                if (issave) Save();
             }
         }
 
@@ -68,7 +68,7 @@ namespace Moviewer.Nico.Core
         }
         private BindableCollection<NicoVideoHistoryModel> _Histories;
 
-        public static void AddHistory(string contentid)
+        public static void AddHistory(string contentid, bool issave = true)
         {
             var tmp = Histories.FirstOrDefault(x => x.ContentId == contentid);
             if (tmp != null)
@@ -78,17 +78,17 @@ namespace Moviewer.Nico.Core
             else
             {
                 Histories.Add(new NicoVideoHistoryModel(contentid));
-                Save();
             }
+            if (issave) Save();
         }
 
-        public static void DelHistory(string contentid)
+        public static void DelHistory(string contentid, bool issave = true)
         {
             var tmp = Histories.FirstOrDefault(x => x.ContentId == contentid);
             if (tmp != null)
             {
                 Histories.Remove(tmp);
-                Save();
+                if (issave) Save();
             }
         }
 
@@ -101,7 +101,7 @@ namespace Moviewer.Nico.Core
         }
         private BindableCollection<NicoSearchHistoryModel> _SearchHistories;
 
-        public static void AddSearchHistory(string word, NicoSearchType type)
+        public static void AddSearchHistory(string word, NicoSearchType type, bool issave = true)
         {
             var tmp = SearchHistories.FirstOrDefault(x => x.Word == word && x.Type == type);
             if (tmp != null)
@@ -111,17 +111,17 @@ namespace Moviewer.Nico.Core
             else
             {
                 SearchHistories.Add(new NicoSearchHistoryModel(word, type));
-                Save();
             }
+            if (issave) Save();
         }
 
-        public static void DelSearchHistory(string word, NicoSearchType type)
+        public static void DelSearchHistory(string word, NicoSearchType type, bool issave = true)
         {
             var tmp = SearchHistories.FirstOrDefault(x => x.Word == word && x.Type == type);
             if (tmp != null)
             {
                 SearchHistories.Remove(tmp);
-                Save();
+                if (issave) Save();
             }
         }
 
@@ -134,7 +134,7 @@ namespace Moviewer.Nico.Core
         }
         private BindableCollection<NicoSearchHistoryModel> _SearchFavorites;
 
-        public static void AddSearchFavorite(string word, NicoSearchType type)
+        public static void AddSearchFavorite(string word, NicoSearchType type, bool issave = true)
         {
             var tmp = SearchFavorites.FirstOrDefault(x => x.Word == word && x.Type == type);
             if (tmp != null)
@@ -144,17 +144,17 @@ namespace Moviewer.Nico.Core
             else
             {
                 SearchFavorites.Add(new NicoSearchHistoryModel(word, type));
-                Save();
             }
+            if (issave) Save();
         }
 
-        public static void DelSearchFavorite(string word, NicoSearchType type)
+        public static void DelSearchFavorite(string word, NicoSearchType type, bool issave = true)
         {
             var tmp = SearchFavorites.FirstOrDefault(x => x.Word == word && x.Type == type);
             if (tmp != null)
             {
                 SearchFavorites.Remove(tmp);
-                Save();
+                if (issave) Save();
             }
         }
     }

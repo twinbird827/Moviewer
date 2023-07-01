@@ -53,8 +53,6 @@ namespace Moviewer.Nico.Workspaces
                 Sources.Clear();
                 Sources.AddRange(x.Result);
             });
-
-            NicoModel.AddSearchFavorite(vm.Word, vm.Type);
         });
         private ICommand _OnSearch;
 

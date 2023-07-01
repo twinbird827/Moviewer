@@ -56,14 +56,16 @@ namespace Moviewer.Core.Windows
         {
             foreach (var m in NicoModel.SearchFavorites)
             {
-                var arr = await NicoUtil.GetVideoBySearchType(m.Word, m.Type, "regdate-")
-                    .ContinueWith(x => x.Result.Where(y => m.Date < y.StartTime));
+                var enumerable = await NicoUtil.GetVideoBySearchType(m.Word, m.Type, "regdate-");
+                var arr = enumerable.Where(x => m.Date < x.StartTime).ToArray();
 
-                if (!arr.Any()) return;
+                foreach (var video in arr)
+                {
+                    NicoModel.AddTemporary(video.ContentId, false);
 
-                m.Date = arr.Max(x => x.StartTime);
-
-                arr.ForEach(x => NicoModel.AddTemporary(x.ContentId));
+                    m.Date = Arr(m.Date, video.StartTime).Max();
+                }
+                NicoModel.Save();
             }
         }
 

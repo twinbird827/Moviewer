@@ -8,14 +8,20 @@
     <DataTemplate DataType="{x:Type local:NicoTemporaryViewModel}">
         <DockPanel>
 
-            <StackPanel DockPanel.Dock="Top"
-                        Style="{DynamicResource HorizontalStackPanel}">
+            <DockPanel DockPanel.Dock="Top">
 
-                <corestyle:IconPacksButton Style="{DynamicResource Core.HorizontalIconPackButton}"
+                <corestyle:IconPacksButton DockPanel.Dock="Left"
+                                           Style="{DynamicResource Core.HorizontalIconPackButton}"
                                            Kind="BookmarkPlus"
                                            Text="{x:Static core:AppConst.L_AddTemporary}"
                                            Command="{Binding OnTemporaryAdd}" />
-            </StackPanel>
+
+                <ComboBox DockPanel.Dock="Right"
+                          Style="{DynamicResource DefaultComboBox}"
+                          ItemsSource="{Binding Users}"
+                          ItemTemplate="{DynamicResource NicoUserViewModel.S}"
+                          SelectedItem="{Binding SelectedUser}" />
+            </DockPanel>
 
             <ListBox Style="{DynamicResource Core.VideoStyle}"
                      beha:FrameworkElementBehavior.DragDrop="{Binding OnDrop}"
