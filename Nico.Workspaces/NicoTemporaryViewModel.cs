@@ -22,6 +22,7 @@ namespace Moviewer.Nico.Workspaces
 
             Users = Sources
                 .ToBindableSelectCollection(x => x.UserInfo)
+                .ToBindableDistinctCollection(x => x.Userid, "Userid")
                 .ToBindableContextCollection();
 
             Videos = Sources
