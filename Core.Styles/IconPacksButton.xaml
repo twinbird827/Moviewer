@@ -3,6 +3,17 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:core="clr-namespace:Moviewer.Core.Styles">
 
+    <ControlTemplate x:Key="IconPacksButton.ControlTemplate.IconOnly" TargetType="{x:Type core:IconPacksButton}">
+        <Button Command="{TemplateBinding Command}"
+                CommandParameter="{TemplateBinding CommandParameter}"
+                Padding="{TemplateBinding Padding}"
+                HorizontalContentAlignment="Stretch">
+            <icon:PackIconMaterial Kind="{TemplateBinding Kind}"
+                                   Margin="{DynamicResource Margin.Zero}"
+                                   HorizontalAlignment="Center" />
+        </Button>
+    </ControlTemplate>
+
     <ControlTemplate x:Key="IconPacksButton.ControlTemplate.Horizontal" TargetType="{x:Type core:IconPacksButton}">
         <Button Command="{TemplateBinding Command}"
                 CommandParameter="{TemplateBinding CommandParameter}"

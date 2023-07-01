@@ -4,8 +4,35 @@
                     xmlns:nicore="clr-namespace:Moviewer.Nico.Core"
                     xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
 
+    <Style x:Key="NicoUserViewModel.TextBlock" TargetType="TextBlock">
+        <Setter Property="Margin" Value="4,2" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="NicoUserViewModel.UsernameTextBlock" TargetType="TextBlock" BasedOn="{StaticResource NicoUserViewModel.TextBlock}">
+        <Setter Property="Text" Value="{Binding Username}" />
+        <Setter Property="Foreground" Value="DarkBlue" />
+        <Setter Property="TextDecorations" Value="Underline" />
+    </Style>
+
+    <DataTemplate x:Key="NicoUserViewModel.Combo" DataType="{x:Type nicore:NicoUserViewModel}">
+        <DockPanel beha:FrameworkElementBehavior.Width="200">
+
+            <Grid DockPanel.Dock="Left"
+                  beha:FrameworkElementBehavior.Width="30"
+                  beha:FrameworkElementBehavior.Height="30">
+                <ContentPresenter ContentTemplate="{DynamicResource Core.Thumbnail}"
+                                  Content="{Binding Thumbnail}" />
+            </Grid>
+
+            <TextBlock Style="{StaticResource NicoUserViewModel.UsernameTextBlock}"
+                       FontSize="{DynamicResource FontSize.M}" />
+            
+        </DockPanel>
+    </DataTemplate>
+
     <DataTemplate x:Key="NicoUserViewModel.S" DataType="{x:Type nicore:NicoUserViewModel}">
-        <DockPanel beha:FrameworkElementBehavior.Width="150">
+        <DockPanel beha:FrameworkElementBehavior.Width="200">
 
             <Grid DockPanel.Dock="Left"
                   beha:FrameworkElementBehavior.Width="35"
@@ -15,10 +42,10 @@
             </Grid>
 
             <TextBlock DockPanel.Dock="Top"
-                       Margin="4,1"
+                       Style="{StaticResource NicoUserViewModel.TextBlock}"
                        Text="{Binding Userid}" />
 
-            <mocore:LinkedTextBlock Margin="4,3"
+            <mocore:LinkedTextBlock Margin="4,2"
                                     Command="{Binding OnClickUsername}"
                                     VerticalAlignment="Center"
                                     Text="{Binding Username}" />
@@ -36,16 +63,11 @@
             </Grid>
 
             <TextBlock DockPanel.Dock="Top"
-                       Margin="4,2"
-                       VerticalAlignment="Center"
+                       Style="{StaticResource NicoUserViewModel.TextBlock}"
                        Text="{Binding Userid}" />
 
-            <TextBlock Margin="4,2"
-                       VerticalAlignment="Center"
-                       Text="{Binding Username}"
-                       FontSize="{DynamicResource FontSize.L}"
-                       Foreground="DarkBlue"
-                       TextDecorations="Underline" />
+            <TextBlock Style="{StaticResource NicoUserViewModel.UsernameTextBlock}"
+                       FontSize="{DynamicResource FontSize.L}" />
         </DockPanel>
     </DataTemplate>
 </ResourceDictionary>

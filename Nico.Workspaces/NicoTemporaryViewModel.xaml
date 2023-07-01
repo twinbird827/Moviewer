@@ -16,10 +16,17 @@
                                            Text="{x:Static core:AppConst.L_AddTemporary}"
                                            Command="{Binding OnTemporaryAdd}" />
 
+                <corestyle:IconPacksButton DockPanel.Dock="Right"
+                                           Margin="3,0"
+                                           beha:FrameworkElementBehavior.Width="30"
+                                           Command="{Binding OnDeleteSelectedUser}"
+                                           Kind="Close" />
+                
                 <ComboBox DockPanel.Dock="Right"
+                          beha:FrameworkElementBehavior.Width="200"
                           Style="{DynamicResource DefaultComboBox}"
                           ItemsSource="{Binding Users}"
-                          ItemTemplate="{DynamicResource NicoUserViewModel.S}"
+                          ItemTemplate="{DynamicResource NicoUserViewModel.Combo}"
                           SelectedItem="{Binding SelectedUser}" />
 
                 <StackPanel />

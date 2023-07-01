@@ -32,6 +32,8 @@ namespace Moviewer.Nico.Workspaces
             AddDisposed((sender, e) =>
             {
                 Videos.Dispose();
+                Users.Dispose();
+                Sources.Dispose();
             });
         }
 
@@ -62,6 +64,12 @@ namespace Moviewer.Nico.Workspaces
             set => SetProperty(ref _Videos, value);
         }
         public BindableContextCollection<NicoVideoViewModel> _Videos;
+
+        public ICommand OnDeleteSelectedUser => _OnDeleteSelectedUser = _OnDeleteSelectedUser ?? RelayCommand.Create(_ =>
+        {
+            SelectedUser = null;
+        });
+        private ICommand _OnDeleteSelectedUser;
 
         public ICommand OnTemporaryAdd => _OnTemporaryAdd = _OnTemporaryAdd ?? RelayCommand.Create(async _ =>
         {
