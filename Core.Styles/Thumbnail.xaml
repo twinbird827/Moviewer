@@ -7,29 +7,6 @@
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Converters.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <!--<DataTemplate x:Key="Core.Thumbnail.Visible" DataType="{x:Type BitmapImage}">
-        <Image Margin="{DynamicResource Margin.Zero}"
-               Focusable="False"
-               VerticalAlignment="Stretch"
-               HorizontalAlignment="Stretch"
-               Source="{Binding}" />
-    </DataTemplate>
-
-    <DataTemplate x:Key="Core.Thumbnail.Hidden" DataType="{x:Type BitmapImage}">
-        <Controls:ProgressRing />
-    </DataTemplate>
-
-    <Style x:Key="Core.Thumbnail.ContentPresenter" TargetType="ContentPresenter">
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding ., Converter={StaticResource Null2BooleanConverter}}" Value="False">
-                <Setter Property="ContentTemplate" Value="{StaticResource Core.Thumbnail.Visible}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding ., Converter={StaticResource Null2BooleanConverter}}" Value="True">
-                <Setter Property="ContentTemplate" Value="{StaticResource Core.Thumbnail.Hidden}" />
-            </DataTrigger>
-        </Style.Triggers>
-    </Style>-->
-
     <DataTemplate x:Key="Core.Thumbnail" DataType="{x:Type BitmapImage}">
         <Grid Name="ROOT_Grid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Controls:ProgressRing MaxWidth="{Binding ElementName=ROOT_Grid, Path=ActualWidth}"

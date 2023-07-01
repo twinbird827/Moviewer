@@ -25,10 +25,10 @@
             <Style x:Key="MenuIconpacksButton" TargetType="corestyle:IconPacksButton">
                 <Setter Property="Orientation" Value="Vertical" />
                 <Setter Property="Padding" Value="5" />
-                <Setter Property="Margin" Value="{StaticResource Margin.Header}" />
+                <Setter Property="Margin" Value="{DynamicResource Margin.Header}" />
                 <Setter Property="MinWidth" Value="50" />
                 <Setter Property="VerticalAlignment" Value="Stretch" />
-                <Setter Property="FontSize" Value="{StaticResource FontSize.M}" />
+                <Setter Property="FontSize" Value="{DynamicResource FontSize.M}" />
                 <Setter Property="Width" Value="90" />
             </Style>
         </ResourceDictionary>

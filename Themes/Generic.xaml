@@ -16,7 +16,7 @@
             <Trigger Property="Orientation" Value="Vertical">
                 <Setter Property="Template" Value="{StaticResource IconPacksButton.ControlTemplate.Vertical}" />
             </Trigger>
-            <Trigger Property="Text" Value="">
+            <Trigger Property="Text" Value="{x:Null}">
                 <Setter Property="Template" Value="{StaticResource IconPacksButton.ControlTemplate.IconOnly}" />
             </Trigger>
         </Style.Triggers>

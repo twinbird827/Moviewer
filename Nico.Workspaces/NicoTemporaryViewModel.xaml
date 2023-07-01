@@ -24,7 +24,7 @@
                 
                 <ComboBox DockPanel.Dock="Right"
                           beha:FrameworkElementBehavior.Width="200"
-                          Style="{DynamicResource DefaultComboBox}"
+                          Style="{DynamicResource DefaultComboBox.Custom}"
                           ItemsSource="{Binding Users}"
                           ItemTemplate="{DynamicResource NicoUserViewModel.Combo}"
                           SelectedItem="{Binding SelectedUser}" />
