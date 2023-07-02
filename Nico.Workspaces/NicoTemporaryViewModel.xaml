@@ -18,7 +18,7 @@
 
                 <corestyle:IconPacksButton DockPanel.Dock="Right"
                                            Margin="3,0"
-                                           beha:FrameworkElementBehavior.Width="30"
+                                           beha:FrameworkElementBehavior.Width="35"
                                            Command="{Binding OnDeleteSelectedUser}"
                                            Kind="Close" />
                 

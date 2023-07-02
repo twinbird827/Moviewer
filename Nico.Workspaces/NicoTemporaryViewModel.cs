@@ -15,10 +15,10 @@ namespace Moviewer.Nico.Workspaces
 
         public NicoTemporaryViewModel()
         {
-            Sources = new BindableCollection<NicoVideoViewModel>(NicoModel.Temporaries
+            Sources = NicoModel.Temporaries
                 .ToBindableSelectCollection(x => x.GetVideo())
                 .ToBindableSortedCollection(x => x.TempTime, true)
-                .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x)), true);
+                .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x));
 
             Users = Sources
                 .ToBindableSelectCollection(x => x.UserInfo)
