@@ -17,7 +17,6 @@ namespace Moviewer.Nico.Workspaces
         {
             Sources = NicoModel.Temporaries
                 .ToBindableSelectCollection(x => x.GetVideo())
-                .ToBindableSortedCollection(x => x.TempTime, true)
                 .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x));
 
             Users = Sources
@@ -28,6 +27,7 @@ namespace Moviewer.Nico.Workspaces
             Videos = Sources
                 .ToBindableWhereCollection(x => SelectedUser == null || x.UserInfo.Userid == SelectedUser.Userid)
                 .AddOnRefreshCollection(this, nameof(SelectedUser))
+                .ToBindableSortedCollection(x => x.TempTime, true)
                 .ToBindableContextCollection();
 
             AddDisposed((sender, e) =>
