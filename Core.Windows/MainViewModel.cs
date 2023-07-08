@@ -73,7 +73,7 @@ namespace Moviewer.Core.Windows
 
         public BindableChildCollection<DownloadViewModel> Downloads
         {
-            get => _Downloads = _Downloads ?? _DownloadSources.ToBindableContextCollection();
+            get => _Downloads = _Downloads ?? DownloadSources.ToBindableContextCollection();
         }
         private BindableChildCollection<DownloadViewModel> _Downloads;
 
