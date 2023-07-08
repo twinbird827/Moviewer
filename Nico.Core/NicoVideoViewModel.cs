@@ -260,8 +260,7 @@ namespace Moviewer.Nico.Core
 
         public ICommand OnDownload => _OnDownload = _OnDownload ?? RelayCommand.Create(_ =>
         {
-            MessageService.Info("OnDownload");
-            //            NicoModel.AddTemporary(Source.ContentId);
+            DownloadViewModel.Download(new NicoDownloadModel(Source));
         });
         private ICommand _OnDownload;
 

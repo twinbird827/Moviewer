@@ -17,6 +17,7 @@ namespace Moviewer.Core
             if (!Load())
             {
                 BrowserPath = @"C:\Program Files\Google\Chrome\Application\chrome.exe";
+                DownloadDirectory = Directories.DownloadDirectory;
             }
         }
 
@@ -26,6 +27,13 @@ namespace Moviewer.Core
             set => SetProperty(ref _BrowserPath, value);
         }
         private string _BrowserPath;
+
+        public string DownloadDirectory
+        {
+            get => GetProperty(_DownloadDirectory);
+            set => SetProperty(ref _DownloadDirectory, value);
+        }
+        private string _DownloadDirectory;
 
     }
 }

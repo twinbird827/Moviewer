@@ -39,7 +39,7 @@
         <!-- ｽﾃｰﾀｽﾊﾞｰ -->
         <StatusBar DockPanel.Dock="Bottom">
 
-            <!--<StatusBarItem DockPanel.Dock="Right">
+            <StatusBarItem DockPanel.Dock="Right">
                 <ItemsControl ItemsSource="{Binding Downloads}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -49,15 +49,15 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Controls:MetroProgressBar Width="50"
-                                                           Margin="5,0"
-                                                           Minimum="{Binding Minimum}"
-                                                           Maximum="{Binding Maximum}"
-                                                           Value="{Binding Value}"
-                                                           ToolTip="{Binding Title}" />
+                                                       Margin="5,0"
+                                                       Minimum="{Binding Minimum}"
+                                                       Maximum="{Binding Maximum}"
+                                                       Value="{Binding Value}"
+                                                       ToolTip="{Binding Title}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
-            </StatusBarItem>-->
+            </StatusBarItem>
 
             <TextBlock Text="{Binding Now}" />
         </StatusBar>

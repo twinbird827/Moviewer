@@ -74,7 +74,7 @@ namespace Moviewer.Nico.Workspaces
 
         public ICommand OnTemporaryAdd => _OnTemporaryAdd = _OnTemporaryAdd ?? RelayCommand.Create(async _ =>
         {
-            using (var vm = new WpfMessageInputViewModel(AppConst.L_AddTemporary, AppConst.MH_AddTemporary, AppConst.L_UrlOrId, true))
+            using (var vm = new WpfMessageInputViewModel(AppConst.L_AddTemporary, AppConst.M_AddTemporary, AppConst.L_UrlOrId, true))
             {
                 if (!(bool)vm.ShowDialog(() => new WpfMessageInputWindow()))
                 {

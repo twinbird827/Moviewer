@@ -2,11 +2,13 @@
 using Moviewer.Nico.Workspaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TBird.Core;
 using TBird.Wpf;
+using TBird.Wpf.Collections;
 using TBird.Wpf.Controls;
 
 namespace Moviewer.Core.Windows
@@ -69,12 +71,17 @@ namespace Moviewer.Core.Windows
             }
         }
 
-        //public ObservableCollection<DownloadModel> Downloads
-        //{
-        //    get => _Downloads;
-        //    set => SetProperty(ref _Downloads, value);
-        //}
-        //private ObservableCollection<DownloadModel> _Downloads;
+        public BindableChildCollection<DownloadViewModel> Downloads
+        {
+            get => _Downloads = _Downloads ?? _DownloadSources.ToBindableContextCollection();
+        }
+        private BindableChildCollection<DownloadViewModel> _Downloads;
+
+        public BindableCollection<DownloadViewModel> DownloadSources
+        {
+            get => _DownloadSources = _DownloadSources ?? new BindableCollection<DownloadViewModel>();
+        }
+        private BindableCollection<DownloadViewModel> _DownloadSources;
 
         private void DoLoading()
         {

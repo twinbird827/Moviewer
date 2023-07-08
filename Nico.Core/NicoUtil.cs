@@ -8,7 +8,7 @@ using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
 {
-    public static partial class NicoUtil
+    public static class NicoUtil
     {
         public const string NicoBlankUserUrl = "https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon/defaults/blank.jpg";
 
