@@ -58,7 +58,7 @@ namespace Moviewer.Core.Windows
 
         public virtual string GetDownloadPath()
         {
-            const string dialogfilter = "MP4 ファイル|.mp4|全ファイル|.*";
+            const string dialogfilter = "動画ファイル|*.mp4|全ファイル|*.*";
 
             // 保存先を決める
             var filepath = WpfDialog.ShowSaveFile(Path.Combine(AppSetting.Instance.DownloadDirectory, Title), dialogfilter);
@@ -67,7 +67,7 @@ namespace Moviewer.Core.Windows
             AppSetting.Instance.DownloadDirectory = Path.GetDirectoryName(filepath);
             AppSetting.Instance.Save();
 
-            return filepath;
+            return FilePath = filepath;
         }
 
         public virtual Task<bool> Execute()
