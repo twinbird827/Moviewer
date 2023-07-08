@@ -10,11 +10,17 @@ namespace Moviewer.Core
         /// <summary>ﾀﾞｳﾝﾛｰﾄﾞ失敗通知</summary>
         public static string H_FailedDownload { get; } = Lang.Instance.Get();
 
+        /// <summary>Youtube APIｷｰ入力</summary>
+        public static string H_InputAPIKEY { get; } = Lang.Instance.Get();
+
         /// <summary>お気に入り追加</summary>
         public static string L_AddFavorite { get; } = Lang.Instance.Get();
 
         /// <summary>ﾃﾝﾎﾟﾗﾘ追加</summary>
         public static string L_AddTemporary { get; } = Lang.Instance.Get();
+
+        /// <summary>APIｷｰ</summary>
+        public static string L_APIKEY { get; } = Lang.Instance.Get();
 
         /// <summary>お気に入り削除</summary>
         public static string L_DelFavorite { get; } = Lang.Instance.Get();
@@ -30,6 +36,9 @@ namespace Moviewer.Core
 
         /// <summary>何らかの原因で{0}のﾀﾞｳﾝﾛｰﾄﾞが失敗しました。</summary>
         public static string M_FailedDownload { get; } = Lang.Instance.Get();
+
+        /// <summary>Youtube APIｷｰを入力してください。</summary>
+        public static string M_InputAPIKEY { get; } = Lang.Instance.Get();
 
     }
 }

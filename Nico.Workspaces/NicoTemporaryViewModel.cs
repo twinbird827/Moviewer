@@ -76,7 +76,7 @@ namespace Moviewer.Nico.Workspaces
         {
             using (var vm = new WpfMessageInputViewModel(AppConst.L_AddTemporary, AppConst.M_AddTemporary, AppConst.L_UrlOrId, true))
             {
-                if (!(bool)vm.ShowDialog(() => new WpfMessageInputWindow()))
+                if (!vm.ShowDialog(() => new WpfMessageInputWindow()))
                 {
                     return;
                 }
