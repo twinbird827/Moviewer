@@ -48,40 +48,43 @@ namespace Moviewer.Nico.Core
         public static async Task<NicoVideoModel> GetVideo(string videoid)
         {
             var video = new NicoVideoModel();
-            var body = await WebUtil.GetStringAsync(GetNicoVideoUrl(videoid));
-            var json = DynamicJson.Parse(body);
 
-            if ((int)json.meta.status == 200)
-            {
-                return video.SetFromJsonVideo(json);
-            }
-            else
-            {
-                video.ContentId = videoid;
-                video.Status = VideoStatus.Delete;
-                return video;
-            }
+            //// TODO この方法でも可能だけどﾚｽﾎﾟﾝｽが悪いので旧式を使用する
+            //// TODO 旧式はDescriptionが簡素になる
+            //var body = await WebUtil.GetStringAsync(GetNicoVideoUrl(videoid));
+            //var json = DynamicJson.Parse(body);
 
-            //try
+            //if ((int)json.meta.status == 200)
             //{
-            //    var txt = await WebUtil.GetStringAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{videoid}");
-            //    var xml = WebUtil.ToXml(txt);
-
-            //    if (xml == null || xml.AttributeS("status") == "fail")
-            //    {
-            //        video.ContentId = videoid;
-            //        video.Status = VideoStatus.Delete;
-            //        return video;
-            //    }
-
-            //    return video.SetFromXml(xml);
+            //    return video.SetFromJsonVideo(json);
             //}
-            //catch
+            //else
             //{
             //    video.ContentId = videoid;
             //    video.Status = VideoStatus.Delete;
             //    return video;
             //}
+
+            try
+            {
+                var txt = await WebUtil.GetStringAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{videoid}");
+                var xml = WebUtil.ToXml(txt);
+
+                if (xml == null || xml.AttributeS("status") == "fail")
+                {
+                    video.ContentId = videoid;
+                    video.Status = VideoStatus.Delete;
+                    return video;
+                }
+
+                return video.SetFromXml(xml);
+            }
+            catch
+            {
+                video.ContentId = videoid;
+                video.Status = VideoStatus.Delete;
+                return video;
+            }
         }
 
         public static string GetNicoVideoUrl(string contentid)
