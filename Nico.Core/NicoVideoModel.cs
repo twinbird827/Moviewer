@@ -1,6 +1,7 @@
 ﻿using Moviewer.Core;
 using Moviewer.Core.Windows;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,36 @@ namespace Moviewer.Nico.Core
 
             _isinitialize = true;
             return this;
+        }
+
+        public NicoVideoModel SetFromJsonVideo(dynamic json)
+        {
+            ContentId = (string)json.data.video.id;
+            Title = (string)json.data.video.title;
+            Description = (string)json.data.video.description;
+            ThumbnailUrl = (string)json.data.video.thumbnail.url;
+            ViewCounter = (long)json.data.video.count.view;
+            CommentCounter = (long)json.data.video.count.comment;
+            MylistCounter = (long)json.data.video.count.mylist;
+            StartTime = DateTime.Parse((string)json.data.video.registeredAt);
+            LengthSeconds = (long)json.data.video.duration;
+            Tags = string.Join(' ', GetTags(json));
+            UserInfo = json.data.channel == null
+                ? new NicoUserModel($"{json.data.owner.id}", (string)json.data.owner.nickname, null, null)
+                : new NicoUserModel(null, null, (string)json.data.channel.id, (string)json.data.channel.name);
+
+            RefreshStatus();
+
+            _isinitialize = false;
+            return this;
+        }
+
+        private static IEnumerable<string> GetTags(dynamic json)
+        {
+            foreach (var item in json.data.tag.items)
+            {
+                yield return (string)item.name;
+            }
         }
 
         public NicoVideoModel SetFromXml(XElement xml)

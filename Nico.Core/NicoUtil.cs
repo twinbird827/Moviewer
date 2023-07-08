@@ -1,10 +1,15 @@
-﻿using Moviewer.Core;
+﻿using Codeplex.Data;
+using Microsoft.WindowsAPICodePack.PortableDevices.CommandSystem.Object;
+using Moviewer.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TBird.Core;
 using TBird.Wpf;
+using static Microsoft.WindowsAPICodePack.PortableDevices.PropertySystem.Properties;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace Moviewer.Nico.Core
 {
@@ -43,27 +48,47 @@ namespace Moviewer.Nico.Core
         public static async Task<NicoVideoModel> GetVideo(string videoid)
         {
             var video = new NicoVideoModel();
+            var body = await WebUtil.GetStringAsync(GetNicoVideoUrl(videoid));
+            var json = DynamicJson.Parse(body);
 
-            try
+            if ((int)json.meta.status == 200)
             {
-                var txt = await WebUtil.GetStringAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{videoid}");
-                var xml = WebUtil.ToXml(txt);
-
-                if (xml == null || xml.AttributeS("status") == "fail")
-                {
-                    video.ContentId = videoid;
-                    video.Status = VideoStatus.Delete;
-                    return video;
-                }
-
-                return video.SetFromXml(xml);
+                return video.SetFromJsonVideo(json);
             }
-            catch
+            else
             {
                 video.ContentId = videoid;
                 video.Status = VideoStatus.Delete;
                 return video;
             }
+
+            //try
+            //{
+            //    var txt = await WebUtil.GetStringAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{videoid}");
+            //    var xml = WebUtil.ToXml(txt);
+
+            //    if (xml == null || xml.AttributeS("status") == "fail")
+            //    {
+            //        video.ContentId = videoid;
+            //        video.Status = VideoStatus.Delete;
+            //        return video;
+            //    }
+
+            //    return video.SetFromXml(xml);
+            //}
+            //catch
+            //{
+            //    video.ContentId = videoid;
+            //    video.Status = VideoStatus.Delete;
+            //    return video;
+            //}
+        }
+
+        public static string GetNicoVideoUrl(string contentid)
+        {
+            var session = (long)(DateTime.Now - new DateTime(1970, 1, 1)).TotalMilliseconds;
+            var trackid = $"MOVIEWER_{session}";
+            return $"https://www.nicovideo.jp/api/watch/v3_guest/{contentid}?_frontendId=6&_frontendVersion=0&actionTrackId={trackid}&skips=harmful&noSideEffect=false&t={session}";
         }
 
         /// <summary>

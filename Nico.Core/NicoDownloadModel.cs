@@ -44,7 +44,7 @@ namespace Moviewer.Nico.Core
             client.Timeout = new TimeSpan(1, 0, 0);
 
             // 対象動画にｼﾞｬﾝﾌﾟ
-            var watchurl = $"https://www.nicovideo.jp/api/watch/v3_guest/{Source.ContentId}?_frontendId=6&_frontendVersion=0&actionTrackId=AAAAAAAAAA_{time}&skips=harmful&noSideEffect=false&t={time}";
+            var watchurl = NicoUtil.GetNicoVideoUrl(Source.ContentId);
             var watchbody = await client.GetStringAsync(watchurl);
             var watchjson = DynamicJson.Parse(watchbody);
             var dmcreq = watchjson.data.media.delivery.movie.session;

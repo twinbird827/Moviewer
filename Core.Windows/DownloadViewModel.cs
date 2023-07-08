@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using TBird.Core;
 using TBird.Wpf;
 
 namespace Moviewer.Core.Windows
@@ -51,7 +53,7 @@ namespace Moviewer.Core.Windows
 
                 if (string.IsNullOrEmpty(filepath)) return;
 
-                if (await m.Execute())
+                if (await m.Execute().TryCatch())
                 {
                     WpfToast.ShowMessage(
                         AppConst.H_CompleteDownload,
