@@ -43,10 +43,6 @@ namespace Moviewer.Nico.Core
 
             client.Timeout = new TimeSpan(1, 0, 0);
 
-            // 動画URL全文を取得
-            var flapiurl = $"https://flapi.nicovideo.jp/api/getflv/{Source.ContentId}";
-            var flapibody = await client.GetStringAsync(flapiurl);
-
             // 対象動画にｼﾞｬﾝﾌﾟ
             var watchurl = $"https://www.nicovideo.jp/api/watch/v3_guest/{Source.ContentId}?_frontendId=6&_frontendVersion=0&actionTrackId=AAAAAAAAAA_{time}&skips=harmful&noSideEffect=false&t={time}";
             var watchbody = await client.GetStringAsync(watchurl);
@@ -83,9 +79,6 @@ namespace Moviewer.Nico.Core
             beattimer.Interval = TimeSpan.FromMilliseconds((double)dmcreq.heartbeatLifetime / 3);
             beattimer.Start();
 
-            //// ﾊｰﾄﾋﾞｰﾄ送信
-            //Heartbeat(client, dmcreq, dmcjson, beatcts);
-
             // ﾃﾞｰﾀ取得
             using (var response = await client.GetAsync((string)dmcjson.data.session.content_uri, HttpCompletionOption.ResponseHeadersRead))
             using (var rs = await response.Content.ReadAsStreamAsync())
@@ -95,7 +88,7 @@ namespace Moviewer.Nico.Core
                 Maximum = (double)response.Content.Headers.ContentLength;
                 Value = 0;
 
-                var bytes = new byte[64 * 1024];
+                var bytes = new byte[256 * 1024];
                 var size = 0;
 
                 while ((size = await rs.ReadAsync(bytes, 0, bytes.Length)) != 0)
@@ -114,27 +107,6 @@ namespace Moviewer.Nico.Core
 
             // ﾊｰﾄﾋﾞｰﾄｷｬﾝｾﾙされていたら失敗と判定
             return !beatcts.IsCancellationRequested;
-        }
-
-        private async void Heartbeat(HttpClient client, dynamic dmcreq, dynamic dmcres, CancellationTokenSource cts)
-        {
-            try
-            {
-                var beaturl = $"{dmcreq.urls[0].url}/{dmcres.data.session.id}?_format=json&_method=PUT";
-                var beatreq = dmcres.data.ToString();
-                var milliseconds = TimeSpan.FromMilliseconds((double)dmcreq.heartbeatLifetime / 3);
-
-                while (!cts.IsCancellationRequested)
-                {
-                    var beatres = await client.PostAsync(beaturl, new StringContent(beatreq));
-                    if (!beatres.IsSuccessStatusCode) cts.Cancel();
-                    await Task.Delay(milliseconds);
-                }
-            }
-            catch
-            {
-                cts.Cancel();
-            }
         }
 
         private static string ToDmcContent(dynamic n)
