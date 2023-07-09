@@ -22,7 +22,7 @@ namespace Moviewer.Tube.Core
         {
             if (!Load())
             {
-
+                Users = new TubeUserModel[] { };
             }
         }
 
@@ -32,6 +32,13 @@ namespace Moviewer.Tube.Core
             set => SetProperty(ref _APIKEY, value);
         }
         private string _APIKEY;
+
+        public TubeUserModel[] Users
+        {
+            get => GetProperty(_Users);
+            set => SetProperty(ref _Users, value);
+        }
+        private TubeUserModel[] _Users;
 
     }
 }

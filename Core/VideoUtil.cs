@@ -15,7 +15,7 @@ namespace Moviewer.Core
             return CoreUtil.Nvl(url).Split('/').Last().Split('?').First();
         }
 
-        public static async Task<BitmapImage> GetThumnailAsync(params string[] urls)
+        public static async Task<BitmapImage> GetThumnailAsync(string id, params string[] urls)
         {
             using (await Locker.LockAsync(_guid))
             {
@@ -26,11 +26,11 @@ namespace Moviewer.Core
                         continue;
                     }
 
-                    var bytes = GetThumnailFromFileAsync(url) ?? await WebUtil.GetThumnailBytes(url);
+                    var bytes = GetThumnailFromFileAsync(id) ?? await WebUtil.GetThumnailBytes(url);
 
                     if (bytes == null) continue;
 
-                    SaveFileBytes(url, bytes);
+                    SaveFileBytes(id, bytes);
 
                     using (WrappingStream stream = new WrappingStream(new MemoryStream(bytes)))
                     {
@@ -53,22 +53,22 @@ namespace Moviewer.Core
 
         private static string _guid = Guid.NewGuid().ToString();
 
-        private static void SaveFileBytes(string url, byte[] bytes)
+        private static void SaveFileBytes(string id, byte[] bytes)
         {
             Directory.CreateDirectory(_path);
 
-            var urlpath = Path.Combine(_path, Url2Id(url));
+            var urlpath = Path.Combine(_path, id);
 
             if (File.Exists(urlpath)) return;
 
             File.WriteAllBytes(urlpath, bytes);
         }
 
-        private static byte[] GetThumnailFromFileAsync(string url)
+        private static byte[] GetThumnailFromFileAsync(string id)
         {
             Directory.CreateDirectory(_path);
 
-            var urlpath = Path.Combine(_path, Url2Id(url));
+            var urlpath = Path.Combine(_path, id);
 
             if (!File.Exists(urlpath)) return null;
 
@@ -76,7 +76,5 @@ namespace Moviewer.Core
         }
 
         private const string _path = @"bytes\";
-
-        private static Dictionary<string, BitmapImage> _dic = new Dictionary<string, BitmapImage>();
     }
 }

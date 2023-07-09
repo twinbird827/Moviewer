@@ -28,21 +28,51 @@ namespace Moviewer.Tube.Core
             return TubeSetting.Instance.APIKEY;
         }
 
+        private static async Task<dynamic> GetResponse(string url, Dictionary<string, string> dic)
+        {
+            var urlparameter = dic.Select(x => $"{x.Key}={x.Value}").GetString("&");
+            var body = await WebUtil.GetStringAsync(url + urlparameter);
+            var json = DynamicJson.Parse(body);
+            return json;
+        }
+
+        private static async Task<IEnumerable<TubeVideoModel>> GetUserThumnailUrlInVideos(IEnumerable<TubeVideoModel> videos)
+        {
+            var dic = new Dictionary<string, string>()
+            {
+                { "part", "statistics" },
+                { "id", videos.Select(x => x.UserInfo).Where(x => string.IsNullOrEmpty(x.ThumbnailUrl)).Select(x => x.ChannelId).GetString(",") },
+                { "key", GetAPIKEY() },
+            };
+            var json = await GetResponse("https://www.googleapis.com/youtube/v3/channels?", dic);
+
+            foreach (var item in json.items)
+            {
+                var id = DynamicUtil.S(item.id);
+                var url = CoreUtil.Nvl(
+                    DynamicUtil.S(item.snippet.thumbnails.standard.url),
+                    DynamicUtil.S(item.snippet.thumbnails.high.url),
+                    DynamicUtil.S(item.snippet.thumbnails.medium.url)
+                );
+                var info = videos.FirstOrDefault(x => x.UserInfo.ChannelId == id);
+                if (info != null) info.UserInfo.ThumbnailUrl = url;
+            }
+            videos.ForEach(x => TubeModel.AddUser(x.UserInfo));
+
+            return videos;
+        }
+
         private static IEnumerable<TubeVideoModel> GetVideosByJson(dynamic json)
         {
             foreach (var item in json.items)
             {
-                yield return new TubeVideoModel();
+                yield return new TubeVideoModel().SetFromJson(item);
             }
         }
 
         private static async Task<IEnumerable<TubeVideoModel>> GetVideosByUrl(string url, Dictionary<string, string> dic)
         {
-            var urlparameter = dic.Select(x => $"{x.Key}={x.Value}").GetString("&");
-            var body = await WebUtil.GetStringAsync(url + urlparameter);
-            var json = DynamicJson.Parse(body);
-
-            return GetVideosByJson(json);
+            return GetUserThumnailUrlInVideos(GetVideosByJson(await GetResponse(url, dic)));
         }
 
         public static async Task<IEnumerable<TubeVideoModel>> GetVideosByIds(params string[] ids)

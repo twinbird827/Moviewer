@@ -290,7 +290,7 @@ namespace Moviewer.Nico.Core
                 .ToArray();
 
             await VideoUtil
-                .GetThumnailAsync(urls)
+                .GetThumnailAsync(VideoUtil.Url2Id(VideoUrl), urls)
                 .ContinueWith(x => Thumbnail = x.IsFaulted ? null : x.Result);
         }
     }

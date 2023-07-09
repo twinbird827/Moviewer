@@ -6,12 +6,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml;
+using TBird.Core;
 using TBird.Wpf;
 
 namespace Moviewer.Tube.Core
 {
     public class TubeVideoModel : BindableBase
     {
+        public TubeVideoModel SetFromJson(dynamic json)
+        {
+            ContentId = DynamicUtil.S(json.id);
+            Title = DynamicUtil.S(json.snippet.title);
+            Description = DynamicUtil.S(json.snippet.title.description);
+            ThumbnailUrl = CoreUtil.Nvl(
+                DynamicUtil.S(json.snippet.title.thumbnails.standard.url),
+                DynamicUtil.S(json.snippet.title.thumbnails.high.url),
+                DynamicUtil.S(json.snippet.title.thumbnails.medium.url),
+                DynamicUtil.S(json.snippet.title.thumbnails["default"].url)
+            );
+            ViewCounter = DynamicUtil.L(json.statistics.viewCount);
+            LikeCounter = DynamicUtil.L(json.statistics.likeCount);
+            CommentCounter = DynamicUtil.L(json.statistics.commentCount);
+            StartTime = DateTime.Parse(DynamicUtil.S(json.snippet.publishedAt));
+            TempTime = default(DateTime);
+            Duration = XmlConvert.ToTimeSpan(DynamicUtil.S(json.contentDetails.duration));
+            Tags = GetTags(json).ToArray();
+            UserInfo = new TubeUserModel(
+                DynamicUtil.S(json.snippet.channelId),
+                DynamicUtil.S(json.snippet.channelTitle)
+            );
+            return this;
+        }
+
+        private IEnumerable<string> GetTags(dynamic json)
+        {
+            foreach (var item in json.snippet.tags) yield return DynamicUtil.S(item);
+        }
+
         public string ContentId
         {
             get => _ContentId;
@@ -47,12 +79,12 @@ namespace Moviewer.Tube.Core
         }
         private long _ViewCounter;
 
-        public long MylistCounter
+        public long LikeCounter
         {
-            get => _MylistCounter;
-            set => SetProperty(ref _MylistCounter, value);
+            get => _LikeCounter;
+            set => SetProperty(ref _LikeCounter, value);
         }
-        private long _MylistCounter;
+        private long _LikeCounter;
 
         public long CommentCounter
         {
@@ -75,19 +107,19 @@ namespace Moviewer.Tube.Core
         }
         private DateTime _TempTime;
 
-        public long LengthSeconds
+        public TimeSpan Duration
         {
-            get => _LengthSeconds;
-            private set => SetProperty(ref _LengthSeconds, value);
+            get => _Duration;
+            private set => SetProperty(ref _Duration, value);
         }
-        private long _LengthSeconds;
+        private TimeSpan _Duration;
 
-        public NicoUserModel UserInfo
+        public TubeUserModel UserInfo
         {
             get => _UserInfo;
             set => SetProperty(ref _UserInfo, value);
         }
-        private NicoUserModel _UserInfo;
+        private TubeUserModel _UserInfo;
 
         public VideoStatus Status
         {
@@ -96,12 +128,12 @@ namespace Moviewer.Tube.Core
         }
         private VideoStatus _Status = VideoStatus.None;
 
-        public string Tags
+        public string[] Tags
         {
             get => _Tags;
             set => SetProperty(ref _Tags, value);
         }
-        private string _Tags = null;
+        private string[] _Tags = null;
 
     }
 }

@@ -41,7 +41,7 @@ namespace Moviewer.Nico.Core
         private async void SetThumbnail(string url)
         {
             await VideoUtil
-                .GetThumnailAsync(url, NicoUtil.NicoBlankUserUrl)
+                .GetThumnailAsync(Userid, url, NicoUtil.NicoBlankUserUrl)
                 .ContinueWith(x => Thumbnail = x.IsFaulted ? null : x.Result);
         }
 
