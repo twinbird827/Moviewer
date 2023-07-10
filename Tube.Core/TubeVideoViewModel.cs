@@ -1,24 +1,35 @@
 ﻿using Microsoft.WindowsAPICodePack.PortableDevices.CommandSystem.Object;
+using Microsoft.WindowsAPICodePack.Win32Native.Shell;
 using Moviewer.Core;
+using Moviewer.Core.Windows;
 using Moviewer.Nico.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using TBird.Core;
 using TBird.Wpf;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Moviewer.Tube.Core
 {
-    public class TubeVideoViewModel : BindableBase
+    public class TubeVideoViewModel : TubeViewModel
     {
         public TubeVideoViewModel(TubeVideoModel m)
         {
-            VideoUrl = $"http://nico.ms/{m.ContentId}";
+            Source = m;
+
+            m.AddOnPropertyChanged(this, (sender, e) =>
+            {
+                ContentId = m.ContentId;
+                VideoUrl = $"http://nico.ms/{m.ContentId}";
+            }, nameof(m.ContentId), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
@@ -37,8 +48,8 @@ namespace Moviewer.Tube.Core
 
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
-                MylistCounter = m.MylistCounter;
-            }, nameof(m.MylistCounter), true);
+                LikeCounter = m.LikeCounter;
+            }, nameof(m.LikeCounter), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
@@ -58,10 +69,10 @@ namespace Moviewer.Tube.Core
 
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
-                LengthToSeconds = TimeSpan.FromSeconds(m.LengthSeconds);
-            }, nameof(m.LengthSeconds), true);
+                Duration = m.Duration;
+            }, nameof(m.Duration), true);
 
-            UserInfo = new NicoUserViewModel();
+            UserInfo = new TubeUserViewModel();
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 if (m.UserInfo != null) UserInfo.SetModel(m.UserInfo);
@@ -76,8 +87,8 @@ namespace Moviewer.Tube.Core
             {
                 if (m.Tags == null) return;
 
-                Tags = new ObservableCollection<NicoVideoTagViewModel>(
-                    m.Tags.Split(' ').Select(x => new NicoVideoTagViewModel(x))
+                Tags = new ObservableCollection<TubeTagViewModel>(
+                    m.Tags.Select(x => new TubeTagViewModel(x))
                 );
             }, nameof(m.Tags), true);
 
@@ -99,9 +110,10 @@ namespace Moviewer.Tube.Core
                 OnTemporaryDel.TryDispose();
 
                 Source = null;
-                Parent = null;
             });
         }
+
+        public TubeVideoModel Source { get; private set; }
 
         public string VideoUrl
         {
@@ -131,12 +143,12 @@ namespace Moviewer.Tube.Core
         }
         private string _Description;
 
-        public string ThumbnailUrl
+        public BitmapImage Thumbnail
         {
-            get => _ThumbnailUrl;
-            set => SetProperty(ref _ThumbnailUrl, value);
+            get => _Thumbnail;
+            set => SetProperty(ref _Thumbnail, value);
         }
-        private string _ThumbnailUrl;
+        private BitmapImage _Thumbnail;
 
         public long ViewCounter
         {
@@ -173,6 +185,13 @@ namespace Moviewer.Tube.Core
         }
         private DateTime _TempTime;
 
+        public bool ExistTempTime
+        {
+            get => _ExistTempTime;
+            set => SetProperty(ref _ExistTempTime, value);
+        }
+        private bool _ExistTempTime;
+
         public TimeSpan Duration
         {
             get => _Duration;
@@ -180,12 +199,12 @@ namespace Moviewer.Tube.Core
         }
         private TimeSpan _Duration;
 
-        public TubeUserModel UserInfo
+        public TubeUserViewModel UserInfo
         {
             get => _UserInfo;
             set => SetProperty(ref _UserInfo, value);
         }
-        private TubeUserModel _UserInfo;
+        private TubeUserViewModel _UserInfo;
 
         public VideoStatus Status
         {
@@ -194,12 +213,93 @@ namespace Moviewer.Tube.Core
         }
         private VideoStatus _Status = VideoStatus.None;
 
-        public string[] Tags
+        public ObservableCollection<TubeTagViewModel> Tags
         {
             get => _Tags;
             set => SetProperty(ref _Tags, value);
         }
-        private string[] _Tags = null;
+        private ObservableCollection<TubeTagViewModel> _Tags;
+
+        public ICommand OnDoubleClick => _OnDoubleClick = _OnDoubleClick ?? RelayCommand.Create(_ =>
+        {
+            // TODO 子画面出して追加するかどうかを決めたい
+            // TODO ﾘﾝｸも抽出したい
+            // TODO smだけじゃなくてsoとかも抽出したい
+            //foreach (var videoid in Regex.Matches(Description, @"(?<id>sm[\d]+)").OfType<Match>()
+            //        .Select(m => m.Groups["id"].Value)
+            //        .Where(tmp => !NicoModel.Histories.Any(x => x.ContentId == tmp))
+            //    )
+            //{
+            //    NicoModel.AddTemporary(videoid);
+            //}
+
+            // 視聴ﾘｽﾄに追加
+            NicoModel.AddHistory(ContentId);
+
+            // ｽﾃｰﾀｽ更新
+            Source.RefreshStatus();
+
+            // ﾌﾞﾗｳｻﾞ起動
+            Process.Start(AppSetting.Instance.BrowserPath, VideoUrl);
+        });
+        private ICommand _OnDoubleClick;
+
+        public ICommand OnKeyDown => _OnKeyDown = _OnKeyDown ?? RelayCommand.Create<KeyEventArgs>(e =>
+        {
+            if (e.Key == Key.Enter)
+            {
+                OnDoubleClick.Execute(null);
+            }
+            //else if (e.Key == Key.Delete && Parent is INicoVideoParentViewModel parent)
+            //{
+            //    parent.NicoVideoOnDelete(this);
+            //}
+        });
+        private ICommand _OnKeyDown;
+
+        public ICommand OnTemporaryAdd => _OnTemporaryAdd = _OnTemporaryAdd ?? RelayCommand.Create(_ =>
+        {
+            TubeModel.AddTemporary(Source.ContentId);
+            Source.RefreshStatus();
+        });
+        private ICommand _OnTemporaryAdd;
+
+        public ICommand OnTemporaryDel => _OnTemporaryDel = _OnTemporaryDel ?? RelayCommand.Create(_ =>
+        {
+            TubeModel.DelTemporary(Source.ContentId);
+            Source.RefreshStatus();
+        });
+        private ICommand _OnTemporaryDel;
+
+        public ICommand OnDownload => _OnDownload = _OnDownload ?? RelayCommand.Create(_ =>
+        {
+            //DownloadViewModel.Download(new NicoDownloadModel(Source));
+        });
+        private ICommand _OnDownload;
+
+        public override IRelayCommand Loaded => RelayCommand.Create(async async =>
+        {
+            if (Thumbnail != null) return;
+
+            if (!string.IsNullOrEmpty(Source.ThumbnailUrl))
+            {
+                await SetThumnailAsync(Source.ThumbnailUrl);
+            }
+            else
+            {
+                Source.AddOnPropertyChanged(this, async (sender, e) =>
+                {
+                    await SetThumnailAsync(Source.ThumbnailUrl);
+                }, nameof(Source.ThumbnailUrl), true);
+            }
+        });
+
+        private async Task SetThumnailAsync(string url)
+        {
+            await VideoUtil
+                .GetThumnailAsync(VideoUtil.Url2Id(VideoUrl), url)
+                .ContinueWith(x => Thumbnail = x.IsFaulted ? null : x.Result);
+        }
 
     }
 }

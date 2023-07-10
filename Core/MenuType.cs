@@ -20,6 +20,8 @@
 
         TubeRanking,
 
+        TubePopular,
+
         TubeTemporary,
 
         TubeHistory,

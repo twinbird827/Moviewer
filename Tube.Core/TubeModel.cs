@@ -61,5 +61,71 @@ namespace Moviewer.Tube.Core
             }
         }
 
+        // **************************************************
+        // Temporaries
+
+        public static BindableCollection<TubeVideoHistoryModel> Temporaries
+        {
+            get => Instance._Temporaries = Instance._Temporaries ?? new BindableCollection<TubeVideoHistoryModel>(TubeSetting.Instance.Temporaries);
+        }
+        private BindableCollection<TubeVideoHistoryModel> _Temporaries;
+
+        public static void AddTemporary(string id, bool issave = true)
+        {
+            var tmp = Temporaries.FirstOrDefault(x => x.ContentId == id);
+            if (tmp != null)
+            {
+                tmp.Date = DateTime.Now;
+            }
+            if (tmp == null)
+            {
+                Temporaries.Add(new TubeVideoHistoryModel(id));
+            }
+            if (issave) Save();
+        }
+
+        public static void DelTemporary(string id, bool issave = true)
+        {
+            var tmp = Temporaries.FirstOrDefault(x => x.ContentId == id);
+            if (tmp != null)
+            {
+                Temporaries.Remove(tmp);
+                if (issave) Save();
+            }
+        }
+
+        // **************************************************
+        // Histories
+
+        public static BindableCollection<TubeVideoHistoryModel> Histories
+        {
+            get => Instance._Histories = Instance._Histories ?? new BindableCollection<TubeVideoHistoryModel>(TubeSetting.Instance.Histories);
+        }
+        private BindableCollection<TubeVideoHistoryModel> _Histories;
+
+        public static void AddHistory(string id, bool issave = true)
+        {
+            var tmp = Histories.FirstOrDefault(x => x.ContentId == id);
+            if (tmp != null)
+            {
+                tmp.Date = DateTime.Now;
+            }
+            if (tmp == null)
+            {
+                Histories.Add(new TubeVideoHistoryModel(id));
+            }
+            if (issave) Save();
+        }
+
+        public static void DelHistory(string id, bool issave = true)
+        {
+            var tmp = Histories.FirstOrDefault(x => x.ContentId == id);
+            if (tmp != null)
+            {
+                Histories.Remove(tmp);
+                if (issave) Save();
+            }
+        }
+
     }
 }

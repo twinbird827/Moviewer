@@ -1,4 +1,5 @@
 ﻿using Moviewer.Core;
+using Moviewer.Core.Windows;
 using Moviewer.Nico.Core;
 using System;
 using System.Collections.Generic;
@@ -36,12 +37,32 @@ namespace Moviewer.Tube.Core
                 DynamicUtil.S(json.snippet.channelId),
                 DynamicUtil.S(json.snippet.channelTitle)
             );
+
+            RefreshStatus();
+
             return this;
         }
 
         private IEnumerable<string> GetTags(dynamic json)
         {
             foreach (var item in json.snippet.tags) yield return DynamicUtil.S(item);
+        }
+
+        public void RefreshStatus()
+        {
+            // Temporaryの有無でﾌﾟﾛﾊﾟﾃｨを変更
+            if (TubeModel.Temporaries.FirstOrDefault(x => x.ContentId == ContentId) is TubeVideoHistoryModel tmp)
+            {
+                TempTime = tmp.Date;
+            }
+
+            Status = TubeModel.Histories.Any(x => x.ContentId == ContentId)
+                ? VideoStatus.See
+                : TubeModel.Temporaries.Any(x => x.ContentId == ContentId && MainViewModel.Instance.StartupTime < x.Date)
+                ? VideoStatus.New
+                : TubeModel.Temporaries.Any(x => x.ContentId == ContentId)
+                ? VideoStatus.Temporary
+                : VideoStatus.None;
         }
 
         public string ContentId

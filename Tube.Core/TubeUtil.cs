@@ -5,13 +5,43 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using TBird.Core;
+using TBird.Wpf;
 using TBird.Wpf.Controls;
 
 namespace Moviewer.Tube.Core
 {
     public static class TubeUtil
     {
+        private const string TubeComboPath = @"lib\tube-combo-setting.xml";
+
+        public static ComboboxModel[] Combos { get; private set; }
+
+        public static void Initialize()
+        {
+            Combos = XDocument.Load(FileUtil.RelativePathToAbsolutePath(TubeComboPath))
+                .Root
+                .Descendants("combo")
+                .Select(x => new ComboboxModel(
+                    x.AttributeS("group"),
+                    x.Descendants("item").Select(i =>
+                        new ComboboxItemModel(i.AttributeS("value"), i.AttributeS("display"))
+                    )
+                ))
+                .ToArray();
+        }
+
+        public static IEnumerable<ComboboxItemModel> GetCombos(string group)
+        {
+            return Combos.Where(x => x.Group == group).SelectMany(x => x.Items);
+        }
+
+        public static string GetComboDisplay(string group, string value)
+        {
+            return GetCombos(group).FirstOrDefault(x => x.Value == value)?.Display;
+        }
+
         public static string GetAPIKEY()
         {
             if (string.IsNullOrEmpty(TubeSetting.Instance.APIKEY))

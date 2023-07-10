@@ -1,5 +1,7 @@
 ﻿using Moviewer.Nico.Core;
 using Moviewer.Nico.Workspaces;
+using Moviewer.Tube.Core;
+using Moviewer.Tube.Workspaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -87,6 +89,8 @@ namespace Moviewer.Core.Windows
         {
             NicoUtil.Initialize();
 
+            TubeUtil.Initialize();
+
             AddCollectionChanged(NicoModel.Temporaries, (sender, e) =>
             {
                 OnPropertyChanged(nameof(NicoTemporaryCount));
@@ -141,6 +145,7 @@ namespace Moviewer.Core.Windows
             [MenuType.NicoFavorite] = typeof(NicoFavoriteViewModel),
             [MenuType.NicoHistory] = typeof(NicoHistoryViewModel),
             [MenuType.NicoSearch] = typeof(NicoSearchViewModel),
+            [MenuType.TubePopular] = typeof(TubePopularViewModel),
         };
 
     }

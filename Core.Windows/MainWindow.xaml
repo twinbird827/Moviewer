@@ -127,6 +127,14 @@
                         CommandParameter="{x:Static core:MenuType.NicoHistory}"
                         Kind="History"
                         Text="{Binding Source={x:Static core:MenuType.NicoHistory}, Converter={StaticResource Enum2StringConverter}}" />
+
+                <corestyle:IconPacksButton
+                        Style="{StaticResource MenuIconpacksButton}"
+                        Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Youtube}"
+                        Command="{Binding OnClickMenu}"
+                        CommandParameter="{x:Static core:MenuType.TubePopular}"
+                        Kind="ChartAreasplineVariant"
+                        Text="{Binding Source={x:Static core:MenuType.TubePopular}, Converter={StaticResource Enum2StringConverter}}" />
             </StackPanel>
         </DockPanel>
 
