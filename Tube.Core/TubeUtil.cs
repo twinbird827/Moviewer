@@ -109,7 +109,7 @@ namespace Moviewer.Tube.Core
         {
             var dic = new Dictionary<string, string>()
             {
-                { "part", "id,snippet,statistics" },
+                { "part", "id,snippet,statistics,contentDetails" },
                 { "id", ids.GetString(",") },
                 { "key", GetAPIKEY() },
             };
@@ -121,10 +121,11 @@ namespace Moviewer.Tube.Core
         {
             var dic = new Dictionary<string, string>()
             {
-                { "part", "id,snippet,statistics" },
+                { "part", "id,snippet,statistics,contentDetails" },
                 { "chart", "mostPopular" },
                 { "maxResults", "50" },
                 { "videoCategoryId", CoreUtil.Nvl(category, "0") },
+                { "regionCode", "jp" },
                 { "key", GetAPIKEY() },
             };
 

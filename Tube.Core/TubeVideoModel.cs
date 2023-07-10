@@ -19,12 +19,11 @@ namespace Moviewer.Tube.Core
         {
             ContentId = DynamicUtil.S(json.id);
             Title = DynamicUtil.S(json.snippet.title);
-            Description = DynamicUtil.S(json.snippet.title.description);
+            Description = DynamicUtil.S(json.snippet.description);
             ThumbnailUrl = CoreUtil.Nvl(
-                DynamicUtil.S(json.snippet.title.thumbnails.standard.url),
-                DynamicUtil.S(json.snippet.title.thumbnails.high.url),
-                DynamicUtil.S(json.snippet.title.thumbnails.medium.url),
-                DynamicUtil.S(json.snippet.title.thumbnails["default"].url)
+                DynamicUtil.S(json.snippet.thumbnails.standard.url),
+                DynamicUtil.S(json.snippet.thumbnails.high.url),
+                DynamicUtil.S(json.snippet.thumbnails.medium.url)
             );
             ViewCounter = DynamicUtil.L(json.statistics.viewCount);
             LikeCounter = DynamicUtil.L(json.statistics.likeCount);
@@ -32,7 +31,7 @@ namespace Moviewer.Tube.Core
             StartTime = DateTime.Parse(DynamicUtil.S(json.snippet.publishedAt));
             TempTime = default(DateTime);
             Duration = XmlConvert.ToTimeSpan(DynamicUtil.S(json.contentDetails.duration));
-            Tags = GetTags(json).ToArray();
+            Tags = (string[])json.snippet.tags;
             UserInfo = new TubeUserModel(
                 DynamicUtil.S(json.snippet.channelId),
                 DynamicUtil.S(json.snippet.channelTitle)
@@ -45,7 +44,7 @@ namespace Moviewer.Tube.Core
 
         private IEnumerable<string> GetTags(dynamic json)
         {
-            foreach (var item in json.snippet.tags) yield return DynamicUtil.S(item);
+            foreach (var item in json) yield return DynamicUtil.S(item);
         }
 
         public void RefreshStatus()
