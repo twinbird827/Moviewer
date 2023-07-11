@@ -70,7 +70,7 @@ namespace Moviewer.Tube.Core
         {
             var dic = new Dictionary<string, string>()
             {
-                { "part", "statistics" },
+                { "part", "snippet" },
                 { "id", videos.Select(x => x.UserInfo).Where(x => string.IsNullOrEmpty(x.ThumbnailUrl)).Select(x => x.ChannelId).GetString(",") },
                 { "key", GetAPIKEY() },
             };
@@ -78,11 +78,11 @@ namespace Moviewer.Tube.Core
 
             foreach (var item in json.items)
             {
-                var id = DynamicUtil.S(item.id);
+                var id = DynamicUtil.S(item, "id");
                 var url = CoreUtil.Nvl(
-                    DynamicUtil.S(item.snippet.thumbnails.standard.url),
-                    DynamicUtil.S(item.snippet.thumbnails.high.url),
-                    DynamicUtil.S(item.snippet.thumbnails.medium.url)
+                    DynamicUtil.S(item, "snippet.thumbnails.standard.url"),
+                    DynamicUtil.S(item, "snippet.thumbnails.high.url"),
+                    DynamicUtil.S(item, "snippet.thumbnails.medium.url")
                 );
                 var info = videos.FirstOrDefault(x => x.UserInfo.ChannelId == id);
                 if (info != null) info.UserInfo.ThumbnailUrl = url;

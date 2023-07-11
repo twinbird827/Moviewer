@@ -17,34 +17,29 @@ namespace Moviewer.Tube.Core
     {
         public TubeVideoModel SetFromJson(dynamic json)
         {
-            ContentId = DynamicUtil.S(json.id);
-            Title = DynamicUtil.S(json.snippet.title);
-            Description = DynamicUtil.S(json.snippet.description);
+            ContentId = DynamicUtil.S(json, "id");
+            Title = DynamicUtil.S(json, "snippet.title");
+            Description = DynamicUtil.S(json, "snippet.description");
             ThumbnailUrl = CoreUtil.Nvl(
-                DynamicUtil.S(json.snippet.thumbnails.standard.url),
-                DynamicUtil.S(json.snippet.thumbnails.high.url),
-                DynamicUtil.S(json.snippet.thumbnails.medium.url)
+                DynamicUtil.S(json, "snippet.thumbnails.standard.url"),
+                DynamicUtil.S(json, "snippet.thumbnails.high.url"),
+                DynamicUtil.S(json, "snippet.thumbnails.medium.url")
             );
-            ViewCounter = DynamicUtil.L(json.statistics.viewCount);
-            LikeCounter = DynamicUtil.L(json.statistics.likeCount);
-            CommentCounter = DynamicUtil.L(json.statistics.commentCount);
-            StartTime = DateTime.Parse(DynamicUtil.S(json.snippet.publishedAt));
+            ViewCounter = DynamicUtil.L(json, "statistics.viewCount");
+            LikeCounter = DynamicUtil.L(json, "statistics.likeCount");
+            CommentCounter = DynamicUtil.L(json, "statistics.commentCount");
+            StartTime = DateTime.Parse(DynamicUtil.S(json, "snippet.publishedAt"));
             TempTime = default(DateTime);
-            Duration = XmlConvert.ToTimeSpan(DynamicUtil.S(json.contentDetails.duration));
-            Tags = (string[])json.snippet.tags;
+            Duration = XmlConvert.ToTimeSpan(DynamicUtil.S(json, "contentDetails.duration"));
+            Tags = DynamicUtil.T<string[]>(json, "snippet.tags");
             UserInfo = new TubeUserModel(
-                DynamicUtil.S(json.snippet.channelId),
-                DynamicUtil.S(json.snippet.channelTitle)
+                DynamicUtil.S(json, "snippet.channelId"),
+                DynamicUtil.S(json, "snippet.channelTitle")
             );
 
             RefreshStatus();
 
             return this;
-        }
-
-        private IEnumerable<string> GetTags(dynamic json)
-        {
-            foreach (var item in json) yield return DynamicUtil.S(item);
         }
 
         public void RefreshStatus()
