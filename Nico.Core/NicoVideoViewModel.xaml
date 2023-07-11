@@ -31,7 +31,7 @@
     </Style>
 
     <DataTemplate DataType="{x:Type nicore:NicoVideoViewModel}">
-        <DockPanel HorizontalAlignment="Stretch" Name="ROOT_DockPanel" beha:FrameworkElementBehavior.Loaded="{Binding Loaded}">
+        <DockPanel HorizontalAlignment="Stretch" beha:FrameworkElementBehavior.Loaded="{Binding Loaded}">
 
             <DockPanel DockPanel.Dock="Left" ToolTip="{Binding VideoUrl}">
 

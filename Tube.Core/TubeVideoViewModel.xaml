@@ -104,8 +104,8 @@
                        TextTrimming="CharacterEllipsis"
                        FontSize="{DynamicResource FontSize.SS}"
                        Foreground="DimGray"
-                       beha:TextBlockBehavior.MaxLines="3"
-                       beha:TextBlockBehavior.MaxText="{Binding Description}" />
+                       Text="{Binding Description}"
+                       beha:FrameworkElementBehavior.Height="50" />
         </DockPanel>
     </DataTemplate>
 </ResourceDictionary>

@@ -68,10 +68,19 @@ namespace Moviewer.Tube.Core
 
         private static async Task<IEnumerable<TubeVideoModel>> GetUserThumnailUrlInVideos(IEnumerable<TubeVideoModel> videos)
         {
+            var videoarr = videos.ToArray();
+            var nothumnailarr = videoarr.Where(x => string.IsNullOrEmpty(x.UserInfo.ThumbnailUrl)).ToArray();
+
+            if (!nothumnailarr.Any()) return videoarr;
+
+            var idcomma = nothumnailarr.Select(x => x.UserInfo.ChannelId).GetString(",");
+
+            if (string.IsNullOrEmpty(idcomma)) return videoarr;
+
             var dic = new Dictionary<string, string>()
             {
                 { "part", "snippet" },
-                { "id", videos.Select(x => x.UserInfo).Where(x => string.IsNullOrEmpty(x.ThumbnailUrl)).Select(x => x.ChannelId).GetString(",") },
+                { "id", idcomma },
                 { "key", GetAPIKEY() },
             };
             var json = await GetResponse("https://www.googleapis.com/youtube/v3/channels?", dic);
@@ -84,12 +93,12 @@ namespace Moviewer.Tube.Core
                     DynamicUtil.S(item, "snippet.thumbnails.high.url"),
                     DynamicUtil.S(item, "snippet.thumbnails.medium.url")
                 );
-                var info = videos.FirstOrDefault(x => x.UserInfo.ChannelId == id);
+                var info = videoarr.FirstOrDefault(x => x.UserInfo.ChannelId == id);
                 if (info != null) info.UserInfo.ThumbnailUrl = url;
             }
-            videos.ForEach(x => TubeModel.AddUser(x.UserInfo));
+            videoarr.ForEach(x => TubeModel.AddUser(x.UserInfo));
 
-            return videos;
+            return videoarr;
         }
 
         private static IEnumerable<TubeVideoModel> GetVideosByJson(dynamic json)
@@ -102,7 +111,7 @@ namespace Moviewer.Tube.Core
 
         private static async Task<IEnumerable<TubeVideoModel>> GetVideosByUrl(string url, Dictionary<string, string> dic)
         {
-            return GetUserThumnailUrlInVideos(GetVideosByJson(await GetResponse(url, dic)));
+            return await GetUserThumnailUrlInVideos(GetVideosByJson(await GetResponse(url, dic)));
         }
 
         public static async Task<IEnumerable<TubeVideoModel>> GetVideosByIds(params string[] ids)

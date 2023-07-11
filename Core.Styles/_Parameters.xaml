@@ -15,5 +15,9 @@
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Workspaces/NicoSearchViewModel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Workspaces/NicoFavoriteViewModel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Workspaces/NicoHistoryViewModel.xaml" />
+
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Tube.Core/TubeVideoViewModel.xaml" />
+
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Tube.Workspaces/TubePopularViewModel.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

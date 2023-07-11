@@ -28,7 +28,7 @@ namespace Moviewer.Tube.Core
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 ContentId = m.ContentId;
-                VideoUrl = $"http://nico.ms/{m.ContentId}";
+                VideoUrl = $"https://www.youtube.com/watch?{m.ContentId}";
             }, nameof(m.ContentId), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
@@ -297,7 +297,7 @@ namespace Moviewer.Tube.Core
         private async Task SetThumnailAsync(string url)
         {
             await VideoUtil
-                .GetThumnailAsync(VideoUtil.Url2Id(VideoUrl), url)
+                .GetThumnailAsync(Source.ContentId, url)
                 .ContinueWith(x => Thumbnail = x.IsFaulted ? null : x.Result);
         }
 
