@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using TBird.Wpf;
 
-namespace Moviewer.Tube.Core
+namespace Moviewer.Tube.Controls
 {
     public class TubeUserViewModel : BindableBase
     {

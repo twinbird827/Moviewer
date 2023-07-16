@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mocore="clr-namespace:Moviewer.Core.Styles"
-                    xmlns:tucore="clr-namespace:Moviewer.Tube.Core"
+                    xmlns:tuctrl="clr-namespace:Moviewer.Tube.Controls"
                     xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
 
     <Style x:Key="TubeUserViewModel.TextBlock" TargetType="TextBlock">
@@ -15,7 +15,7 @@
         <Setter Property="TextDecorations" Value="Underline" />
     </Style>
 
-    <DataTemplate x:Key="TubeUserViewModel.Combo" DataType="{x:Type tucore:TubeUserViewModel}">
+    <DataTemplate x:Key="TubeUserViewModel.Combo" DataType="{x:Type tuctrl:TubeUserViewModel}">
         <DockPanel beha:FrameworkElementBehavior.Width="200">
 
             <Grid DockPanel.Dock="Left"
@@ -27,11 +27,10 @@
 
             <TextBlock Style="{StaticResource TubeUserViewModel.UsernameTextBlock}"
                        FontSize="{DynamicResource FontSize.M}" />
-
         </DockPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="TubeUserViewModel.S" DataType="{x:Type tucore:TubeUserViewModel}">
+    <DataTemplate x:Key="TubeUserViewModel.S" DataType="{x:Type tuctrl:TubeUserViewModel}">
         <DockPanel beha:FrameworkElementBehavior.Width="200">
 
             <Grid DockPanel.Dock="Left"
@@ -51,7 +50,7 @@
         </DockPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="TubeUserViewModel.M" DataType="{x:Type tucore:TubeUserViewModel}">
+    <DataTemplate x:Key="TubeUserViewModel.M" DataType="{x:Type tuctrl:TubeUserViewModel}">
         <DockPanel>
 
             <Grid DockPanel.Dock="Left"

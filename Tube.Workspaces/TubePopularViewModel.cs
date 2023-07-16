@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using TBird.Wpf;
 using TBird.Wpf.Collections;
 using TBird.Core;
+using Moviewer.Tube.Controls;
 
 namespace Moviewer.Tube.Workspaces
 {

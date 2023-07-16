@@ -3,6 +3,7 @@ using Microsoft.WindowsAPICodePack.Win32Native.Shell;
 using Moviewer.Core;
 using Moviewer.Core.Windows;
 using Moviewer.Nico.Core;
+using Moviewer.Tube.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,9 +16,10 @@ using System.Web;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using TBird.Core;
+using TBird.Web;
 using TBird.Wpf;
 
-namespace Moviewer.Tube.Core
+namespace Moviewer.Tube.Controls
 {
     public class TubeVideoViewModel : TubeViewModel
     {
@@ -28,7 +30,7 @@ namespace Moviewer.Tube.Core
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 ContentId = m.ContentId;
-                VideoUrl = $"https://www.youtube.com/watch?{m.ContentId}";
+                VideoUrl = $"https://www.youtube.com/watch?v={m.ContentId}";
             }, nameof(m.ContentId), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
@@ -64,7 +66,7 @@ namespace Moviewer.Tube.Core
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 TempTime = m.TempTime;
-                ExistTempTime = TempTime != default(DateTime);
+                ExistTempTime = TempTime != default;
             }, nameof(m.TempTime), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
@@ -240,7 +242,7 @@ namespace Moviewer.Tube.Core
             Source.RefreshStatus();
 
             // ﾌﾞﾗｳｻﾞ起動
-            Process.Start(AppSetting.Instance.BrowserPath, VideoUrl);
+            WebUtil.Browse(VideoUrl);
         });
         private ICommand _OnDoubleClick;
 

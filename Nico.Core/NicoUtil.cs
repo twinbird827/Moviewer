@@ -7,9 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TBird.Core;
+using TBird.Web;
 using TBird.Wpf;
-using static Microsoft.WindowsAPICodePack.PortableDevices.PropertySystem.Properties;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace Moviewer.Nico.Core
 {
@@ -23,8 +22,7 @@ namespace Moviewer.Nico.Core
 
         public static void Initialize()
         {
-            Combos = XDocument.Load(FileUtil.RelativePathToAbsolutePath(NicoComboPath))
-                .Root
+            Combos = XmlUtil.Load(NicoComboPath)
                 .Descendants("combo")
                 .Select(x => new ComboboxModel(
                     x.AttributeS("group"),
@@ -67,8 +65,7 @@ namespace Moviewer.Nico.Core
 
             try
             {
-                var txt = await WebUtil.GetStringAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{videoid}");
-                var xml = WebUtil.ToXml(txt);
+                var xml = await WebUtil.GetXmlAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{videoid}");
 
                 if (xml == null || xml.AttributeS("status") == "fail")
                 {

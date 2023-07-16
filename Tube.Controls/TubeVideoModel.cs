@@ -1,6 +1,7 @@
 ﻿using Moviewer.Core;
 using Moviewer.Core.Windows;
 using Moviewer.Nico.Core;
+using Moviewer.Tube.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using System.Xml;
 using TBird.Core;
 using TBird.Wpf;
 
-namespace Moviewer.Tube.Core
+namespace Moviewer.Tube.Controls
 {
     public class TubeVideoModel : BindableBase
     {
@@ -29,7 +30,7 @@ namespace Moviewer.Tube.Core
             LikeCounter = DynamicUtil.L(json, "statistics.likeCount");
             CommentCounter = DynamicUtil.L(json, "statistics.commentCount");
             StartTime = DateTime.Parse(DynamicUtil.S(json, "snippet.publishedAt"));
-            TempTime = default(DateTime);
+            TempTime = default;
             Duration = XmlConvert.ToTimeSpan(DynamicUtil.S(json, "contentDetails.duration"));
             Tags = DynamicUtil.T<string[]>(json, "snippet.tags");
             UserInfo = new TubeUserModel(

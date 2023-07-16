@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Moviewer.Tube.Core;
 using TBird.Wpf;
 
-namespace Moviewer.Tube.Core
+namespace Moviewer.Tube.Controls
 {
     public class TubeUserModel : BindableBase
     {

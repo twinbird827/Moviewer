@@ -9,7 +9,7 @@ using System.Windows.Input;
 using TBird.Core;
 using TBird.Wpf;
 
-namespace Moviewer.Tube.Core
+namespace Moviewer.Tube.Controls
 {
     public class TubeTagViewModel : BindableBase
     {

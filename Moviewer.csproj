@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TBird.Library\TBird.Core\TBird.Core.csproj" />
+    <ProjectReference Include="..\TBird.Library\TBird.IO\TBird.IO.csproj" />
     <ProjectReference Include="..\TBird.Library\TBird.Web\TBird.Web.csproj" />
     <ProjectReference Include="..\TBird.Library\TBird.Wpf\TBird.Wpf.csproj" />
   </ItemGroup>

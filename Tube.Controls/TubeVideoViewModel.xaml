@@ -1,13 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:tucore="clr-namespace:Moviewer.Tube.Core"
+                    xmlns:tuctrl="clr-namespace:Moviewer.Tube.Controls"
                     xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
 
     <ResourceDictionary.MergedDictionaries>
 
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Converters.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Tube.Core/TubeUserViewModel.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Tube.Core/TubeTagViewModel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Tube.Controls/TubeUserViewModel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Tube.Controls/TubeTagViewModel.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="TubeVideoViewModel.ItemContainerStyle" TargetType="ListBoxItem" BasedOn="{StaticResource MahApps.Styles.ListBoxItem}">
@@ -28,7 +28,7 @@
         </Setter>
     </Style>
 
-    <DataTemplate DataType="{x:Type tucore:TubeVideoViewModel}">
+    <DataTemplate DataType="{x:Type tuctrl:TubeVideoViewModel}">
         <DockPanel HorizontalAlignment="Stretch" beha:FrameworkElementBehavior.Loaded="{Binding Loaded}">
 
             <DockPanel DockPanel.Dock="Left" ToolTip="{Binding VideoUrl}">

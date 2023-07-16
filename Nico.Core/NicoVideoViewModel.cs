@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using TBird.Core;
+using TBird.Web;
 using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
@@ -227,7 +228,7 @@ namespace Moviewer.Nico.Core
             Source.RefreshStatus();
 
             // ﾌﾞﾗｳｻﾞ起動
-            Process.Start(AppSetting.Instance.BrowserPath, VideoUrl);
+            WebUtil.Browse(VideoUrl);
         });
         private ICommand _OnDoubleClick;
 

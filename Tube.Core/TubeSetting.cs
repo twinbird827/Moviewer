@@ -1,4 +1,5 @@
 ﻿using Moviewer.Nico.Core;
+using Moviewer.Tube.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,20 @@ namespace Moviewer.Tube.Core
             set => SetProperty(ref _APIKEY, value);
         }
         private string _APIKEY;
+
+        public string ClientSecret
+        {
+            get => GetProperty(_ClientSecret);
+            set => SetProperty(ref _ClientSecret, value);
+        }
+        private string _ClientSecret;
+
+        public string ClientId
+        {
+            get => GetProperty(_ClientId);
+            set => SetProperty(ref _ClientId, value);
+        }
+        private string _ClientId;
 
         public string TubePopularCategory
         {

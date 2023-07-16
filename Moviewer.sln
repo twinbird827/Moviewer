@@ -28,6 +28,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "wpftest", "..\TBird.Library\wpftest\wpftest.csproj", "{60C3B1BF-EF6E-44A5-AB37-3B981FD366B1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moviewer", "Moviewer.csproj", "{6031AA96-DFFB-46C3-8D64-38D15E54DC10}"
+	ProjectSection(ProjectDependencies) = postProject
+		{721FB522-0164-464B-939F-43BCBFE635F7} = {721FB522-0164-464B-939F-43BCBFE635F7}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{0D37875A-72BC-4DCA-8411-F255A7AA2FD5}"
 EndProject

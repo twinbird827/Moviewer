@@ -1,5 +1,6 @@
 ﻿using Codeplex.Data;
 using Moviewer.Core;
+using Moviewer.Tube.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TBird.Core;
+using TBird.Web;
 using TBird.Wpf;
 using TBird.Wpf.Controls;
 
@@ -20,8 +22,7 @@ namespace Moviewer.Tube.Core
 
         public static void Initialize()
         {
-            Combos = XDocument.Load(FileUtil.RelativePathToAbsolutePath(TubeComboPath))
-                .Root
+            Combos = XmlUtil.Load(TubeComboPath)
                 .Descendants("combo")
                 .Select(x => new ComboboxModel(
                     x.AttributeS("group"),
@@ -44,6 +45,14 @@ namespace Moviewer.Tube.Core
 
         public static string GetAPIKEY()
         {
+            using (var vm = new TubeOAuthViewModel())
+            {
+                if (vm.ShowDialog(() => new TubeOAuthWindow()))
+                {
+
+                }
+            }
+
             if (string.IsNullOrEmpty(TubeSetting.Instance.APIKEY))
             {
                 using (var vm = new WpfMessageInputViewModel(AppConst.H_InputAPIKEY, AppConst.M_InputAPIKEY, AppConst.L_APIKEY, true))
@@ -60,8 +69,7 @@ namespace Moviewer.Tube.Core
 
         private static async Task<dynamic> GetResponse(string url, Dictionary<string, string> dic)
         {
-            var urlparameter = dic.Select(x => $"{x.Key}={x.Value}").GetString("&");
-            var body = await WebUtil.GetStringAsync(url + urlparameter);
+            var body = await WebUtil.GetStringAsync(WebUtil.GetUrl(url, dic));
             var json = DynamicJson.Parse(body);
             return json;
         }

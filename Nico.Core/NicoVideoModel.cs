@@ -157,7 +157,7 @@ namespace Moviewer.Nico.Core
             //descriptionString = HttpUtility.HtmlDecode(descriptionString);
             descriptionString = descriptionString.Replace("&", "&amp;");
             descriptionString = descriptionString.Replace("'", "&apos;");
-            return WebUtil.ToXml($"<root>{descriptionString}</root>");
+            return XmlUtil.Str2Xml($"<root>{descriptionString}</root>");
         }
 
         private long ToLengthSeconds(string lengthSecondsStr)

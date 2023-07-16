@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TBird.Wpf;
 
-namespace Moviewer.Tube.Core
+namespace Moviewer.Tube.Controls
 {
     public class TubeVideoHistoryModel : BindableBase
     {
