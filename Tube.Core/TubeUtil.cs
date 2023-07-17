@@ -14,7 +14,7 @@ using TBird.Wpf.Controls;
 
 namespace Moviewer.Tube.Core
 {
-    public static class TubeUtil
+    public static partial class TubeUtil
     {
         private const string TubeComboPath = @"lib\tube-combo-setting.xml";
 
@@ -43,32 +43,10 @@ namespace Moviewer.Tube.Core
             return GetCombos(group).FirstOrDefault(x => x.Value == value)?.Display;
         }
 
-        public static string GetAPIKEY()
-        {
-            using (var vm = new TubeOAuthViewModel())
-            {
-                if (vm.ShowDialog(() => new TubeOAuthWindow()))
-                {
-
-                }
-            }
-
-            if (string.IsNullOrEmpty(TubeSetting.Instance.APIKEY))
-            {
-                using (var vm = new WpfMessageInputViewModel(AppConst.H_InputAPIKEY, AppConst.M_InputAPIKEY, AppConst.L_APIKEY, true))
-                {
-                    if (vm.ShowDialog(() => new WpfMessageInputWindow()))
-                    {
-                        TubeSetting.Instance.APIKEY = vm.Value;
-                        TubeSetting.Instance.Save();
-                    }
-                }
-            }
-            return TubeSetting.Instance.APIKEY;
-        }
-
         private static async Task<dynamic> GetResponse(string url, Dictionary<string, string> dic)
         {
+            dic.Add("key", GetAPIKEY());
+            dic.Add("access_token", await GetAccessToken());
             var body = await WebUtil.GetStringAsync(WebUtil.GetUrl(url, dic));
             var json = DynamicJson.Parse(body);
             return json;
@@ -89,7 +67,6 @@ namespace Moviewer.Tube.Core
             {
                 { "part", "snippet" },
                 { "id", idcomma },
-                { "key", GetAPIKEY() },
             };
             var json = await GetResponse("https://www.googleapis.com/youtube/v3/channels?", dic);
 
@@ -128,7 +105,6 @@ namespace Moviewer.Tube.Core
             {
                 { "part", "id,snippet,statistics,contentDetails" },
                 { "id", ids.GetString(",") },
-                { "key", GetAPIKEY() },
             };
 
             return await GetVideosByUrl("https://www.googleapis.com/youtube/v3/videos?", dic);
@@ -143,7 +119,6 @@ namespace Moviewer.Tube.Core
                 { "maxResults", "50" },
                 { "videoCategoryId", CoreUtil.Nvl(category, "0") },
                 { "regionCode", "jp" },
-                { "key", GetAPIKEY() },
             };
 
             return await GetVideosByUrl("https://www.googleapis.com/youtube/v3/videos?", dic);

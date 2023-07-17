@@ -3,11 +3,13 @@ using Moviewer.Core;
 using Moviewer.Nico.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using System.Windows.Input;
 using TBird.Core;
@@ -63,43 +65,12 @@ namespace Moviewer.Tube.Core
 
         protected override ICommand GetOKCommand()
         {
-            return RelayCommand.Create(async _ =>
-            {
-                if (string.IsNullOrEmpty(CoreUtil.Nvl(ClientId, ClientSecret)))
-                {
-                    MessageService.Error("client id or client secret is empty.");
-                    return;
-                }
-
-                using (var listener = new WebListener())
-                {
-                    var oauthurl = "https://accounts.google.com/o/oauth2/v2/auth";
-                    var dic = new Dictionary<string, string>()
-                {
-                    { "client_id", ClientId },
-                    { "redirect_uri", $@"http://localhost:{listener.Port}" },
-                    { "response_type", "code" },
-                    { "scope", scopes.GetString(" ")},
-                };
-                    WebUtil.Browse(WebUtil.GetUrl(oauthurl, dic));
-
-                    var context = await listener.GetContextAsync();
-                    var request = context.Request;
-
-                }
-                //MainViewModel.Instance.Current = new NicoSearchViewModel(Tag, NicoSearchType.Tag);
-            });
+            return RelayCommand.Create(
+                _ => DialogResult = true,
+                _ => !string.IsNullOrEmpty(CoreUtil.Nvl(ClientId, ClientSecret))
+            ).AddCanExecuteChanged(
+                this, nameof(ClientId), nameof(ClientSecret)
+            );
         }
-
-        private static readonly string[] scopes = new string[]
-        {
-            "https://www.googleapis.com/auth/youtube",
-            "https://www.googleapis.com/auth/youtube.channel-memberships.creator",
-            "https://www.googleapis.com/auth/youtube.force-ssl",
-            "https://www.googleapis.com/auth/youtube.readonly",
-            "https://www.googleapis.com/auth/youtube.upload",
-            "https://www.googleapis.com/auth/youtubepartner",
-            "https://www.googleapis.com/auth/youtubepartner-channel-audit"
-        };
     }
 }

@@ -36,6 +36,13 @@ namespace Moviewer.Tube.Core
         }
         private string _APIKEY;
 
+        public string ClientId
+        {
+            get => GetProperty(_ClientId);
+            set => SetProperty(ref _ClientId, value);
+        }
+        private string _ClientId;
+
         public string ClientSecret
         {
             get => GetProperty(_ClientSecret);
@@ -43,12 +50,26 @@ namespace Moviewer.Tube.Core
         }
         private string _ClientSecret;
 
-        public string ClientId
+        public string AccessToken
         {
-            get => GetProperty(_ClientId);
-            set => SetProperty(ref _ClientId, value);
+            get => GetProperty(_AccessToken);
+            set => SetProperty(ref _AccessToken, value);
         }
-        private string _ClientId;
+        private string _AccessToken;
+
+        public string RefreshToken
+        {
+            get => GetProperty(_RefreshToken);
+            set => SetProperty(ref _RefreshToken, value);
+        }
+        private string _RefreshToken;
+
+        public DateTime RefreshDate
+        {
+            get => GetProperty(_RefreshDate);
+            set => SetProperty(ref _RefreshDate, value);
+        }
+        private DateTime _RefreshDate;
 
         public string TubePopularCategory
         {

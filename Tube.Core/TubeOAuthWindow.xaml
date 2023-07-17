@@ -52,7 +52,7 @@
                    Style="{StaticResource HeaderLabel}"
                    Content="Client Secret" />
 
-            <TextBox Grid.Column="1" Grid.Row="0"
+            <TextBox Grid.Column="1" Grid.Row="1"
                      Margin="{DynamicResource Margin.Header}"
                      Text="{Binding ClientSecret}" />
         </Grid>
