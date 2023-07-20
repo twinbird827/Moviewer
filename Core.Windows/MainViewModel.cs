@@ -146,6 +146,7 @@ namespace Moviewer.Core.Windows
             [MenuType.NicoHistory] = typeof(NicoHistoryViewModel),
             [MenuType.NicoSearch] = typeof(NicoSearchViewModel),
             [MenuType.TubePopular] = typeof(TubePopularViewModel),
+            [MenuType.TubeRanking] = typeof(TubeHomeViewModel),
         };
 
     }

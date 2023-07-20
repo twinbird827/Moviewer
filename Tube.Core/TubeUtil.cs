@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TBird.Core;
@@ -119,18 +120,37 @@ namespace Moviewer.Tube.Core
             return await GetVideosByUrl("https://www.googleapis.com/youtube/v3/videos?", dic);
         }
 
-        public static async Task<IEnumerable<TubeVideoModel>> GetVideosByActivities(string category)
+        public static async Task<IEnumerable<TubeVideoModel>> GetVideosByHome()
         {
-            var dic = new Dictionary<string, string>()
-            {
-                { "part", "id,snippet,contentDetails" },
-                { "chart", "mostPopular" },
-                { "maxResults", "50" },
-                { "videoCategoryId", CoreUtil.Nvl(category, "0") },
-                { "regionCode", "jp" },
-            };
+            var htmlString = await WebUtil.GetStringAsync(@"https://www.youtube.com/?hl=ja&gl=JP");
+            var jsonMatch = Regex.Match(htmlString, @"(?<=var ytInitialData =)[^;]+");
+            if (!jsonMatch.Success) return Enumerable.Empty<TubeVideoModel>();
 
-            return await GetVideosByUrl("https://www.googleapis.com/youtube/v3/activities?", dic);
+            dynamic json = DynamicJson.Parse(jsonMatch.Value);
+            var ids = GetVideosByHome(json);
+            return await GetVideosByHome(ids);
         }
+
+        private static IEnumerable<TubeVideoModel> GetVideosByHome(dynamic json)
+        {
+            foreach (dynamic tab in json.contents.twoColumnBrowseResultsRenderer.tabs)
+            {
+                foreach (dynamic tmp in tab.tabRenderer.content.richGridRenderer.contents)
+                {
+                    var id = DynamicUtil.S(tmp, "richItemRenderer.content.videoRenderer.videoId");
+                    if (string.IsNullOrEmpty(id)) continue;
+                    yield return id;
+                }
+            }
+        }
+
+        private static async Task<IEnumerable<TubeVideoModel>> GetVideosByHome(IEnumerable<string> arr)
+        {
+            return await arr.Chunk(50)
+                .Select(ids => GetVideosByIds(ids.ToArray()))
+                .WhenAll()
+                .ContinueWith(x => x.Result.SelectMany(x => x));
+        }
+
     }
 }
