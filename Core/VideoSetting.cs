@@ -22,12 +22,8 @@ namespace Moviewer.Core
         {
             if (!Load())
             {
-                Histories = NicoSetting.Instance.Histories
-                    .Select(x => new VideoHistoryModel(MenuMode.Niconico, x.ContentId) { Date = x.Date })
-                    .ToArray();
-                Temporaries = NicoSetting.Instance.Temporaries
-                    .Select(x => new VideoHistoryModel(MenuMode.Niconico, x.ContentId) { Date = x.Date })
-                    .ToArray();
+                Histories = new VideoHistoryModel[] { };
+                Temporaries = new VideoHistoryModel[] { };
             }
         }
 

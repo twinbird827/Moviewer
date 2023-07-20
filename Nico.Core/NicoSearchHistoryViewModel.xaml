@@ -12,7 +12,7 @@
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Core.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Converters.xaml" />
 
-        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Core/NicoUserViewModel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Controls/UserViewModel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Core/NicoMylistViewModel.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
@@ -51,7 +51,7 @@
     <DataTemplate x:Key="NicoSearchHistoryViewModel.Display.NicoUserViewModel" DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
         <ContentControl DataContext="{Binding Display}"
                         Content="{Binding}"
-                        ContentTemplate="{DynamicResource NicoUserViewModel.M}" />
+                        ContentTemplate="{DynamicResource UserViewModel.Search}" />
     </DataTemplate>
 
     <DataTemplate x:Key="NicoSearchHistoryViewModel.Display.NicoMylistViewModel" DataType="{x:Type nicore:NicoSearchHistoryViewModel}">

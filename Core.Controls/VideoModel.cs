@@ -56,12 +56,7 @@ namespace Moviewer.Core.Controls
         }
         private string _ThumbnailUrl;
 
-        public BindableCollection<CounterModel> Counters
-        {
-            get => _Counters;
-            set => SetProperty(ref _Counters, value);
-        }
-        private BindableCollection<CounterModel> _Counters = null;
+        public BindableCollection<CounterModel> Counters { get; private set; }
 
         public DateTime StartTime
         {
@@ -91,12 +86,7 @@ namespace Moviewer.Core.Controls
         }
         private UserModel _UserInfo;
 
-        public BindableCollection<string> Tags
-        {
-            get => _Tags;
-            set => SetProperty(ref _Tags, value);
-        }
-        private BindableCollection<string> _Tags = null;
+        public BindableCollection<string> Tags { get; private set; }
 
         public VideoStatus Status
         {

@@ -40,7 +40,7 @@ namespace Moviewer.Tube.Controls
             StartTime = DateTime.Parse(DynamicUtil.S(json, "snippet.publishedAt"));
             TempTime = default;
             Duration = XmlConvert.ToTimeSpan(DynamicUtil.S(json, "contentDetails.duration"));
-            Tags = DynamicUtil.T<string[]>(json, "snippet.tags");
+            Tags.AddRange((string[])DynamicUtil.T<string[]>(json, "snippet.tags"));
             UserInfo = new TubeUserModel(
                 DynamicUtil.S(json, "snippet.channelId"),
                 DynamicUtil.S(json, "snippet.channelTitle")

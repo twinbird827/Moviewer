@@ -23,6 +23,9 @@ namespace Moviewer.Tube.Core
 
         public static void Initialize()
         {
+            TubeSetting.Instance.RefreshToken = null;
+            TubeSetting.Instance.Save();
+
             Combos = XmlUtil.Load(TubeComboPath)
                 .Descendants("combo")
                 .Select(x => new ComboboxModel(
@@ -131,7 +134,7 @@ namespace Moviewer.Tube.Core
             return await GetVideosByHome(ids);
         }
 
-        private static IEnumerable<TubeVideoModel> GetVideosByHome(dynamic json)
+        private static IEnumerable<string> GetVideosByHome(dynamic json)
         {
             foreach (dynamic tab in json.contents.twoColumnBrowseResultsRenderer.tabs)
             {

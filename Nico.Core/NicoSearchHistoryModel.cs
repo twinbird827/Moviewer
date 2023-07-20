@@ -4,7 +4,7 @@ using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
 {
-    public class NicoSearchHistoryModel : ControlModel
+    public class NicoSearchHistoryModel : BindableBase
     {
         public NicoSearchHistoryModel()
         {

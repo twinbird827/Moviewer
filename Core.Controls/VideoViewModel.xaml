@@ -14,17 +14,17 @@
 
     <system:Double x:Key="VideoViewModel.Height">140</system:Double>
 
-    <Style x:Key="VideoViewModel.MenuItem.OnTemporaryAdd" TargetType="MenuItem">
+    <Style x:Key="VideoViewModel.MenuItem.OnTemporaryAdd" TargetType="MenuItem" BasedOn="{StaticResource MahApps.Styles.MenuItem}">
         <Setter Property="Header" Value="追加" />
         <Setter Property="Command" Value="{Binding OnTemporaryAdd}" />
     </Style>
 
-    <Style x:Key="VideoViewModel.MenuItem.OnTemporaryDel" TargetType="MenuItem">
+    <Style x:Key="VideoViewModel.MenuItem.OnTemporaryDel" TargetType="MenuItem" BasedOn="{StaticResource MahApps.Styles.MenuItem}">
         <Setter Property="Header" Value="削除" />
-        <Setter Property="Command" Value="{Binding OnTemporaryAdd}" />
+        <Setter Property="Command" Value="{Binding OnTemporaryDel}" />
     </Style>
 
-    <Style x:Key="VideoViewModel.MenuItem.OnDownload" TargetType="MenuItem">
+    <Style x:Key="VideoViewModel.MenuItem.OnDownload" TargetType="MenuItem" BasedOn="{StaticResource MahApps.Styles.MenuItem}">
         <Setter Property="Header" Value="ダウンロード" />
         <Setter Property="Command" Value="{Binding OnDownload}" />
     </Style>
@@ -55,6 +55,7 @@
                            Text="{Binding Status, Converter={StaticResource Enum2StringConverter}}" />
 
                 <ContentPresenter DockPanel.Dock="Left"
+                                  beha:FrameworkElementBehavior.Width="188"
                                   beha:FrameworkElementBehavior.Height="{StaticResource VideoViewModel.Height}"
                                   ContentTemplate="{DynamicResource Core.Thumbnail}"
                                   Content="{Binding Thumbnail}" />

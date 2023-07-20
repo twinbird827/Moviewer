@@ -58,7 +58,10 @@ namespace Moviewer.Nico.Workspaces
             await NicoUtil.GetVideosByRanking(Genre.SelectedItem.Value, "all", Period.SelectedItem.Value).ContinueWith(x =>
             {
                 Sources.Clear();
-                Sources.AddRange(x.Result);
+                foreach (var item in x.Result)
+                {
+                    Sources.Add(item);
+                }
             });
         }
     }

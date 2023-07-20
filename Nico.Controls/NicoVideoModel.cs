@@ -16,7 +16,9 @@ namespace Moviewer.Nico.Controls
     {
         public NicoVideoModel()
         {
-            Counters.AddRange(Arr(_ViewCount, _MylistCount, _CommentCount));
+            Counters.Add(_ViewCount);
+            Counters.Add(_MylistCount);
+            Counters.Add(_CommentCount);
         }
 
         public NicoVideoModel(string contentid)
@@ -219,7 +221,7 @@ namespace Moviewer.Nico.Controls
                 StartTime = Arr(StartTime, m.StartTime).Max();
                 Duration = Arr(Duration, m.Duration).Max();
                 Tags.AddRange(m.Tags);
-                UserInfo.SetUserInfo(m.UserInfo);
+                (UserInfo = UserInfo ?? m.UserInfo).SetUserInfo(m.UserInfo);
                 RefreshStatus();
 
                 _beforedisplay = false;

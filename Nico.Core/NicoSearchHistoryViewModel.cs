@@ -10,7 +10,7 @@ namespace Moviewer.Nico.Core
 {
     public class NicoSearchHistoryViewModel : ControlViewModel
     {
-        public NicoSearchHistoryViewModel(INicoSearchHistoryParentViewModel parent, NicoSearchHistoryModel m) : base(m)
+        public NicoSearchHistoryViewModel(INicoSearchHistoryParentViewModel parent, NicoSearchHistoryModel m) : base(null)
         {
             Parent = parent;
 

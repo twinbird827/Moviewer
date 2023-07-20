@@ -154,7 +154,8 @@ namespace Moviewer.Tube.Core
                 { "refresh_token", TubeSetting.Instance.RefreshToken },
             };
 
-            dynamic json = await WebUtil.GetJsonAsync(WebUtil.GetUrl(url, dic));
+            var response = await WebUtil.PostStringAsync(url, WebUtil.ToParameter(dic), @"application/x-www-form-urlencoded").TryCatch();
+            dynamic json = DynamicJson.Parse(response);
 
             TubeSetting.Instance.AccessToken = DynamicUtil.S(json, "access_token");
             TubeSetting.Instance.RefreshDate = DateTime.Now.AddSeconds(DynamicUtil.I(json, "expires_in") * 0.75);
