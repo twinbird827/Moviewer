@@ -49,7 +49,7 @@ namespace Moviewer.Core.Windows
         }
         private MenuMode _MenuMode = MenuMode.Niconico;
 
-        public int NicoTemporaryCount => NicoModel.Temporaries.Count;
+        public int NicoTemporaryCount => VideoUtil.Temporaries.Count(x => x.Mode == MenuMode.Niconico);
 
         /// <summary>
         /// お気に入り巡回ﾀｲﾏｰ
@@ -65,11 +65,11 @@ namespace Moviewer.Core.Windows
 
                 foreach (var video in arr)
                 {
-                    NicoModel.AddTemporary(video.ContentId, false);
+                    VideoUtil.AddTemporary(MenuMode.Niconico, video.ContentId, false);
 
                     m.Date = Arr(m.Date, video.StartTime).Max();
                 }
-                NicoModel.Save();
+                VideoUtil.Save();
             }
         }
 
@@ -91,7 +91,7 @@ namespace Moviewer.Core.Windows
 
             TubeUtil.Initialize();
 
-            AddCollectionChanged(NicoModel.Temporaries, (sender, e) =>
+            AddCollectionChanged(VideoUtil.Temporaries, (sender, e) =>
             {
                 OnPropertyChanged(nameof(NicoTemporaryCount));
             });

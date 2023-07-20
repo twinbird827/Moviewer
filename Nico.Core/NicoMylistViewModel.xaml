@@ -6,12 +6,11 @@
     <DataTemplate x:Key="NicoMylistViewModel.M" DataType="{x:Type nicore:NicoMylistViewModel}">
         <DockPanel ToolTip="{Binding MylistDescription}">
 
-            <Grid DockPanel.Dock="Left"
-                  beha:FrameworkElementBehavior.Width="50"
-                  beha:FrameworkElementBehavior.Height="50">
-                <ContentPresenter ContentTemplate="{DynamicResource Core.Thumbnail}"
-                                  Content="{Binding Thumbnail}" />
-            </Grid>
+            <ContentPresenter DockPanel.Dock="Left"
+                              beha:FrameworkElementBehavior.Width="50"
+                              beha:FrameworkElementBehavior.Height="50"
+                              ContentTemplate="{DynamicResource Core.Thumbnail}"
+                              Content="{Binding Thumbnail}" />
 
             <TextBlock DockPanel.Dock="Top"
                        Margin="4,2"

@@ -1,39 +1,55 @@
 ﻿using Moviewer.Core;
+using Moviewer.Core.Controls;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
 {
-    public class NicoMylistViewModel : BindableBase
+    public class NicoMylistViewModel : ControlViewModel, IThumbnail
     {
-        public NicoMylistViewModel(NicoMylistModel m)
+        public NicoMylistViewModel(NicoMylistModel m) : base(m)
         {
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 MylistId = m.MylistId;
             }, nameof(MylistId), true);
+
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 MylistTitle = m.MylistTitle;
             }, nameof(MylistTitle), true);
+
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 MylistDescription = m.MylistDescription;
             }, nameof(MylistDescription), true);
+
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 MylistDate = m.MylistDate;
             }, nameof(MylistDate), true);
+
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 SetThumbnail(m.ThumbnailUrl);
             }, nameof(m.ThumbnailUrl), true);
+
             m.UserInfo.AddOnPropertyChanged(this, (sender, e) =>
             {
                 MylistUsername = m.UserInfo.Username;
             }, nameof(m.UserInfo.Username), true);
+
+            Loaded.Add(SetThumbnail);
+
+            AddDisposed((sender, e) =>
+            {
+                Source = null;
+            });
         }
+
+        public NicoMylistModel Source { get; private set; }
 
         public string MylistId
         {
@@ -77,11 +93,14 @@ namespace Moviewer.Nico.Core
         }
         private BitmapImage _Thumbnail;
 
-        private async void SetThumbnail(string url)
+        private Task SetThumbnail()
         {
-            await VideoUtil
-                .GetThumnailAsync(MylistId, url, NicoUtil.NicoBlankUserUrl)
-                .ContinueWith(x => Thumbnail = x.IsFaulted ? null : x.Result);
+            return this.SetThumbnail(Source);
+        }
+
+        public virtual Task SetThumbnail(string url)
+        {
+            return this.SetThumbnail(MylistId, url, NicoUtil.NicoBlankUserUrl);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Moviewer.Core.Controls;
+using Moviewer.Core.Windows;
 using Moviewer.Nico.Core;
 using Moviewer.Nico.Workspaces;
 using System;
@@ -7,21 +8,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using TBird.Core;
 using TBird.Wpf;
 
-namespace Moviewer.Tube.Controls
+namespace Moviewer.Nico.Controls
 {
-    public class TubeTagViewModel : TagViewModel
+    public class NicoTagViewModel : TagViewModel
     {
-        public TubeTagViewModel(string tag) : base(tag)
+        public NicoTagViewModel(string tag) : base(tag)
         {
 
         }
 
         protected override ICommand CreateOnClickTag()
         {
-            return base.CreateOnClickTag();
+            return RelayCommand.Create(_ =>
+            {
+                MainViewModel.Instance.Current = new NicoSearchViewModel(Tag, NicoSearchType.Tag);
+            });
         }
     }
 }

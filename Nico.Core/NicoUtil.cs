@@ -1,6 +1,7 @@
 ﻿using Codeplex.Data;
 using Microsoft.WindowsAPICodePack.PortableDevices.CommandSystem.Object;
 using Moviewer.Core;
+using Moviewer.Nico.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,8 +46,6 @@ namespace Moviewer.Nico.Core
 
         public static async Task<NicoVideoModel> GetVideo(string videoid)
         {
-            var video = new NicoVideoModel();
-
             //// TODO この方法でも可能だけどﾚｽﾎﾟﾝｽが悪いので旧式を使用する
             //// TODO 旧式はDescriptionが簡素になる
             //var body = await WebUtil.GetStringAsync(GetNicoVideoUrl(videoid));
@@ -63,24 +62,18 @@ namespace Moviewer.Nico.Core
             //    return video;
             //}
 
-            try
-            {
-                var xml = await WebUtil.GetXmlAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{videoid}");
+            var xml = await WebUtil.GetXmlAsync($"http://ext.nicovideo.jp/api/getthumbinfo/{videoid}").TryCatch();
 
-                if (xml == null || xml.AttributeS("status") == "fail")
-                {
-                    video.ContentId = videoid;
-                    video.Status = VideoStatus.Delete;
-                    return video;
-                }
-
-                return video.SetFromXml(xml);
-            }
-            catch
+            if (xml == null || xml.AttributeS("status") == "fail")
             {
+                var video = new NicoVideoModel();
                 video.ContentId = videoid;
                 video.Status = VideoStatus.Delete;
                 return video;
+            }
+            else
+            {
+                return new NicoVideoModel(xml);
             }
         }
 
@@ -108,7 +101,7 @@ namespace Moviewer.Nico.Core
 
             return xml
                 .Descendants("item")
-                .Select(item => new NicoVideoModel().SetFromXml(item, view, mylist, comment));
+                .Select(item => new NicoVideoModel(item, view, mylist, comment));
         }
 
         public static Task<IEnumerable<NicoVideoModel>> GetVideoBySearchType(string word, NicoSearchType type, string order)
@@ -188,7 +181,7 @@ namespace Moviewer.Nico.Core
         {
             foreach (var item in json.data)
             {
-                yield return new NicoVideoModel().SetFromJson(item);
+                yield return new NicoVideoModel(item);
             }
         }
     }

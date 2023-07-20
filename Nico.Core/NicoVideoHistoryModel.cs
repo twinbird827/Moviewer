@@ -29,22 +29,5 @@ namespace Moviewer.Nico.Core
             set => SetProperty(ref _Date, value);
         }
         private DateTime _Date;
-
-        public NicoVideoModel GetVideo()
-        {
-            var video = new NicoVideoModel().SetFromContentId(ContentId);
-
-            AddOnPropertyChanged(video, (sender, e) =>
-            {
-                video.TempTime = Date;
-            }, nameof(Date), true);
-            video.AddOnPropertyChanged(this, (sender, e) =>
-            {
-                Date = video.TempTime;
-                video.RefreshStatus();
-            }, nameof(video.TempTime), false);
-
-            return video;
-        }
     }
 }

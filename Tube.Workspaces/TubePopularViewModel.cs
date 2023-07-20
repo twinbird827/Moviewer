@@ -24,7 +24,7 @@ namespace Moviewer.Tube.Workspaces
             Sources = new BindableCollection<TubeVideoModel>();
 
             Videos = Sources
-                .ToBindableSelectCollection(x => new TubeVideoViewModel(x))
+                .ToBindableSelectCollection(x => new TubeVideoViewModel(this, x))
                 .ToBindableContextCollection();
 
             Categories = new ComboboxViewModel(TubeUtil.GetCombos("popular_category"));
@@ -38,6 +38,7 @@ namespace Moviewer.Tube.Workspaces
 
                 Categories.Dispose();
                 Videos.Dispose();
+                Sources.Dispose();
             });
 
         }

@@ -1,4 +1,5 @@
 ﻿using Moviewer.Core;
+using Moviewer.Core.Controls;
 using Moviewer.Core.Windows;
 using Moviewer.Nico.Core;
 using Moviewer.Tube.Core;
@@ -14,9 +15,16 @@ using TBird.Wpf;
 
 namespace Moviewer.Tube.Controls
 {
-    public class TubeVideoModel : BindableBase
+    public class TubeVideoModel : VideoModel
     {
-        public TubeVideoModel SetFromJson(dynamic json)
+        public override MenuMode Mode => MenuMode.Youtube;
+
+        public TubeVideoModel()
+        {
+            Counters.AddRange(Arr(_ViewCount, _LikeCount, _CommentCount));
+        }
+
+        public TubeVideoModel(dynamic json)
         {
             ContentId = DynamicUtil.S(json, "id");
             Title = DynamicUtil.S(json, "snippet.title");
@@ -26,9 +34,9 @@ namespace Moviewer.Tube.Controls
                 DynamicUtil.S(json, "snippet.thumbnails.high.url"),
                 DynamicUtil.S(json, "snippet.thumbnails.medium.url")
             );
-            ViewCounter = DynamicUtil.L(json, "statistics.viewCount");
-            LikeCounter = DynamicUtil.L(json, "statistics.likeCount");
-            CommentCounter = DynamicUtil.L(json, "statistics.commentCount");
+            ViewCount = DynamicUtil.L(json, "statistics.viewCount");
+            LikeCount = DynamicUtil.L(json, "statistics.likeCount");
+            CommentCount = DynamicUtil.L(json, "statistics.commentCount");
             StartTime = DateTime.Parse(DynamicUtil.S(json, "snippet.publishedAt"));
             TempTime = default;
             Duration = XmlConvert.ToTimeSpan(DynamicUtil.S(json, "contentDetails.duration"));
@@ -39,117 +47,28 @@ namespace Moviewer.Tube.Controls
             );
 
             RefreshStatus();
-
-            return this;
         }
 
-        public void RefreshStatus()
+        public long ViewCount
         {
-            // Temporaryの有無でﾌﾟﾛﾊﾟﾃｨを変更
-            if (TubeModel.Temporaries.FirstOrDefault(x => x.ContentId == ContentId) is TubeVideoHistoryModel tmp)
-            {
-                TempTime = tmp.Date;
-            }
-
-            Status = TubeModel.Histories.Any(x => x.ContentId == ContentId)
-                ? VideoStatus.See
-                : TubeModel.Temporaries.Any(x => x.ContentId == ContentId && MainViewModel.Instance.StartupTime < x.Date)
-                ? VideoStatus.New
-                : TubeModel.Temporaries.Any(x => x.ContentId == ContentId)
-                ? VideoStatus.Temporary
-                : VideoStatus.None;
+            get => _ViewCount.Count;
+            set => _ViewCount.Count = value;
         }
+        private CounterModel _ViewCount = new CounterModel(CounterType.View, 0);
 
-        public string ContentId
+        public long LikeCount
         {
-            get => _ContentId;
-            set => SetProperty(ref _ContentId, value);
+            get => _LikeCount.Count;
+            set => _LikeCount.Count = value;
         }
-        private string _ContentId;
+        private CounterModel _LikeCount = new CounterModel(CounterType.Like, 0);
 
-        public string Title
+        public long CommentCount
         {
-            get => _Title;
-            set => SetProperty(ref _Title, HttpUtility.HtmlDecode(value));
+            get => _CommentCount.Count;
+            set => _CommentCount.Count = value;
         }
-        private string _Title;
-
-        public string Description
-        {
-            get => _Description;
-            set => SetProperty(ref _Description, HttpUtility.HtmlDecode(value));
-        }
-        private string _Description;
-
-        public string ThumbnailUrl
-        {
-            get => _ThumbnailUrl;
-            set => SetProperty(ref _ThumbnailUrl, value);
-        }
-        private string _ThumbnailUrl;
-
-        public long ViewCounter
-        {
-            get => _ViewCounter;
-            set => SetProperty(ref _ViewCounter, value);
-        }
-        private long _ViewCounter;
-
-        public long LikeCounter
-        {
-            get => _LikeCounter;
-            set => SetProperty(ref _LikeCounter, value);
-        }
-        private long _LikeCounter;
-
-        public long CommentCounter
-        {
-            get => _CommentCounter;
-            set => SetProperty(ref _CommentCounter, value);
-        }
-        private long _CommentCounter;
-
-        public DateTime StartTime
-        {
-            get => _StartTime;
-            set => SetProperty(ref _StartTime, value);
-        }
-        private DateTime _StartTime;
-
-        public DateTime TempTime
-        {
-            get => _TempTime;
-            set => SetProperty(ref _TempTime, value);
-        }
-        private DateTime _TempTime;
-
-        public TimeSpan Duration
-        {
-            get => _Duration;
-            private set => SetProperty(ref _Duration, value);
-        }
-        private TimeSpan _Duration;
-
-        public TubeUserModel UserInfo
-        {
-            get => _UserInfo;
-            set => SetProperty(ref _UserInfo, value);
-        }
-        private TubeUserModel _UserInfo;
-
-        public VideoStatus Status
-        {
-            get => _Status;
-            set => SetProperty(ref _Status, value);
-        }
-        private VideoStatus _Status = VideoStatus.None;
-
-        public string[] Tags
-        {
-            get => _Tags;
-            set => SetProperty(ref _Tags, value);
-        }
-        private string[] _Tags = null;
+        private CounterModel _CommentCount = new CounterModel(CounterType.Comment, 0);
 
     }
 }

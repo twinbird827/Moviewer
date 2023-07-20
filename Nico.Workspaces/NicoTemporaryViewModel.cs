@@ -1,6 +1,9 @@
 ﻿using Moviewer.Core;
+using Moviewer.Core.Controls;
 using Moviewer.Core.Windows;
+using Moviewer.Nico.Controls;
 using Moviewer.Nico.Core;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TBird.Wpf;
@@ -9,13 +12,14 @@ using TBird.Wpf.Controls;
 
 namespace Moviewer.Nico.Workspaces
 {
-    public class NicoTemporaryViewModel : WorkspaceViewModel, INicoVideoParentViewModel
+    public class NicoTemporaryViewModel : WorkspaceViewModel, IVideoParentViewModel
     {
         public override MenuType Type => MenuType.NicoTemporary;
 
         public NicoTemporaryViewModel()
         {
-            Sources = NicoModel.Temporaries
+            Sources = VideoUtil.Temporaries
+                .ToBindableWhereCollection(x => x.Mode == MenuMode.Niconico)
                 .ToBindableSelectCollection(x => x.GetVideo())
                 .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x));
 
@@ -38,19 +42,19 @@ namespace Moviewer.Nico.Workspaces
             });
         }
 
-        public BindableChildCollection<NicoUserViewModel> Users
+        public BindableChildCollection<UserViewModel> Users
         {
             get => _Users;
             set => SetProperty(ref _Users, value);
         }
-        public BindableChildCollection<NicoUserViewModel> _Users;
+        public BindableChildCollection<UserViewModel> _Users;
 
-        public NicoUserViewModel SelectedUser
+        public UserViewModel SelectedUser
         {
             get => _SelectedUser;
             set => SetProperty(ref _SelectedUser, value);
         }
-        public NicoUserViewModel _SelectedUser;
+        public UserViewModel _SelectedUser;
 
         public BindableCollection<NicoVideoViewModel> Sources
         {
@@ -81,11 +85,7 @@ namespace Moviewer.Nico.Workspaces
                     return;
                 }
 
-                var video = await NicoUtil.GetVideo(VideoUtil.Url2Id(vm.Value));
-                if (video.Status != VideoStatus.Delete)
-                {
-                    NicoModel.AddTemporary(video.ContentId);
-                }
+                await AddTemporary(vm.Value);
             }
         });
         private ICommand _OnTemporaryAdd;
@@ -94,18 +94,23 @@ namespace Moviewer.Nico.Workspaces
         {
             if (e.Data.GetData(DataFormats.Text) is string url)
             {
-                var video = await NicoUtil.GetVideo(VideoUtil.Url2Id(url));
-                if (video.Status != VideoStatus.Delete)
-                {
-                    NicoModel.AddTemporary(video.ContentId);
-                }
+                await AddTemporary(url);
             }
         });
         private ICommand _OnDrop;
 
-        public void NicoVideoOnDelete(NicoVideoViewModel vm)
+        private async Task AddTemporary(string url)
         {
-            NicoModel.DelTemporary(vm.Source.ContentId);
+            var video = await NicoUtil.GetVideo(VideoUtil.Url2Id(url));
+            if (video.Status != VideoStatus.Delete)
+            {
+                VideoUtil.AddTemporary(MenuMode.Niconico, video.ContentId);
+            }
+        }
+
+        public void DeleteOnVideo(VideoViewModel vm)
+        {
+            VideoUtil.DelHistory(MenuMode.Niconico, vm.Source.ContentId);
         }
     }
 }

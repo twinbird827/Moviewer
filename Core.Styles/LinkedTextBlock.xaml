@@ -13,5 +13,6 @@
         <Setter Property="beha:FrameworkElementBehavior.MouseDown" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Command}" />
         <Setter Property="Foreground" Value="DarkBlue" />
         <Setter Property="TextDecorations" Value="Underline" />
+        <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
 </ResourceDictionary>

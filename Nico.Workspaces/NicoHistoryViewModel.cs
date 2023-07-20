@@ -1,17 +1,20 @@
 ﻿using Moviewer.Core;
+using Moviewer.Core.Controls;
 using Moviewer.Core.Windows;
+using Moviewer.Nico.Controls;
 using Moviewer.Nico.Core;
 using TBird.Wpf.Collections;
 
 namespace Moviewer.Nico.Workspaces
 {
-    public class NicoHistoryViewModel : WorkspaceViewModel, INicoVideoParentViewModel
+    public class NicoHistoryViewModel : WorkspaceViewModel, IVideoParentViewModel
     {
         public override MenuType Type => MenuType.NicoHistory;
 
         public NicoHistoryViewModel()
         {
-            Videos = NicoModel.Histories
+            Videos = VideoUtil.Histories
+                .ToBindableWhereCollection(x => x.Mode == MenuMode.Niconico)
                 .ToBindableSelectCollection(x => x.GetVideo())
                 .ToBindableSortedCollection(x => x.TempTime, isDescending: true)
                 .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x))
@@ -30,9 +33,9 @@ namespace Moviewer.Nico.Workspaces
         }
         public BindableContextCollection<NicoVideoViewModel> _Videos;
 
-        public void NicoVideoOnDelete(NicoVideoViewModel vm)
+        public void DeleteOnVideo(VideoViewModel vm)
         {
-            NicoModel.DelHistory(vm.Source.ContentId);
+            VideoUtil.DelHistory(MenuMode.Niconico, vm.Source.ContentId);
         }
     }
 }

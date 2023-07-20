@@ -7,7 +7,7 @@
 
             <ListBox Style="{DynamicResource Core.VideoStyle}"
                      ItemsSource="{Binding Videos}"
-                     ItemContainerStyle="{DynamicResource NicoVideoViewModel.ItemContainerStyle}" />
+                     ItemContainerStyle="{DynamicResource VideoViewModel.ItemContainerStyle}" />
         </DockPanel>
     </DataTemplate>
 </ResourceDictionary>

@@ -55,13 +55,9 @@ namespace Moviewer.Tube.Core
         private static async Task<IEnumerable<TubeVideoModel>> GetUserThumnailUrlInVideos(IEnumerable<TubeVideoModel> videos)
         {
             var videoarr = videos.ToArray();
-            var nothumnailarr = videoarr.Where(x => string.IsNullOrEmpty(x.UserInfo.ThumbnailUrl)).ToArray();
+            if (!videoarr.Any()) return videoarr;
 
-            if (!nothumnailarr.Any()) return videoarr;
-
-            var idcomma = nothumnailarr.Select(x => x.UserInfo.ChannelId).GetString(",");
-
-            if (string.IsNullOrEmpty(idcomma)) return videoarr;
+            var idcomma = videoarr.Select(x => x.UserInfo.Userid).GetString(",");
 
             var dic = new Dictionary<string, string>()
             {
@@ -78,10 +74,9 @@ namespace Moviewer.Tube.Core
                     DynamicUtil.S(item, "snippet.thumbnails.high.url"),
                     DynamicUtil.S(item, "snippet.thumbnails.medium.url")
                 );
-                var info = videoarr.FirstOrDefault(x => x.UserInfo.ChannelId == id);
+                var info = videoarr.FirstOrDefault(x => x.UserInfo.Userid == id);
                 if (info != null) info.UserInfo.ThumbnailUrl = url;
             }
-            videoarr.ForEach(x => TubeModel.AddUser(x.UserInfo));
 
             return videoarr;
         }
@@ -90,7 +85,7 @@ namespace Moviewer.Tube.Core
         {
             foreach (var item in json.items)
             {
-                yield return new TubeVideoModel().SetFromJson(item);
+                yield return new TubeVideoModel(item);
             }
         }
 
@@ -122,6 +117,20 @@ namespace Moviewer.Tube.Core
             };
 
             return await GetVideosByUrl("https://www.googleapis.com/youtube/v3/videos?", dic);
+        }
+
+        public static async Task<IEnumerable<TubeVideoModel>> GetVideosByActivities(string category)
+        {
+            var dic = new Dictionary<string, string>()
+            {
+                { "part", "id,snippet,contentDetails" },
+                { "chart", "mostPopular" },
+                { "maxResults", "50" },
+                { "videoCategoryId", CoreUtil.Nvl(category, "0") },
+                { "regionCode", "jp" },
+            };
+
+            return await GetVideosByUrl("https://www.googleapis.com/youtube/v3/activities?", dic);
         }
     }
 }

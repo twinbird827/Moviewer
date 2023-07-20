@@ -1,113 +1,16 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:nicore="clr-namespace:Moviewer.Nico.Core"
                     xmlns:niwork="clr-namespace:Moviewer.Nico.Workspaces"
                     xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
 
     <ResourceDictionary.MergedDictionaries>
 
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Converters.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Core/NicoUserViewModel.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Core/NicoVideoTagViewModel.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="NicoVideoViewModel.ItemContainerStyle" TargetType="ListBoxItem" BasedOn="{StaticResource MahApps.Styles.ListBoxItem}">
-        <Setter Property="beha:FrameworkElementBehavior.LDoubleClick" Value="{Binding OnDoubleClick}" />
-        <Setter Property="beha:FrameworkElementBehavior.KeyDown" Value="{Binding OnKeyDown}" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="ContextMenu">
-            <Setter.Value>
-                <ContextMenu>
-                    <MenuItem Visibility="{Binding Parent, Converter={StaticResource Type2ReverseVisibilityCollapsedConverter}, ConverterParameter={x:Type niwork:NicoTemporaryViewModel}}"
-                              Header="追加"
-                              Command="{Binding OnTemporaryAdd}" />
-                    <MenuItem Header="削除"
-                              Command="{Binding OnTemporaryDel}" />
-                    <MenuItem Header="ダウンロード"
-                              Command="{Binding OnDownload}" />
-                </ContextMenu>
-            </Setter.Value>
-        </Setter>
+    <Style x:Key="VideoViewModel.MenuItem.OnTemporaryAdd" TargetType="MenuItem">
+        <Setter Property="Visibility" Value="{Binding Parent, Converter={StaticResource Type2ReverseVisibilityCollapsedConverter}, ConverterParameter={x:Type niwork:NicoTemporaryViewModel}}" />
+        <Setter Property="Header" Value="追加" />
+        <Setter Property="Command" Value="{Binding OnTemporaryAdd}" />
     </Style>
-
-    <DataTemplate DataType="{x:Type nicore:NicoVideoViewModel}">
-        <DockPanel HorizontalAlignment="Stretch" beha:FrameworkElementBehavior.Loaded="{Binding Loaded}">
-
-            <DockPanel DockPanel.Dock="Left" ToolTip="{Binding VideoUrl}">
-
-                <TextBlock DockPanel.Dock="Bottom"
-                           Text="{Binding Status, Converter={StaticResource Enum2StringConverter}}" />
-
-                <ContentPresenter DockPanel.Dock="Left"
-                                  beha:FrameworkElementBehavior.Width="188"
-                                  beha:FrameworkElementBehavior.Height="141"
-                                  ContentTemplate="{DynamicResource Core.Thumbnail}"
-                                  Content="{Binding Thumbnail}" />
-            </DockPanel>
-
-            <!-- 最下段 -->
-            <DockPanel DockPanel.Dock="Bottom">
-
-                <TextBlock DockPanel.Dock="Left"
-                           beha:FrameworkElementBehavior.Width="100"
-                           Text="{Binding LengthToSeconds}" />
-
-                <TextBlock DockPanel.Dock="Left"
-                           beha:FrameworkElementBehavior.Width="100"
-                           Text="{Binding ViewCounter, StringFormat=View：{0:N0}}" />
-
-                <TextBlock DockPanel.Dock="Left"
-                           beha:FrameworkElementBehavior.Width="100"
-                           Text="{Binding MylistCounter, StringFormat=Mylist：{0:N0}}" />
-
-                <TextBlock DockPanel.Dock="Left"
-                           beha:FrameworkElementBehavior.Width="100"
-                           Text="{Binding CommentCounter, StringFormat=Comment：{0:N0}}" />
-
-                <TextBlock DockPanel.Dock="Right"
-                           Foreground="DarkRed"
-                           Text="{Binding StartTime, StringFormat={}{0:yy/MM/dd HH:mm:ss}}" />
-
-                <TextBlock DockPanel.Dock="Right"
-                           Visibility="{Binding ExistTempTime, Converter={StaticResource Boolean2VisibilityCollapsedConverter}}"
-                           Foreground="DarkBlue"
-                           Margin="5,0">
-                        <Run Text="(" />
-                        <Run Text="{Binding TempTime, StringFormat={}{0:yy/MM/dd HH:mm:ss}}" />
-                        <Run Text=")" />
-                </TextBlock>
-
-                <StackPanel />
-            </DockPanel>
-
-            <DockPanel DockPanel.Dock="Bottom">
-
-                <ContentPresenter DockPanel.Dock="Right"
-                                  Content="{Binding UserInfo}"
-                                  ContentTemplate="{DynamicResource NicoUserViewModel.S}" />
-
-                <ItemsControl ItemsSource="{Binding Tags}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Style="{DynamicResource HorizontalStackPanel}" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </DockPanel>
-
-            <TextBlock DockPanel.Dock="Top"
-                       TextWrapping="Wrap"
-                       TextTrimming="CharacterEllipsis"
-                       FontSize="{DynamicResource FontSize.L}"
-                       beha:TextBlockBehavior.MaxLines="1"
-                       beha:TextBlockBehavior.MaxText="{Binding Title}" />
-
-            <TextBlock TextWrapping="Wrap"
-                       TextTrimming="CharacterEllipsis"
-                       FontSize="{DynamicResource FontSize.SS}"
-                       Foreground="DimGray"
-                       beha:TextBlockBehavior.MaxLines="3"
-                       beha:TextBlockBehavior.MaxText="{Binding Description}" />
-        </DockPanel>
-    </DataTemplate>
 </ResourceDictionary>

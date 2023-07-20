@@ -1,6 +1,7 @@
 ﻿using Codeplex.Data;
 using ControlzEx.Standard;
 using Moviewer.Core.Windows;
+using Moviewer.Nico.Controls;
 using System;
 using System.Collections.Generic;
 using System.IO;

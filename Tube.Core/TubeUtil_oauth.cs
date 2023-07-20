@@ -49,7 +49,7 @@ namespace Moviewer.Tube.Core
 
                 await SetToken(authorizationcode);
             }
-            
+
             if (string.IsNullOrEmpty(TubeSetting.Instance.AccessToken))
             {
                 await RefreshToken();
@@ -134,7 +134,7 @@ namespace Moviewer.Tube.Core
             };
             var urlparameter = dic.Select(x => $"{x.Key}={HttpUtility.UrlEncode(x.Value)}").GetString("&");
 
-            var response =  await WebUtil.PostStringAsync(url, WebUtil.ToParameter(dic), @"application/x-www-form-urlencoded").TryCatch();
+            var response = await WebUtil.PostStringAsync(url, WebUtil.ToParameter(dic), @"application/x-www-form-urlencoded").TryCatch();
             dynamic json = DynamicJson.Parse(response);
 
             TubeSetting.Instance.AccessToken = DynamicUtil.S(json, "access_token");
@@ -160,7 +160,6 @@ namespace Moviewer.Tube.Core
             TubeSetting.Instance.RefreshDate = DateTime.Now.AddSeconds(DynamicUtil.I(json, "expires_in") * 0.75);
             TubeSetting.Instance.Save();
         }
-
 
     }
 }

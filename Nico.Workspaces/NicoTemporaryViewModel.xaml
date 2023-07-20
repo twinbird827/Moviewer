@@ -21,7 +21,7 @@
                                            beha:FrameworkElementBehavior.Width="35"
                                            Command="{Binding OnDeleteSelectedUser}"
                                            Kind="Close" />
-                
+
                 <ComboBox DockPanel.Dock="Right"
                           beha:FrameworkElementBehavior.Width="200"
                           Style="{DynamicResource DefaultComboBox.Custom}"
@@ -35,7 +35,7 @@
             <ListBox Style="{DynamicResource Core.VideoStyle}"
                      beha:FrameworkElementBehavior.DragDrop="{Binding OnDrop}"
                      ItemsSource="{Binding Videos}"
-                     ItemContainerStyle="{DynamicResource NicoVideoViewModel.ItemContainerStyle}" />
+                     ItemContainerStyle="{DynamicResource VideoViewModel.ItemContainerStyle}" />
         </DockPanel>
     </DataTemplate>
 </ResourceDictionary>

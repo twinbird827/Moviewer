@@ -23,9 +23,7 @@ namespace Moviewer.Tube.Core
         {
             if (!Load())
             {
-                Users = new TubeUserModel[] { };
-                Histories = new TubeVideoHistoryModel[] { };
-                Temporaries = new TubeVideoHistoryModel[] { };
+
             }
         }
 
@@ -77,27 +75,6 @@ namespace Moviewer.Tube.Core
             set => SetProperty(ref _TubePopularCategory, value);
         }
         private string _TubePopularCategory;
-
-        public TubeUserModel[] Users
-        {
-            get => GetProperty(_Users);
-            set => SetProperty(ref _Users, value);
-        }
-        private TubeUserModel[] _Users;
-
-        public TubeVideoHistoryModel[] Histories
-        {
-            get => GetProperty(_Histories);
-            set => SetProperty(ref _Histories, value);
-        }
-        private TubeVideoHistoryModel[] _Histories;
-
-        public TubeVideoHistoryModel[] Temporaries
-        {
-            get => GetProperty(_Temporaries);
-            set => SetProperty(ref _Temporaries, value);
-        }
-        private TubeVideoHistoryModel[] _Temporaries;
 
     }
 }

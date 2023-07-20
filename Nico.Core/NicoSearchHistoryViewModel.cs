@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Moviewer.Core.Controls;
+using Moviewer.Nico.Controls;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TBird.Core;
@@ -6,9 +8,9 @@ using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
 {
-    public class NicoSearchHistoryViewModel : NicoViewModel
+    public class NicoSearchHistoryViewModel : ControlViewModel
     {
-        public NicoSearchHistoryViewModel(INicoSearchHistoryParentViewModel parent, NicoSearchHistoryModel m)
+        public NicoSearchHistoryViewModel(INicoSearchHistoryParentViewModel parent, NicoSearchHistoryModel m) : base(m)
         {
             Parent = parent;
 
@@ -27,7 +29,7 @@ namespace Moviewer.Nico.Core
                 Date = m.Date;
             }, nameof(Date), true);
 
-            Loaded = RelayCommand.Create(async _ =>
+            Loaded.Add(async () =>
             {
                 Display = await GetDisplay();
             });
@@ -80,9 +82,9 @@ namespace Moviewer.Nico.Core
             switch (Type)
             {
                 case NicoSearchType.User:
-                    return new NicoUserViewModel(new NicoUserModel(Word, null, null, null));
+                    return new NicoUserViewModel(new NicoUserModel(Word, null));
                 case NicoSearchType.Mylist:
-                    return new NicoMylistViewModel(await NicoMylistModel.GetNicoMylistModel(Word));
+                    return new NicoMylistViewModel(new NicoMylistModel(Word, await NicoMylistModel.GetNicoMylistXml(Word)));
                 default:
                     return Word;
             }
@@ -120,8 +122,6 @@ namespace Moviewer.Nico.Core
             NicoModel.DelSearchFavorite(Word, Type);
         });
         private ICommand _OnFavoriteDel;
-
-        public override IRelayCommand Loaded { get; }
 
     }
 }

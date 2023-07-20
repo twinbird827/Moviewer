@@ -1,4 +1,6 @@
 ﻿using Moviewer.Core;
+using Moviewer.Core.Controls;
+using Moviewer.Nico.Controls;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -9,15 +11,15 @@ using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
 {
-    public class NicoMylistModel : BindableBase
+    public class NicoMylistModel : ControlModel, IThumbnailUrl
     {
-        public static async Task<NicoMylistModel> GetNicoMylistModel(string id)
+        public static async Task<XElement> GetNicoMylistXml(string id)
         {
             var xml = await NicoUtil.GetXmlChannelAsync($"http://www.nicovideo.jp/mylist/{VideoUtil.Url2Id(id)}?rss=2.0&numbers=1&sort=0");
-            return new NicoMylistModel(id, xml);
+            return xml;
         }
 
-        private NicoMylistModel(string id, XElement xml)
+        public NicoMylistModel(string id, XElement xml)
         {
             MylistId = id;
             MylistTitle = GetMylistTitle(xml.ElementS("title"));
@@ -27,7 +29,7 @@ namespace Moviewer.Nico.Core
             UserInfo = new NicoUserModel(
                 Regex.Match(xml.ElementS("link"), @"(?<=user\/)[\d]+").Value,          // user id
                 xml.ElementS(XName.Get("creator", "http://purl.org/dc/elements/1.1/")) // creator name
-            , null, null);
+            );
 
             UserInfo.AddOnPropertyChanged(this, (sender, e) =>
             {

@@ -78,7 +78,7 @@
     </Style>
 
     <DataTemplate DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
-        <DockPanel beha:FrameworkElementBehavior.Height="80" beha:FrameworkElementBehavior.Loaded="{Binding Loaded}">
+        <DockPanel beha:FrameworkElementBehavior.Height="80" beha:FrameworkElementBehavior.Loaded="{Binding OnLoaded}">
 
             <DockPanel DockPanel.Dock="Right">
 
