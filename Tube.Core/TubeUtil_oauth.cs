@@ -96,7 +96,8 @@ namespace Moviewer.Tube.Core
 
                 using (var response = context.Response)
                 {
-                    response.StatusCode = 200;
+                    //var body = @"<html><body onload=""open(location, '_self').close();""></body></html>";
+                    response.StatusCode = 204;
                 }
                 return parameters.Get("code");
             }
@@ -134,8 +135,7 @@ namespace Moviewer.Tube.Core
             };
             var urlparameter = dic.Select(x => $"{x.Key}={HttpUtility.UrlEncode(x.Value)}").GetString("&");
 
-            var response = await WebUtil.PostStringAsync(url, WebUtil.ToParameter(dic), @"application/x-www-form-urlencoded").TryCatch();
-            dynamic json = DynamicJson.Parse(response);
+            dynamic json = await PostStringAsync(url, dic);
 
             TubeSetting.Instance.AccessToken = DynamicUtil.S(json, "access_token");
             TubeSetting.Instance.RefreshToken = DynamicUtil.S(json, "refresh_token");
@@ -150,17 +150,22 @@ namespace Moviewer.Tube.Core
             {
                 { "client_id", TubeSetting.Instance.ClientId },
                 { "client_secret", TubeSetting.Instance.ClientSecret },
-                { "grant_type", "refresh_token " },
+                { "grant_type", "refresh_token" },
                 { "refresh_token", TubeSetting.Instance.RefreshToken },
             };
 
-            var response = await WebUtil.PostStringAsync(url, WebUtil.ToParameter(dic), @"application/x-www-form-urlencoded").TryCatch();
-            dynamic json = DynamicJson.Parse(response);
+            dynamic json = await PostStringAsync(url, dic);
 
             TubeSetting.Instance.AccessToken = DynamicUtil.S(json, "access_token");
             TubeSetting.Instance.RefreshDate = DateTime.Now.AddSeconds(DynamicUtil.I(json, "expires_in") * 0.75);
             TubeSetting.Instance.Save();
         }
 
+        private static async Task<dynamic> PostStringAsync(string url, Dictionary<string, string> dic)
+        {
+            var response = await WebUtil.PostStringAsync(url, WebUtil.ToParameter(dic), @"application/x-www-form-urlencoded").TryCatch();
+            dynamic json = DynamicJson.Parse(response);
+            return json;
+        }
     }
 }
