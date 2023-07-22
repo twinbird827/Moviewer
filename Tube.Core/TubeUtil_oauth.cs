@@ -80,7 +80,8 @@ namespace Moviewer.Tube.Core
                 var dic = new Dictionary<string, string>()
                 {
                     { "client_id", TubeSetting.Instance.ClientId },
-                    { "redirect_uri", $@"http://localhost:{listener.Port}" },
+                    //{ "redirect_uri", $@"http://localhost:{listener.Port}" },
+                    { "redirect_uri", listener.Prefix },
                     { "response_type", "code" },
                     { "scope", scopes.GetString(" ")},
                     { "approval_prompt", "force" },
