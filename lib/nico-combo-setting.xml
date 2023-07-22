@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xml>
+    <combo group="video_type">
+        <item value="sm"   display="個人動画" />
+        <item value="so"   display="チャンネル動画" />
+    </combo>
     <combo group="mylist_title_removes">
         <item value="0"   display="‐ニコニコ動画" />
         <item value="1"   display="マイリスト " />

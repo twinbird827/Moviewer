@@ -63,9 +63,9 @@ namespace Moviewer.Core.Controls
         }
         private BitmapImage _Thumbnail;
 
-        private Task SetThumbnail()
+        private void SetThumbnail()
         {
-            return this.SetThumbnail(Source);
+            this.SetThumbnail(Source);
         }
 
         public virtual async Task SetThumbnail(string url)

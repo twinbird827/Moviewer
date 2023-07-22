@@ -156,9 +156,9 @@ namespace Moviewer.Core.Controls
         }
         private VideoStatus _Status = VideoStatus.None;
 
-        private Task SetThumbnail()
+        private void SetThumbnail()
         {
-            return this.SetThumbnail(Source);
+            this.SetThumbnail(Source);
         }
 
         public virtual Task SetThumbnail(string url)

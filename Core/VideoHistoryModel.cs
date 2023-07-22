@@ -21,6 +21,7 @@ namespace Moviewer.Core
         {
             Mode = mode;
             ContentId = id;
+            Date = DateTime.Now;
         }
 
         public MenuMode Mode

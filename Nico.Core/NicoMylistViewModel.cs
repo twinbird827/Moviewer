@@ -93,9 +93,9 @@ namespace Moviewer.Nico.Core
         }
         private BitmapImage _Thumbnail;
 
-        private Task SetThumbnail()
+        private void SetThumbnail()
         {
-            return this.SetThumbnail(Source);
+            this.SetThumbnail(Source);
         }
 
         public virtual Task SetThumbnail(string url)

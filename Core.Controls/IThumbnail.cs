@@ -24,19 +24,12 @@ namespace Moviewer.Core.Controls
 
     public static class ThumbnailExtension
     {
-        public static async Task SetThumbnail(this IThumbnail tgt, IThumbnailUrl m)
+        public static void SetThumbnail(this IThumbnail tgt, IThumbnailUrl m)
         {
-            if (!string.IsNullOrEmpty(m.ThumbnailUrl))
+            m.AddOnPropertyChanged(tgt, async (sender, e) =>
             {
                 await tgt.SetThumbnail(m.ThumbnailUrl);
-            }
-            else
-            {
-                m.AddOnPropertyChanged(tgt, async (sender, e) =>
-                {
-                    await tgt.SetThumbnail(m);
-                }, nameof(m.ThumbnailUrl), true);
-            }
+            }, nameof(m.ThumbnailUrl), true);
         }
 
         public static async Task SetThumbnail(this IThumbnail m, string id, params string[] urls)

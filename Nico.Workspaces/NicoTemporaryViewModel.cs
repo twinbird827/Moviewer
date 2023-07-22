@@ -1,4 +1,5 @@
-﻿using Moviewer.Core;
+﻿using Microsoft.WindowsAPICodePack.Win32Native.NamedPipe;
+using Moviewer.Core;
 using Moviewer.Core.Controls;
 using Moviewer.Core.Windows;
 using Moviewer.Nico.Controls;
@@ -18,6 +19,9 @@ namespace Moviewer.Nico.Workspaces
 
         public NicoTemporaryViewModel()
         {
+            VideoType = new ComboboxViewModel(NicoUtil.GetCombos("video_type"));
+            VideoType.SelectedItem = null;
+
             Sources = VideoUtil.Temporaries
                 .ToBindableWhereCollection(x => x.Mode == MenuMode.Niconico)
                 .ToBindableSelectCollection(x => x.GetVideo())
@@ -31,6 +35,8 @@ namespace Moviewer.Nico.Workspaces
             Videos = Sources
                 .ToBindableWhereCollection(x => SelectedUser == null || x.UserInfo.Userid == SelectedUser.Userid)
                 .AddOnRefreshCollection(this, nameof(SelectedUser))
+                .ToBindableWhereCollection(x => VideoType.SelectedItem == null || x.ContentId.StartsWith(VideoType.SelectedItem.Value))
+                .AddOnRefreshCollection(VideoType, nameof(VideoType.SelectedItem))
                 .ToBindableSortedCollection(x => x.TempTime, true)
                 .ToBindableContextCollection();
 
@@ -41,6 +47,14 @@ namespace Moviewer.Nico.Workspaces
                 Sources.Dispose();
             });
         }
+
+        public ComboboxViewModel VideoType { get; private set; }
+
+        public ICommand OnDeleteVideoType => _OnDeleteVideoType = _OnDeleteVideoType ?? RelayCommand.Create(_ =>
+        {
+            VideoType.SelectedItem = null;
+        });
+        private ICommand _OnDeleteVideoType;
 
         public BindableChildCollection<UserViewModel> Users
         {
