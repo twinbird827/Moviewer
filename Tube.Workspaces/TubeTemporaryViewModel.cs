@@ -1,32 +1,36 @@
-﻿using Microsoft.WindowsAPICodePack.Win32Native.NamedPipe;
-using Moviewer.Core;
-using Moviewer.Core.Controls;
+﻿using Moviewer.Core.Controls;
 using Moviewer.Core.Windows;
+using Moviewer.Core;
 using Moviewer.Nico.Controls;
 using Moviewer.Nico.Core;
-using System.Security.Policy;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using TBird.Wpf;
 using TBird.Wpf.Collections;
+using TBird.Wpf;
+using System.Windows.Input;
+using Moviewer.Tube.Controls;
 using TBird.Wpf.Controls;
+using System.Windows;
+using Moviewer.Tube.Core;
 
-namespace Moviewer.Nico.Workspaces
+namespace Moviewer.Tube.Workspaces
 {
-    public class NicoTemporaryViewModel : WorkspaceViewModel, IVideoParentViewModel
+    public class TubeTemporaryViewModel : WorkspaceViewModel, IVideoParentViewModel
     {
-        public override MenuType Type => MenuType.NicoTemporary;
+        public override MenuType Type => MenuType.TubeTemporary;
 
-        public NicoTemporaryViewModel()
+        public TubeTemporaryViewModel()
         {
-            VideoType = new ComboboxViewModel(ComboUtil.GetNicos("video_type"));
-            VideoType.SelectedItem = null;
+            //VideoType = new ComboboxViewModel(NicoUtil.GetCombos("video_type"));
+            //VideoType.SelectedItem = null;
 
             Sources = VideoUtil.Temporaries
-                .ToBindableWhereCollection(x => x.Mode == MenuMode.Niconico)
-                .ToBindableSelectCollection(NicoVideoModel.FromHistory)
-                .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x));
+                .ToBindableWhereCollection(x => x.Mode == MenuMode.Youtube)
+                .ToBindableSelectCollection(TubeVideoModel.FromHistory)
+                .ToBindableSelectCollection(x => new TubeVideoViewModel(this, x));
 
             Users = Sources
                 .ToBindableSelectCollection(x => x.UserInfo)
@@ -36,8 +40,8 @@ namespace Moviewer.Nico.Workspaces
             Videos = Sources
                 .ToBindableWhereCollection(x => SelectedUser == null || x.UserInfo.Userid == SelectedUser.Userid)
                 .AddOnRefreshCollection(this, nameof(SelectedUser))
-                .ToBindableWhereCollection(x => VideoType.SelectedItem == null || x.ContentId.StartsWith(VideoType.SelectedItem.Value))
-                .AddOnRefreshCollection(VideoType, nameof(VideoType.SelectedItem))
+                //.ToBindableWhereCollection(x => VideoType.SelectedItem == null || x.ContentId.StartsWith(VideoType.SelectedItem.Value))
+                //.AddOnRefreshCollection(VideoType, nameof(VideoType.SelectedItem))
                 .ToBindableSortedCollection(x => x.TempTime, true)
                 .ToBindableContextCollection();
 
@@ -49,13 +53,13 @@ namespace Moviewer.Nico.Workspaces
             });
         }
 
-        public ComboboxViewModel VideoType { get; private set; }
+        //public ComboboxViewModel VideoType { get; private set; }
 
-        public ICommand OnDeleteVideoType => _OnDeleteVideoType = _OnDeleteVideoType ?? RelayCommand.Create(_ =>
-        {
-            VideoType.SelectedItem = null;
-        });
-        private ICommand _OnDeleteVideoType;
+        //public ICommand OnDeleteVideoType => _OnDeleteVideoType = _OnDeleteVideoType ?? RelayCommand.Create(_ =>
+        //{
+        //    VideoType.SelectedItem = null;
+        //});
+        //private ICommand _OnDeleteVideoType;
 
         public BindableChildCollection<UserViewModel> Users
         {
@@ -71,19 +75,19 @@ namespace Moviewer.Nico.Workspaces
         }
         public UserViewModel _SelectedUser;
 
-        public BindableCollection<NicoVideoViewModel> Sources
+        public BindableCollection<TubeVideoViewModel> Sources
         {
             get => _Sources;
             set => SetProperty(ref _Sources, value);
         }
-        public BindableCollection<NicoVideoViewModel> _Sources;
+        public BindableCollection<TubeVideoViewModel> _Sources;
 
-        public BindableContextCollection<NicoVideoViewModel> Videos
+        public BindableContextCollection<TubeVideoViewModel> Videos
         {
             get => _Videos;
             set => SetProperty(ref _Videos, value);
         }
-        public BindableContextCollection<NicoVideoViewModel> _Videos;
+        public BindableContextCollection<TubeVideoViewModel> _Videos;
 
         public ICommand OnDeleteSelectedUser => _OnDeleteSelectedUser = _OnDeleteSelectedUser ?? RelayCommand.Create(_ =>
         {
@@ -112,16 +116,16 @@ namespace Moviewer.Nico.Workspaces
 
         private async Task AddTemporary(string url)
         {
-            var video = await NicoUtil.GetVideo(NicoUtil.Url2Id(url));
+            var video = await TubeUtil.GetVideo(TubeUtil.Url2Id(url));
             if (video.Status != VideoStatus.Delete)
             {
-                VideoUtil.AddTemporary(MenuMode.Niconico, video.ContentId);
+                VideoUtil.AddTemporary(MenuMode.Youtube, video.ContentId);
             }
         }
 
         public void DeleteOnVideo(VideoViewModel vm)
         {
-            VideoUtil.DelTemporary(MenuMode.Niconico, vm.Source.ContentId);
+            VideoUtil.DelTemporary(MenuMode.Youtube, vm.Source.ContentId);
         }
     }
 }

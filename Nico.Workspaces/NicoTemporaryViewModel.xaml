@@ -25,7 +25,6 @@
                 <ComboBox DockPanel.Dock="Right"
                           beha:FrameworkElementBehavior.Width="200"
                           Style="{DynamicResource DefaultComboBox.Custom}"
-                          Margin="0"
                           ItemsSource="{Binding Users}"
                           ItemTemplate="{DynamicResource UserViewModel.Combo}"
                           SelectedItem="{Binding SelectedUser}" />
@@ -38,9 +37,9 @@
 
                 <ComboBox DockPanel.Dock="Right"
                           Style="{DynamicResource Core.HeaderComboBox}"
+                          Margin="0"
                           ItemsSource="{Binding VideoType.Items}"
                           SelectedItem="{Binding VideoType.SelectedItem}" />
-
 
                 <StackPanel />
             </DockPanel>

@@ -14,14 +14,6 @@ namespace Moviewer.Tube.Controls
 {
     public class TubeUserViewModel : UserViewModel
     {
-        public TubeUserViewModel() : base(null)
-        {
 
-        }
-
-        public TubeUserViewModel(UserModel m) : base(m)
-        {
-
-        }
     }
 }

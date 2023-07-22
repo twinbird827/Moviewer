@@ -40,9 +40,9 @@ namespace Moviewer.Nico.Controls
             );
         }
 
-        protected override UserViewModel CreateUserViewModel(UserModel m)
+        protected override UserViewModel CreateUserInfo()
         {
-            return new NicoUserViewModel(m);
+            return new NicoUserViewModel();
         }
 
         protected override TagViewModel CreateTagViewModel(string tag)

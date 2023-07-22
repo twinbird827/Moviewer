@@ -1,12 +1,12 @@
 ﻿using Moviewer.Core.Controls;
-using Moviewer.Nico.Controls;
+using Moviewer.Nico.Core;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TBird.Core;
 using TBird.Wpf;
 
-namespace Moviewer.Nico.Core
+namespace Moviewer.Nico.Controls
 {
     public class NicoSearchHistoryViewModel : ControlViewModel
     {
@@ -82,7 +82,7 @@ namespace Moviewer.Nico.Core
             switch (Type)
             {
                 case NicoSearchType.User:
-                    return new NicoUserViewModel(new NicoUserModel(Word, null));
+                    return new NicoUserViewModel().SetUserInfo(new NicoUserModel() { Userid = Word });
                 case NicoSearchType.Mylist:
                     return new NicoMylistViewModel(new NicoMylistModel(Word, await NicoMylistModel.GetNicoMylistXml(Word)));
                 default:
@@ -113,13 +113,13 @@ namespace Moviewer.Nico.Core
 
         public ICommand OnFavoriteAdd => _OnFavoriteAdd = _OnFavoriteAdd ?? RelayCommand.Create(_ =>
         {
-            NicoModel.AddSearchFavorite(Word, Type);
+            NicoModel.AddFavorite(Word, Type);
         });
         private ICommand _OnFavoriteAdd;
 
         public ICommand OnFavoriteDel => _OnFavoriteDel = _OnFavoriteDel ?? RelayCommand.Create(_ =>
         {
-            NicoModel.DelSearchFavorite(Word, Type);
+            NicoModel.DelFavorite(Word, Type);
         });
         private ICommand _OnFavoriteDel;
 

@@ -17,31 +17,9 @@ namespace Moviewer.Nico.Core
     {
         public const string NicoBlankUserUrl = "https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon/defaults/blank.jpg";
 
-        private const string NicoComboPath = @"lib\nico-combo-setting.xml";
-
-        public static ComboboxModel[] Combos { get; private set; }
-
-        public static void Initialize()
+        public static string Url2Id(string url)
         {
-            Combos = XmlUtil.Load(NicoComboPath)
-                .Descendants("combo")
-                .Select(x => new ComboboxModel(
-                    x.AttributeS("group"),
-                    x.Descendants("item").Select(i =>
-                        new ComboboxItemModel(i.AttributeS("value"), i.AttributeS("display"))
-                    )
-                ))
-                .ToArray();
-        }
-
-        public static IEnumerable<ComboboxItemModel> GetCombos(string group)
-        {
-            return Combos.Where(x => x.Group == group).SelectMany(x => x.Items);
-        }
-
-        public static string GetComboDisplay(string group, string value)
-        {
-            return GetCombos(group).FirstOrDefault(x => x.Value == value)?.Display;
+            return CoreUtil.Nvl(url).Split('/').Last().Split('?').First();
         }
 
         public static async Task<NicoVideoModel> GetVideo(string videoid)
@@ -113,7 +91,7 @@ namespace Moviewer.Nico.Core
                 case NicoSearchType.Tag:
                     return GetVideosByTag(word, order);
                 case NicoSearchType.Mylist:
-                    return GetVideosByMylist(word, NicoUtil.GetComboDisplay("oyder_by_mylist", order));
+                    return GetVideosByMylist(word, ComboUtil.GetNicoDisplay("oyder_by_mylist", order));
                 //case NicoSearchType.Word:
                 default:
                     return GetVideosByWord(word, order);
@@ -144,7 +122,7 @@ namespace Moviewer.Nico.Core
 
         public static Task<IEnumerable<NicoVideoModel>> GetVideosByNicouser(string userid, string order)
         {
-            var orderbyuser = GetComboDisplay("oyder_by_user", order).Split(',');
+            var orderbyuser = ComboUtil.GetNicoDisplay("oyder_by_user", order).Split(',');
             return GetVideosByNicouser(userid, orderbyuser[0], orderbyuser[1]);
         }
 
@@ -170,7 +148,7 @@ namespace Moviewer.Nico.Core
         private static async Task<IEnumerable<NicoVideoModel>> SearchApiV2(string word, string target, string order, int offset = 0, int limit = 50)
         {
             var context = CoreSetting.Instance.ApplicationKey;
-            var orderbyapiv2 = GetComboDisplay("oyder_by_apiv2", order);
+            var orderbyapiv2 = ComboUtil.GetNicoDisplay("oyder_by_apiv2", order);
             var field = "contentId,title,description,userId,viewCounter,mylistCounter,lengthSeconds,thumbnailUrl,startTime,commentCounter,tags,channelId,thumbnailUrl";
             var url = $"https://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search?q={word}&targets={target}&fields={field}&&_sort={orderbyapiv2}&_offset={offset}&_limit={limit}&_context={context}";
 

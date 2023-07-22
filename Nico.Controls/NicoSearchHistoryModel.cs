@@ -1,8 +1,9 @@
 ﻿using Moviewer.Core.Controls;
+using Moviewer.Nico.Core;
 using System;
 using TBird.Wpf;
 
-namespace Moviewer.Nico.Core
+namespace Moviewer.Nico.Controls
 {
     public class NicoSearchHistoryModel : BindableBase
     {

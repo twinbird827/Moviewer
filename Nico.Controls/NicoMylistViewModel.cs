@@ -1,11 +1,12 @@
 ﻿using Moviewer.Core;
 using Moviewer.Core.Controls;
+using Moviewer.Nico.Core;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using TBird.Wpf;
 
-namespace Moviewer.Nico.Core
+namespace Moviewer.Nico.Controls
 {
     public class NicoMylistViewModel : ControlViewModel, IThumbnail
     {

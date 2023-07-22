@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Moviewer.Nico.Controls;
 using TBird.Wpf.Collections;
 
 namespace Moviewer.Nico.Core
@@ -19,73 +20,73 @@ namespace Moviewer.Nico.Core
 
         public static void Save()
         {
-            NicoSetting.Instance.SearchHistories = SearchHistories.ToArray();
-            NicoSetting.Instance.SearchFavorites = SearchFavorites.ToArray();
+            NicoSetting.Instance.Searches = Searches.ToArray();
+            NicoSetting.Instance.Favorites = Favorites.ToArray();
             NicoSetting.Instance.Save();
         }
 
         // **************************************************
-        // Search Histories
+        // Searches
 
-        public static BindableCollection<NicoSearchHistoryModel> SearchHistories
+        public static BindableCollection<NicoSearchHistoryModel> Searches
         {
-            get => Instance._SearchHistories = Instance._SearchHistories ?? new BindableCollection<NicoSearchHistoryModel>(NicoSetting.Instance.SearchHistories);
+            get => Instance._SearchHistories = Instance._SearchHistories ?? new BindableCollection<NicoSearchHistoryModel>(NicoSetting.Instance.Searches);
         }
         private BindableCollection<NicoSearchHistoryModel> _SearchHistories;
 
-        public static void AddSearchHistory(string word, NicoSearchType type, bool issave = true)
+        public static void AddSearch(string word, NicoSearchType type, bool issave = true)
         {
-            var tmp = SearchHistories.FirstOrDefault(x => x.Word == word && x.Type == type);
+            var tmp = Searches.FirstOrDefault(x => x.Word == word && x.Type == type);
             if (tmp != null)
             {
                 tmp.Date = DateTime.Now;
             }
             else
             {
-                SearchHistories.Add(new NicoSearchHistoryModel(word, type));
+                Searches.Add(new NicoSearchHistoryModel(word, type));
             }
             if (issave) Save();
         }
 
-        public static void DelSearchHistory(string word, NicoSearchType type, bool issave = true)
+        public static void DelSearch(string word, NicoSearchType type, bool issave = true)
         {
-            var tmp = SearchHistories.FirstOrDefault(x => x.Word == word && x.Type == type);
+            var tmp = Searches.FirstOrDefault(x => x.Word == word && x.Type == type);
             if (tmp != null)
             {
-                SearchHistories.Remove(tmp);
+                Searches.Remove(tmp);
                 if (issave) Save();
             }
         }
 
         // **************************************************
-        // SearchFavorites
+        // Favorites
 
-        public static BindableCollection<NicoSearchHistoryModel> SearchFavorites
+        public static BindableCollection<NicoSearchHistoryModel> Favorites
         {
-            get => Instance._SearchFavorites = Instance._SearchFavorites ?? new BindableCollection<NicoSearchHistoryModel>(NicoSetting.Instance.SearchFavorites);
+            get => Instance._SearchFavorites = Instance._SearchFavorites ?? new BindableCollection<NicoSearchHistoryModel>(NicoSetting.Instance.Favorites);
         }
         private BindableCollection<NicoSearchHistoryModel> _SearchFavorites;
 
-        public static void AddSearchFavorite(string word, NicoSearchType type, bool issave = true)
+        public static void AddFavorite(string word, NicoSearchType type, bool issave = true)
         {
-            var tmp = SearchFavorites.FirstOrDefault(x => x.Word == word && x.Type == type);
+            var tmp = Favorites.FirstOrDefault(x => x.Word == word && x.Type == type);
             if (tmp != null)
             {
                 tmp.Date = DateTime.Now;
             }
             else
             {
-                SearchFavorites.Add(new NicoSearchHistoryModel(word, type));
+                Favorites.Add(new NicoSearchHistoryModel(word, type));
             }
             if (issave) Save();
         }
 
-        public static void DelSearchFavorite(string word, NicoSearchType type, bool issave = true)
+        public static void DelFavorite(string word, NicoSearchType type, bool issave = true)
         {
-            var tmp = SearchFavorites.FirstOrDefault(x => x.Word == word && x.Type == type);
+            var tmp = Favorites.FirstOrDefault(x => x.Word == word && x.Type == type);
             if (tmp != null)
             {
-                SearchFavorites.Remove(tmp);
+                Favorites.Remove(tmp);
                 if (issave) Save();
             }
         }

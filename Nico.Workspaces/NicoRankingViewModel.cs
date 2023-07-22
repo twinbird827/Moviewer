@@ -21,11 +21,11 @@ namespace Moviewer.Nico.Workspaces
                 .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x))
                 .ToBindableContextCollection();
 
-            Genre = new ComboboxViewModel(NicoUtil.GetCombos("rank_genre"));
+            Genre = new ComboboxViewModel(ComboUtil.GetNicos("rank_genre"));
             Genre.SelectedItem = Genre.GetItemNotNull(NicoSetting.Instance.NicoRankingGenre);
             Genre.AddOnPropertyChanged(this, Reload, nameof(Genre.SelectedItem), false);
 
-            Period = new ComboboxViewModel(NicoUtil.GetCombos("rank_period"));
+            Period = new ComboboxViewModel(ComboUtil.GetNicos("rank_period"));
             Period.SelectedItem = Period.GetItemNotNull(NicoSetting.Instance.NicoRankingPeriod);
             Period.AddOnPropertyChanged(this, Reload, nameof(Period.SelectedItem), true);
 

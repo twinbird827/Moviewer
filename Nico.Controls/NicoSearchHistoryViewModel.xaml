@@ -2,8 +2,8 @@
                     xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mocore="clr-namespace:Moviewer.Core"
-                    xmlns:corestyle="clr-namespace:Moviewer.Core.Styles"
-                    xmlns:nicore="clr-namespace:Moviewer.Nico.Core"
+                    xmlns:mostyl="clr-namespace:Moviewer.Core.Styles"
+                    xmlns:nictrl="clr-namespace:Moviewer.Nico.Controls"
                     xmlns:niwork="clr-namespace:Moviewer.Nico.Workspaces"
                     xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
 
@@ -13,7 +13,7 @@
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Styles/_Converters.xaml" />
 
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Controls/UserViewModel.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Core/NicoMylistViewModel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Controls/NicoMylistViewModel.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="NicoSearchHistoryViewModel.ItemContainerStyle" TargetType="ListBoxItem" BasedOn="{StaticResource MahApps.Styles.ListBoxItem}">
@@ -34,27 +34,27 @@
         </Setter>
     </Style>
 
-    <Style x:Key="NicoSearchHistoryViewModel.IconPacksButton.TypeDisplay" TargetType="{x:Type corestyle:IconPacksButton}" BasedOn="{StaticResource Core.HorizontalIconPackButton}">
+    <Style x:Key="NicoSearchHistoryViewModel.IconPacksButton.TypeDisplay" TargetType="{x:Type mostyl:IconPacksButton}" BasedOn="{StaticResource Core.HorizontalIconPackButton}">
         <Setter Property="Orientation" Value="Horizontal" />
         <Setter Property="Margin" Value="4,2" />
         <Setter Property="Kind" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag, Converter={StaticResource NicoSearchTypeKindConverter}}" />
         <Setter Property="Text" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag, Converter={StaticResource Enum2StringConverter}}" />
     </Style>
 
-    <DataTemplate x:Key="NicoSearchHistoryViewModel.Display" DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
+    <DataTemplate x:Key="NicoSearchHistoryViewModel.Display" DataType="{x:Type nictrl:NicoSearchHistoryViewModel}">
         <TextBlock Text="{Binding Display}"
                    FontSize="{DynamicResource FontSize.L}"
                    Foreground="DarkBlue"
                    TextDecorations="Underline" />
     </DataTemplate>
 
-    <DataTemplate x:Key="NicoSearchHistoryViewModel.Display.NicoUserViewModel" DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
+    <DataTemplate x:Key="NicoSearchHistoryViewModel.Display.NicoUserViewModel" DataType="{x:Type nictrl:NicoSearchHistoryViewModel}">
         <ContentControl DataContext="{Binding Display}"
                         Content="{Binding}"
                         ContentTemplate="{DynamicResource UserViewModel.Search}" />
     </DataTemplate>
 
-    <DataTemplate x:Key="NicoSearchHistoryViewModel.Display.NicoMylistViewModel" DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
+    <DataTemplate x:Key="NicoSearchHistoryViewModel.Display.NicoMylistViewModel" DataType="{x:Type nictrl:NicoSearchHistoryViewModel}">
         <ContentControl DataContext="{Binding Display}"
                         Content="{Binding}"
                         ContentTemplate="{DynamicResource NicoMylistViewModel.M}" />
@@ -77,7 +77,7 @@
         </Style.Triggers>
     </Style>
 
-    <DataTemplate DataType="{x:Type nicore:NicoSearchHistoryViewModel}">
+    <DataTemplate DataType="{x:Type nictrl:NicoSearchHistoryViewModel}">
         <DockPanel beha:FrameworkElementBehavior.Height="80" beha:FrameworkElementBehavior.Loaded="{Binding OnLoaded}">
 
             <DockPanel DockPanel.Dock="Right">

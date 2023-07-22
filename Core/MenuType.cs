@@ -22,6 +22,8 @@
 
         TubePopular,
 
+        TubeHome,
+
         TubeTemporary,
 
         TubeHistory,

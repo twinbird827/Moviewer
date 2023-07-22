@@ -14,7 +14,15 @@ namespace Moviewer.Core.Controls
 {
     public class UserViewModel : ControlViewModel, IThumbnail
     {
-        public UserViewModel(UserModel m) : base(m)
+        public UserViewModel() : base(null)
+        {
+            AddDisposed((sender, e) =>
+            {
+                Thumbnail = null;
+            });
+        }
+
+        public UserViewModel SetUserInfo(UserModel m)
         {
             Source = m;
 
@@ -30,14 +38,17 @@ namespace Moviewer.Core.Controls
                     Username = m.Username;
                 }, nameof(m.Username), true);
 
-                Loaded.Add(SetThumbnail);
-
-                AddDisposed((sender, e) =>
+                if (Loaded.IsDisposed)
                 {
-                    Thumbnail = null;
-                    Source = null;
-                });
+                    SetThumbnail();
+                }
+                else
+                {
+                    Loaded.Add(SetThumbnail);
+                }
             }
+
+            return this;
         }
 
         public UserModel Source { get; private set; }

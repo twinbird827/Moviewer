@@ -97,7 +97,7 @@ namespace Moviewer.Tube.Core
                 using (var response = context.Response)
                 {
                     //var body = @"<html><body onload=""open(location, '_self').close();""></body></html>";
-                    response.StatusCode = 204;
+                    await response.WriteAutoClose();
                 }
                 return parameters.Get("code");
             }
@@ -131,7 +131,7 @@ namespace Moviewer.Tube.Core
                 { "client_secret", TubeSetting.Instance.ClientSecret },
                 { "code", authorizationcode },
                 { "grant_type", "authorization_code" },
-                { "redirect_uri", @"http://localhost:50000" },
+                { "redirect_uri", @"http://localhost" },
             };
             var urlparameter = dic.Select(x => $"{x.Key}={HttpUtility.UrlEncode(x.Value)}").GetString("&");
 

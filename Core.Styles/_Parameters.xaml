@@ -13,9 +13,8 @@
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Controls/VideoViewModel.xaml" />
 
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Controls/NicoVideoViewModel.xaml" />
-
-        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Core/NicoMylistViewModel.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Core/NicoSearchHistoryViewModel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Controls/NicoMylistViewModel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Controls/NicoSearchHistoryViewModel.xaml" />
 
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Workspaces/NicoRankingViewModel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Nico.Workspaces/NicoTemporaryViewModel.xaml" />
@@ -25,7 +24,9 @@
 
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Tube.Controls/TubeVideoViewModel.xaml" />
 
-        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Tube.Workspaces/TubeHomeViewModel.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Tube.Workspaces/TubePopularViewModel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Tube.Workspaces/TubeHomeViewModel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Tube.Workspaces/TubeTemporaryViewModel.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Tube.Workspaces/TubeHistoryViewModel.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

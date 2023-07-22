@@ -12,7 +12,7 @@ namespace Moviewer.Nico.Controls
 {
     public class NicoUserViewModel : UserViewModel
     {
-        public NicoUserViewModel(UserModel m) : base(m)
+        public NicoUserViewModel()
         {
 
         }

@@ -51,6 +51,8 @@ namespace Moviewer.Core.Windows
 
         public int NicoTemporaryCount => VideoUtil.Temporaries.Count(x => x.Mode == MenuMode.Niconico);
 
+        public int TubeTemporaryCount => VideoUtil.Temporaries.Count(x => x.Mode == MenuMode.Youtube);
+
         /// <summary>
         /// お気に入り巡回ﾀｲﾏｰ
         /// </summary>
@@ -58,7 +60,7 @@ namespace Moviewer.Core.Windows
 
         private async Task PatrolFavorites()
         {
-            foreach (var m in NicoModel.SearchFavorites)
+            foreach (var m in NicoModel.Favorites)
             {
                 var enumerable = await NicoUtil.GetVideoBySearchType(m.Word, m.Type, "regdate-");
                 var arr = enumerable.Where(x => m.Date < x.StartTime).ToArray();
@@ -87,13 +89,19 @@ namespace Moviewer.Core.Windows
 
         private void DoLoading()
         {
-            NicoUtil.Initialize();
+            if (!NicoSetting.Instance.Searches.Any() || !NicoSetting.Instance.Favorites.Any())
+            {
+                NicoSetting.Instance.Searches = NicoSetting.Instance.SearchHistories;
+                NicoSetting.Instance.Favorites = NicoSetting.Instance.SearchFavorites;
+                NicoSetting.Instance.Save();
+            }
 
-            TubeUtil.Initialize();
+            ComboUtil.Initialize();
 
             AddCollectionChanged(VideoUtil.Temporaries, (sender, e) =>
             {
                 OnPropertyChanged(nameof(NicoTemporaryCount));
+                OnPropertyChanged(nameof(TubeTemporaryCount));
             });
 
             // お気に入り巡回ﾀｲﾏｰの起動
@@ -146,7 +154,9 @@ namespace Moviewer.Core.Windows
             [MenuType.NicoHistory] = typeof(NicoHistoryViewModel),
             [MenuType.NicoSearch] = typeof(NicoSearchViewModel),
             [MenuType.TubePopular] = typeof(TubePopularViewModel),
-            [MenuType.TubeRanking] = typeof(TubeHomeViewModel),
+            [MenuType.TubeHome] = typeof(TubeHomeViewModel),
+            [MenuType.TubeTemporary] = typeof(TubeTemporaryViewModel),
+            [MenuType.TubeHistory] = typeof(TubeHistoryViewModel),
         };
 
     }

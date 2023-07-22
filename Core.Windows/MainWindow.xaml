@@ -140,9 +140,25 @@
                         Style="{StaticResource MenuIconpacksButton}"
                         Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Youtube}"
                         Command="{Binding OnClickMenu}"
-                        CommandParameter="{x:Static core:MenuType.TubeRanking}"
+                        CommandParameter="{x:Static core:MenuType.TubeHome}"
                         Kind="Home"
-                        Text="{Binding Source={x:Static core:MenuType.TubeRanking}, Converter={StaticResource Enum2StringConverter}}" />
+                        Text="{Binding Source={x:Static core:MenuType.TubeHome}, Converter={StaticResource Enum2StringConverter}}" />
+
+                <corestyle:IconPacksButton
+                        Style="{StaticResource MenuIconpacksButton}"
+                        Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Youtube}"
+                        Command="{Binding OnClickMenu}"
+                        CommandParameter="{x:Static core:MenuType.TubeTemporary}"
+                        Kind="Star"
+                        Text="{Binding TubeTemporaryCount, StringFormat=Temp[{0}]}" />
+
+                <corestyle:IconPacksButton
+                        Style="{StaticResource MenuIconpacksButton}"
+                        Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Youtube}"
+                        Command="{Binding OnClickMenu}"
+                        CommandParameter="{x:Static core:MenuType.TubeHistory}"
+                        Kind="History"
+                        Text="{Binding Source={x:Static core:MenuType.TubeHistory}, Converter={StaticResource Enum2StringConverter}}" />
             </StackPanel>
         </DockPanel>
 

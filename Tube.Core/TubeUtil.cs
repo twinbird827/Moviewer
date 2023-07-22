@@ -17,34 +17,9 @@ namespace Moviewer.Tube.Core
 {
     public static partial class TubeUtil
     {
-        private const string TubeComboPath = @"lib\tube-combo-setting.xml";
-
-        public static ComboboxModel[] Combos { get; private set; }
-
-        public static void Initialize()
+        public static string Url2Id(string url)
         {
-            TubeSetting.Instance.RefreshToken = null;
-            TubeSetting.Instance.Save();
-
-            Combos = XmlUtil.Load(TubeComboPath)
-                .Descendants("combo")
-                .Select(x => new ComboboxModel(
-                    x.AttributeS("group"),
-                    x.Descendants("item").Select(i =>
-                        new ComboboxItemModel(i.AttributeS("value"), i.AttributeS("display"))
-                    )
-                ))
-                .ToArray();
-        }
-
-        public static IEnumerable<ComboboxItemModel> GetCombos(string group)
-        {
-            return Combos.Where(x => x.Group == group).SelectMany(x => x.Items);
-        }
-
-        public static string GetComboDisplay(string group, string value)
-        {
-            return GetCombos(group).FirstOrDefault(x => x.Value == value)?.Display;
+            return CoreUtil.Nvl(url).Split('/').Last().Split("v=").First();
         }
 
         private static async Task<dynamic> GetResponse(string url, Dictionary<string, string> dic)
@@ -96,6 +71,11 @@ namespace Moviewer.Tube.Core
         private static async Task<IEnumerable<TubeVideoModel>> GetVideosByUrl(string url, Dictionary<string, string> dic)
         {
             return await GetUserThumnailUrlInVideos(GetVideosByJson(await GetResponse(url, dic)));
+        }
+
+        public static async Task<TubeVideoModel> GetVideo(string id)
+        {
+            return await GetVideosByIds(id).ContinueWith(x => x.Result.FirstOrDefault());
         }
 
         public static async Task<IEnumerable<TubeVideoModel>> GetVideosByIds(params string[] ids)

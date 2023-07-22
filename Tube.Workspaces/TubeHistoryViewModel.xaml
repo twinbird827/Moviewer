@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Moviewer.Nico.Workspaces">
+                    xmlns:local="clr-namespace:Moviewer.Tube.Workspaces">
 
-    <DataTemplate DataType="{x:Type local:NicoHistoryViewModel}">
+    <DataTemplate DataType="{x:Type local:TubeHistoryViewModel}">
         <DockPanel>
 
             <StackPanel DockPanel.Dock="Top"

@@ -27,7 +27,7 @@ namespace Moviewer.Tube.Workspaces
                 .ToBindableSelectCollection(x => new TubeVideoViewModel(this, x))
                 .ToBindableContextCollection();
 
-            Categories = new ComboboxViewModel(TubeUtil.GetCombos("popular_category"));
+            Categories = new ComboboxViewModel(ComboUtil.GetTubes("popular_category"));
             Categories.SelectedItem = Categories.GetItemNotNull(TubeSetting.Instance.TubePopularCategory);
             Categories.AddOnPropertyChanged(this, Reload, nameof(Categories.SelectedItem), true);
 

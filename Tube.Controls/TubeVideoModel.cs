@@ -1,6 +1,7 @@
 ﻿using Moviewer.Core;
 using Moviewer.Core.Controls;
 using Moviewer.Core.Windows;
+using Moviewer.Nico.Controls;
 using Moviewer.Nico.Core;
 using Moviewer.Tube.Core;
 using System;
@@ -24,6 +25,12 @@ namespace Moviewer.Tube.Controls
             Counters.AddRange(Arr(_ViewCount, _LikeCount, _CommentCount));
         }
 
+        public TubeVideoModel(string id)
+        {
+            ContentId = id;
+            Status = VideoStatus.Delete;
+        }
+
         public TubeVideoModel(dynamic json)
         {
             ContentId = DynamicUtil.S(json, "id");
@@ -41,7 +48,7 @@ namespace Moviewer.Tube.Controls
             TempTime = default;
             Duration = XmlConvert.ToTimeSpan(DynamicUtil.S(json, "contentDetails.duration"));
             Tags.AddRange((string[])DynamicUtil.T<string[]>(json, "snippet.tags"));
-            UserInfo = new TubeUserModel(
+            UserInfo.SetUserInfo(
                 DynamicUtil.S(json, "snippet.channelId"),
                 DynamicUtil.S(json, "snippet.channelTitle")
             );
@@ -69,6 +76,25 @@ namespace Moviewer.Tube.Controls
             set => _CommentCount.Count = value;
         }
         private CounterModel _CommentCount = new CounterModel(CounterType.Comment, 0);
+
+        public static TubeVideoModel FromHistory(VideoHistoryModel m)
+        {
+            var video = new TubeVideoModel(m.ContentId);
+
+            m.AddOnPropertyChanged(video, (sender, e) =>
+            {
+                video.TempTime = m.Date;
+                video.RefreshStatus();
+            }, nameof(m.Date), true);
+
+            video.AddOnPropertyChanged(m, (sender, e) =>
+            {
+                m.Date = video.TempTime;
+                video.RefreshStatus();
+            }, nameof(video.TempTime), false);
+
+            return video;
+        }
 
     }
 }

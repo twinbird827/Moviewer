@@ -1,4 +1,6 @@
-﻿namespace Moviewer.Nico.Core
+﻿using Moviewer.Nico.Controls;
+
+namespace Moviewer.Nico.Core
 {
     public interface INicoSearchHistoryParentViewModel
     {

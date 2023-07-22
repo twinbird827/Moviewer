@@ -12,10 +12,14 @@
   <ItemGroup>
     <None Remove="lib\nico-combo-setting.xml" />
     <None Remove="lib\tube-combo-setting.xml" />
+    <None Remove="lib\view-combo-setting.xml" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Core.Windows\cinema.ico" />
+    <Content Include="lib\view-combo-setting.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="lib\tube-combo-setting.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

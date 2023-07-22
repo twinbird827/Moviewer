@@ -27,6 +27,7 @@ namespace Moviewer.Core.Controls
 
             await Loaded.ExecuteAsync();
             Loaded.Dispose();
+
             if (ShowProgress) MainViewModel.Instance.ShowProgress = false;
         });
         private ICommand _OnLoaded;

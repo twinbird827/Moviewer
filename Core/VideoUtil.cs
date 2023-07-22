@@ -14,10 +14,6 @@ namespace Moviewer.Core
 {
     public static class VideoUtil
     {
-        public static string Url2Id(string url)
-        {
-            return CoreUtil.Nvl(url).Split('/').Last().Split('?').First();
-        }
 
         public static async Task<BitmapImage> GetThumnailAsync(string id, params string[] urls)
         {

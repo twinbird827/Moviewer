@@ -1,29 +1,33 @@
-﻿using Microsoft.WindowsAPICodePack.Win32Native.NamedPipe;
-using Moviewer.Core;
-using Moviewer.Core.Controls;
+﻿using Moviewer.Core.Controls;
 using Moviewer.Core.Windows;
+using Moviewer.Core;
 using Moviewer.Nico.Controls;
-using Moviewer.Nico.Core;
 using System;
-using TBird.Wpf;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using TBird.Wpf.Collections;
+using Moviewer.Tube.Controls;
+using TBird.Wpf;
+using Moviewer.Nico.Core;
 
-namespace Moviewer.Nico.Workspaces
+namespace Moviewer.Tube.Workspaces
 {
-    public class NicoHistoryViewModel : WorkspaceViewModel, IVideoParentViewModel
+    public class TubeHistoryViewModel : WorkspaceViewModel, IVideoParentViewModel
     {
-        public override MenuType Type => MenuType.NicoHistory;
+        public override MenuType Type => MenuType.TubeHistory;
 
-        public NicoHistoryViewModel()
+        public TubeHistoryViewModel()
         {
             DateCondition = new ComboboxViewModel(ComboUtil.GetViews("history_date_condition"));
             DateCondition.SelectedItem = DateCondition.GetItemNotNull(NicoSetting.Instance.NicoRankingGenre);
 
             Videos = VideoUtil.Histories
-                .ToBindableWhereCollection(ShowHistory)
-                .ToBindableSelectCollection(NicoVideoModel.FromHistory)
+                .ToBindableWhereCollection(x => x.Mode == MenuMode.Youtube)
+                .ToBindableSelectCollection(TubeVideoModel.FromHistory)
                 .ToBindableSortedCollection(x => x.TempTime, isDescending: true)
-                .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x))
+                .ToBindableSelectCollection(x => new TubeVideoViewModel(this, x))
                 .ToBindableContextCollection();
 
             AddDisposed((sender, e) =>
@@ -34,21 +38,21 @@ namespace Moviewer.Nico.Workspaces
 
         public ComboboxViewModel DateCondition { get; private set; }
 
-        public BindableContextCollection<NicoVideoViewModel> Videos
+        public BindableContextCollection<TubeVideoViewModel> Videos
         {
             get => _Videos;
             set => SetProperty(ref _Videos, value);
         }
-        public BindableContextCollection<NicoVideoViewModel> _Videos;
+        public BindableContextCollection<TubeVideoViewModel> _Videos;
 
         public void DeleteOnVideo(VideoViewModel vm)
         {
-            VideoUtil.DelHistory(MenuMode.Niconico, vm.Source.ContentId);
+            VideoUtil.DelHistory(MenuMode.Youtube, vm.Source.ContentId);
         }
 
         private bool ShowHistory(VideoHistoryModel m)
         {
-            if (m.Mode != MenuMode.Niconico) return false;
+            if (m.Mode != MenuMode.Youtube) return false;
 
             var condition = DateCondition.SelectedItem;
 
@@ -63,5 +67,6 @@ namespace Moviewer.Nico.Workspaces
                 return true;
             }
         }
+
     }
 }

@@ -18,6 +18,7 @@ namespace Moviewer.Core.Controls
         {
             Tags = new BindableCollection<string>();
             Counters = new BindableCollection<CounterModel>();
+            UserInfo = CreateUserInfo();
 
             AddDisposed((sender, e) =>
             {
@@ -79,12 +80,7 @@ namespace Moviewer.Core.Controls
         }
         private TimeSpan _Duration;
 
-        public UserModel UserInfo
-        {
-            get => _UserInfo;
-            set => SetProperty(ref _UserInfo, value);
-        }
-        private UserModel _UserInfo;
+        public UserModel UserInfo { get; private set; }
 
         public BindableCollection<string> Tags { get; private set; }
 
@@ -94,6 +90,11 @@ namespace Moviewer.Core.Controls
             set => SetProperty(ref _Status, value);
         }
         private VideoStatus _Status = VideoStatus.None;
+
+        protected virtual UserModel CreateUserInfo()
+        {
+            return new UserModel();
+        }
 
         public virtual void RefreshStatus()
         {

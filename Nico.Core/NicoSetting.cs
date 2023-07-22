@@ -1,4 +1,7 @@
-﻿using TBird.Core;
+﻿using System;
+using Moviewer.Nico.Controls;
+using TBird.Core;
+using TBird.Wpf;
 
 namespace Moviewer.Nico.Core
 {
@@ -23,6 +26,10 @@ namespace Moviewer.Nico.Core
                 SearchHistories = new NicoSearchHistoryModel[] { };
 
                 SearchFavorites = new NicoSearchHistoryModel[] { };
+
+                Searches = new NicoSearchHistoryModel[] { };
+
+                Favorites = new NicoSearchHistoryModel[] { };
             }
         }
 
@@ -82,5 +89,48 @@ namespace Moviewer.Nico.Core
         }
         private NicoSearchHistoryModel[] _SearchFavorites;
 
+        public NicoSearchHistoryModel[] Searches
+        {
+            get => GetProperty(_Searches);
+            set => SetProperty(ref _Searches, value);
+        }
+        private NicoSearchHistoryModel[] _Searches;
+
+        public NicoSearchHistoryModel[] Favorites
+        {
+            get => GetProperty(_Favorites);
+            set => SetProperty(ref _Favorites, value);
+        }
+        private NicoSearchHistoryModel[] _Favorites;
+
     }
+
+    public class NicoVideoHistoryModel : BindableBase
+    {
+        public NicoVideoHistoryModel()
+        {
+
+        }
+
+        public NicoVideoHistoryModel(string contentid)
+        {
+            ContentId = contentid;
+            Date = DateTime.Now; ;
+        }
+
+        public string ContentId
+        {
+            get => _ContentId;
+            set => SetProperty(ref _ContentId, value);
+        }
+        private string _ContentId = null;
+
+        public DateTime Date
+        {
+            get => _Date;
+            set => SetProperty(ref _Date, value);
+        }
+        private DateTime _Date;
+    }
+
 }

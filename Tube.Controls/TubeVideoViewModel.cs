@@ -42,9 +42,9 @@ namespace Moviewer.Tube.Controls
 
         public WorkspaceViewModel Parent { get; private set; }
 
-        protected override UserViewModel CreateUserViewModel(UserModel m)
+        protected override UserViewModel CreateUserInfo()
         {
-            return new TubeUserViewModel(m);
+            return new TubeUserViewModel();
         }
 
         protected override TagViewModel CreateTagViewModel(string tag)

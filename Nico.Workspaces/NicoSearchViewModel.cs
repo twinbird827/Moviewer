@@ -27,10 +27,10 @@ namespace Moviewer.Nico.Workspaces
                 .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x))
                 .ToBindableContextCollection();
 
-            Orderby = new ComboboxViewModel(NicoUtil.GetCombos("order_by"));
+            Orderby = new ComboboxViewModel(ComboUtil.GetNicos("order_by"));
             Orderby.SelectedItem = Orderby.GetItemNotNull(NicoSetting.Instance.NicoSearchOrderby);
 
-            Histories = NicoModel.SearchHistories
+            Histories = NicoModel.Searches
                 .ToBindableSortedCollection(x => x.Date, true)
                 .ToBindableSelectCollection(x => new NicoSearchHistoryViewModel(this, x))
                 .ToBindableContextCollection();
@@ -68,7 +68,7 @@ namespace Moviewer.Nico.Workspaces
                 Sources.AddRange(x.Result);
             });
 
-            NicoModel.AddSearchHistory(Word, t);
+            NicoModel.AddSearch(Word, t);
         });
         private ICommand _OnSearch;
 
@@ -80,7 +80,7 @@ namespace Moviewer.Nico.Workspaces
 
         public void NicoSearchHistoryOnDelete(NicoSearchHistoryViewModel vm)
         {
-            NicoModel.DelSearchHistory(vm.Word, vm.Type);
+            NicoModel.DelSearch(vm.Word, vm.Type);
         }
     }
 }

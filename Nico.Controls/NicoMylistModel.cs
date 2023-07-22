@@ -1,6 +1,6 @@
 ﻿using Moviewer.Core;
 using Moviewer.Core.Controls;
-using Moviewer.Nico.Controls;
+using Moviewer.Nico.Core;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -9,13 +9,13 @@ using System.Xml.Linq;
 using TBird.Core;
 using TBird.Wpf;
 
-namespace Moviewer.Nico.Core
+namespace Moviewer.Nico.Controls
 {
     public class NicoMylistModel : ControlModel, IThumbnailUrl
     {
         public static async Task<XElement> GetNicoMylistXml(string id)
         {
-            var xml = await NicoUtil.GetXmlChannelAsync($"http://www.nicovideo.jp/mylist/{VideoUtil.Url2Id(id)}?rss=2.0&numbers=1&sort=0");
+            var xml = await NicoUtil.GetXmlChannelAsync($"http://www.nicovideo.jp/mylist/{NicoUtil.Url2Id(id)}?rss=2.0&numbers=1&sort=0");
             return xml;
         }
 
@@ -26,7 +26,8 @@ namespace Moviewer.Nico.Core
             MylistDate = DateTime.Parse(xml.ElementS("lastBuildDate"));
             MylistDescription = xml.ElementS("description");
 
-            UserInfo = new NicoUserModel(
+            UserInfo = new NicoUserModel();
+            UserInfo.SetUserInfo(
                 Regex.Match(xml.ElementS("link"), @"(?<=user\/)[\d]+").Value,          // user id
                 xml.ElementS(XName.Get("creator", "http://purl.org/dc/elements/1.1/")) // creator name
             );
@@ -39,7 +40,7 @@ namespace Moviewer.Nico.Core
 
         private string GetMylistTitle(string value)
         {
-            return NicoUtil.GetCombos("mylist_title_removes")
+            return ComboUtil.GetNicos("mylist_title_removes")
                 .Aggregate(value, (s, c) => s.Replace(c.Display, ""));
         }
 

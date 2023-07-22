@@ -15,11 +15,5 @@ namespace Moviewer.Tube.Controls
         {
 
         }
-
-        public TubeUserModel(string id, string title)
-        {
-            Userid = id;
-            Username = title;
-        }
     }
 }

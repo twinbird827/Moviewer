@@ -12,27 +12,27 @@ namespace Moviewer.Nico.Controls
 {
     public class NicoUserModel : UserModel
     {
-        public NicoUserModel(string id, string name)
+        public NicoUserModel()
         {
-            Userid = id;
-            Username = name;
-        }
+            AddOnPropertyChanged(this, async (sender, e) =>
+            {
+                if (string.IsNullOrEmpty(Userid)) return;
 
-        protected override async Task OnLoaded()
-        {
-            if (!Userid.StartsWith("ch"))
-            {
-                Username = await GetNickname(Userid);
-                var url0 = Userid;
-                var url1 = "https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon";
-                var url2 = 4 < url0.Length ? url0.Left(url0.Length - 4) : "0";
-                var url3 = url0;
-                ThumbnailUrl = $"{url1}/{url2}/{url3}.jpg";
-            }
-            else
-            {
-                ThumbnailUrl = $"https://secure-dcdn.cdn.nimg.jp/comch/channel-icon/128x128/{Userid}.jpg";
-            }
+                if (!Userid.StartsWith("ch"))
+                {
+                    Username = await GetNickname(Userid);
+                    var url0 = Userid;
+                    var url1 = "https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon";
+                    var url2 = 4 < url0.Length ? url0.Left(url0.Length - 4) : "0";
+                    var url3 = url0;
+                    ThumbnailUrl = $"{url1}/{url2}/{url3}.jpg";
+                }
+                else
+                {
+                    Username = Username ?? Userid;
+                    ThumbnailUrl = $"https://secure-dcdn.cdn.nimg.jp/comch/channel-icon/128x128/{Userid}.jpg";
+                }
+            }, nameof(Userid), false);
         }
 
         private async Task<string> GetNickname(string userid)

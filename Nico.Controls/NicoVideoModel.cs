@@ -16,9 +16,7 @@ namespace Moviewer.Nico.Controls
     {
         public NicoVideoModel()
         {
-            Counters.Add(_ViewCount);
-            Counters.Add(_MylistCount);
-            Counters.Add(_CommentCount);
+            Counters.AddRange(Arr(_ViewCount, _MylistCount, _CommentCount));
         }
 
         public NicoVideoModel(string contentid)
@@ -43,10 +41,9 @@ namespace Moviewer.Nico.Controls
                 StartTime = DateTimeOffset.Parse(DynamicUtil.S(item, "startTime")).DateTime;
                 Duration = TimeSpan.FromSeconds(DynamicUtil.L(item, "lengthSeconds"));
                 Tags.AddRange((string[])DynamicUtil.O(item, "tags"));
-                UserInfo = new NicoUserModel(CoreUtil.Nvl(
-                    DynamicUtil.S(item, "userId"),
-                    $"ch{DynamicUtil.S(item, "channelId")}"
-                ), null);
+                UserInfo.SetUserInfo(
+                    (string)CoreUtil.Nvl(DynamicUtil.S(item, "userId"), $"ch{DynamicUtil.S(item, "channelId")}")
+                );
                 RefreshStatus();
 
                 _beforedisplay = true;
@@ -82,7 +79,7 @@ namespace Moviewer.Nico.Controls
         public NicoVideoModel(XElement xml)
         {
             xml = xml.Descendants("thumb").First();
-            ContentId = VideoUtil.Url2Id(xml.ElementS("watch_url"));
+            ContentId = NicoUtil.Url2Id(xml.ElementS("watch_url"));
             Title = xml.ElementS("title");
             Description = xml.ElementS("description");
             ThumbnailUrl = xml.ElementS("thumbnail_url");
@@ -92,7 +89,7 @@ namespace Moviewer.Nico.Controls
             StartTime = DateTime.Parse(xml.ElementS("first_retrieve"));
             Duration = ToDuration(xml.ElementS("length"));
             Tags.AddRange(xml.Descendants("tags").First().Descendants("tag").Select(tag => (string)tag));
-            UserInfo = new NicoUserModel(
+            UserInfo.SetUserInfo(
                 CoreUtil.Nvl(xml.ElementS("user_id"), "ch" + xml.ElementS("ch_id")),
                 CoreUtil.Nvl(xml.ElementS("user_nickname"), xml.ElementS("ch_name"))
             );
@@ -113,7 +110,7 @@ namespace Moviewer.Nico.Controls
                 descriptionString = descriptionString.Replace("'", "&apos;");
                 var descriptionXml = XmlUtil.ToXml($"<root>{descriptionString}</root>");
 
-                ContentId = VideoUtil.Url2Id(item.ElementS("link"));
+                ContentId = NicoUtil.Url2Id(item.ElementS("link"));
                 Title = item.Element("title").Value;
                 Description = (string)descriptionXml.Descendants("p").FirstOrDefault(x => x.AttributeS("class") == "nico-description");
                 ThumbnailUrl = descriptionXml.Descendants("img").First().AttributeS("src");
@@ -204,6 +201,11 @@ namespace Moviewer.Nico.Controls
         }
         private CounterModel _CommentCount = new CounterModel(CounterType.Comment, 0);
 
+        protected override UserModel CreateUserInfo()
+        {
+            return new NicoUserModel();
+        }
+
         protected override async Task OnLoaded()
         {
             if (!_beforedisplay) return;
@@ -221,7 +223,7 @@ namespace Moviewer.Nico.Controls
                 StartTime = Arr(StartTime, m.StartTime).Max();
                 Duration = Arr(Duration, m.Duration).Max();
                 Tags.AddRange(m.Tags);
-                (UserInfo = UserInfo ?? m.UserInfo).SetUserInfo(m.UserInfo);
+                UserInfo.SetUserInfo(m.UserInfo);
                 RefreshStatus();
 
                 _beforedisplay = false;
@@ -229,5 +231,25 @@ namespace Moviewer.Nico.Controls
         }
 
         private bool _beforedisplay = false;
+
+        public static NicoVideoModel FromHistory(VideoHistoryModel m)
+        {
+            var video = new NicoVideoModel(m.ContentId);
+
+            m.AddOnPropertyChanged(video, (sender, e) =>
+            {
+                video.TempTime = m.Date;
+                video.RefreshStatus();
+            }, nameof(m.Date), true);
+
+            video.AddOnPropertyChanged(m, (sender, e) =>
+            {
+                m.Date = video.TempTime;
+                video.RefreshStatus();
+            }, nameof(video.TempTime), false);
+
+            return video;
+        }
+
     }
 }

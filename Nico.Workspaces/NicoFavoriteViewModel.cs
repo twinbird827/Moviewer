@@ -21,10 +21,10 @@ namespace Moviewer.Nico.Workspaces
                 .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x))
                 .ToBindableContextCollection();
 
-            Orderby = new ComboboxViewModel(NicoUtil.GetCombos("order_by"));
+            Orderby = new ComboboxViewModel(ComboUtil.GetNicos("order_by"));
             Orderby.SelectedItem = Orderby.GetItemNotNull(NicoSetting.Instance.NicoFavoriteOrderby);
 
-            Favorites = NicoModel.SearchFavorites
+            Favorites = NicoModel.Favorites
                 .ToBindableSortedCollection(x => x.Date, true)
                 .ToBindableSelectCollection(x => new NicoSearchHistoryViewModel(this, x))
                 .ToBindableContextCollection();
@@ -64,7 +64,7 @@ namespace Moviewer.Nico.Workspaces
 
         public void NicoSearchHistoryOnDelete(NicoSearchHistoryViewModel vm)
         {
-            NicoModel.DelSearchFavorite(vm.Word, vm.Type);
+            NicoModel.DelFavorite(vm.Word, vm.Type);
         }
     }
 }

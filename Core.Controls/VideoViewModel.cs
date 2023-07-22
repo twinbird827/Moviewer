@@ -33,6 +33,8 @@ namespace Moviewer.Core.Controls
                 .ToBindableSelectCollection(CreateTagViewModel)
                 .ToBindableContextCollection();
 
+            UserInfo = CreateUserInfo();
+
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 Title = m.Title;
@@ -60,8 +62,7 @@ namespace Moviewer.Core.Controls
 
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
-                UserInfo.TryDispose();
-                UserInfo = CreateUserViewModel(m.UserInfo);
+                UserInfo.SetUserInfo(m.UserInfo);
             }, nameof(m.UserInfo), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
@@ -140,12 +141,7 @@ namespace Moviewer.Core.Controls
         }
         private TimeSpan _Duration;
 
-        public UserViewModel UserInfo
-        {
-            get => _UserInfo;
-            set => SetProperty(ref _UserInfo, value);
-        }
-        private UserViewModel _UserInfo;
+        public UserViewModel UserInfo { get; private set; }
 
         public BindableCollection<TagViewModel> Tags { get; private set; }
 
@@ -174,11 +170,6 @@ namespace Moviewer.Core.Controls
         protected virtual CounterViewModel CreateCounterViewModel(CounterModel m)
         {
             return new CounterViewModel(m);
-        }
-
-        protected virtual UserViewModel CreateUserViewModel(UserModel m)
-        {
-            return new UserViewModel(m);
         }
 
         public ICommand OnDoubleClick =>
@@ -232,6 +223,11 @@ namespace Moviewer.Core.Controls
         protected virtual DownloadModel GetDownloadModel()
         {
             return null;
+        }
+
+        protected virtual UserViewModel CreateUserInfo()
+        {
+            return new UserViewModel();
         }
     }
 }

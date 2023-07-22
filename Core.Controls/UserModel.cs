@@ -31,11 +31,16 @@ namespace Moviewer.Core.Controls
         }
         private string _ThumbnailUrl;
 
-        public virtual void SetUserInfo(UserModel m)
+        public void SetUserInfo(UserModel m)
         {
-            Userid = CoreUtil.Nvl(m.Userid, Userid);
-            Username = CoreUtil.Nvl(m.Username, Username);
-            ThumbnailUrl = CoreUtil.Nvl(m.ThumbnailUrl, ThumbnailUrl);
+            SetUserInfo(m.Userid, m.Username, m.ThumbnailUrl);
+        }
+
+        public virtual void SetUserInfo(string id, string name = null, string url = null)
+        {
+            Userid = CoreUtil.Nvl(id, Userid);
+            Username = CoreUtil.Nvl(name, Username);
+            ThumbnailUrl = CoreUtil.Nvl(url, ThumbnailUrl);
         }
     }
 }
