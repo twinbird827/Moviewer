@@ -24,28 +24,27 @@ namespace Moviewer.Core.Controls
 
         public UserViewModel SetUserInfo(UserModel m)
         {
+            if (m == null) return this;
+
             Source = m;
 
-            if (m != null)
+            m.AddOnPropertyChanged(this, (sender, e) =>
             {
-                m.AddOnPropertyChanged(this, (sender, e) =>
-                {
-                    Userid = m.Userid;
-                }, nameof(m.Userid), true);
+                Userid = m.Userid;
+            }, nameof(m.Userid), true);
 
-                m.AddOnPropertyChanged(this, (sender, e) =>
-                {
-                    Username = m.Username;
-                }, nameof(m.Username), true);
+            m.AddOnPropertyChanged(this, (sender, e) =>
+            {
+                Username = m.Username;
+            }, nameof(m.Username), true);
 
-                if (Loaded.IsDisposed)
-                {
-                    SetThumbnail();
-                }
-                else
-                {
-                    Loaded.Add(SetThumbnail);
-                }
+            if (Loaded.IsDisposed)
+            {
+                SetThumbnail();
+            }
+            else
+            {
+                Loaded.Add(SetThumbnail);
             }
 
             return this;
