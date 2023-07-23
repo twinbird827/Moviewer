@@ -19,7 +19,7 @@ namespace Moviewer.Nico.Controls
             Counters.AddRange(Arr(_ViewCount, _MylistCount, _CommentCount));
         }
 
-        public NicoVideoModel(string contentid)
+        public NicoVideoModel(string contentid) : this()
         {
             ContentId = contentid;
             Status = VideoStatus.Delete;
@@ -27,7 +27,7 @@ namespace Moviewer.Nico.Controls
             _beforedisplay = true;
         }
 
-        public NicoVideoModel(dynamic item)
+        public NicoVideoModel(dynamic item) : this()
         {
             try
             {
@@ -41,9 +41,6 @@ namespace Moviewer.Nico.Controls
                 StartTime = DateTimeOffset.Parse(DynamicUtil.S(item, "startTime")).DateTime;
                 Duration = TimeSpan.FromSeconds(DynamicUtil.L(item, "lengthSeconds"));
                 Tags.AddRange((string[])DynamicUtil.O(item, "tags"));
-                UserInfo.SetUserInfo(
-                    (string)CoreUtil.Nvl(DynamicUtil.S(item, "userId"), $"ch{DynamicUtil.S(item, "channelId")}")
-                );
                 RefreshStatus();
 
                 _beforedisplay = true;
@@ -76,7 +73,7 @@ namespace Moviewer.Nico.Controls
         //    _beforedisplay = false;
         //}
 
-        public NicoVideoModel(XElement xml)
+        public NicoVideoModel(XElement xml) : this()
         {
             xml = xml.Descendants("thumb").First();
             ContentId = NicoUtil.Url2Id(xml.ElementS("watch_url"));
@@ -98,7 +95,7 @@ namespace Moviewer.Nico.Controls
             _beforedisplay = false;
         }
 
-        public NicoVideoModel(XElement item, string view, string mylist, string comment)
+        public NicoVideoModel(XElement item, string view, string mylist, string comment) : this()
         {
             try
             {

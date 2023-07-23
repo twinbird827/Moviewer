@@ -33,6 +33,13 @@ namespace Moviewer.Nico.Controls
             {
                 Display = await GetDisplay();
             });
+            Loaded.Add(() =>
+            {
+                if (Display is UserViewModel vm)
+                {
+                    vm.SetThumbnail();
+                }
+            });
 
             AddDisposed((sender, e) =>
             {
@@ -82,7 +89,7 @@ namespace Moviewer.Nico.Controls
             switch (Type)
             {
                 case NicoSearchType.User:
-                    return new NicoUserViewModel().SetUserInfo(new NicoUserModel() { Userid = Word });
+                    return new NicoUserViewModel().SetUserInfo(await NicoUserModel.GetUserInfo(Word));
                 case NicoSearchType.Mylist:
                     return new NicoMylistViewModel(new NicoMylistModel(Word, await NicoMylistModel.GetNicoMylistXml(Word)));
                 default:

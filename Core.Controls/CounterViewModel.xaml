@@ -10,7 +10,7 @@
 
     <DataTemplate DataType="{x:Type moctrl:CounterViewModel}">
         <StackPanel Style="{DynamicResource HorizontalStackPanel}">
-            <TextBlock beha:FrameworkElementBehavior.Width="50"
+            <TextBlock beha:FrameworkElementBehavior.Width="65"
                        Text="{Binding Type, Converter={StaticResource Enum2StringConverter},StringFormat={}{0} : }" />
 
             <TextBlock beha:FrameworkElementBehavior.Width="50"

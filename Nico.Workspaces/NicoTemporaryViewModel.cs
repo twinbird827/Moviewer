@@ -30,13 +30,15 @@ namespace Moviewer.Nico.Workspaces
 
             Users = Sources
                 .ToBindableSelectCollection(x => x.UserInfo)
-                .ToBindableDistinctCollection(x => x.Userid, nameof(UserModel.Userid))
+                .ToBindableDistinctCollection(x => x.Userid, nameof(UserViewModel.Userid))
                 .ToBindableContextCollection();
 
             Videos = Sources
-                .ToBindableWhereCollection(x => SelectedUser == null || x.UserInfo.Userid == SelectedUser.Userid)
+                .ToBindableWhereCollection(x => 
+                    (SelectedUser == null || x.UserInfo.Userid == SelectedUser.Userid) &&
+                    (VideoType.SelectedItem == null || x.ContentId.StartsWith(VideoType.SelectedItem.Value))
+                )
                 .AddOnRefreshCollection(this, nameof(SelectedUser))
-                .ToBindableWhereCollection(x => VideoType.SelectedItem == null || x.ContentId.StartsWith(VideoType.SelectedItem.Value))
                 .AddOnRefreshCollection(VideoType, nameof(VideoType.SelectedItem))
                 .ToBindableSortedCollection(x => x.TempTime, true)
                 .ToBindableContextCollection();

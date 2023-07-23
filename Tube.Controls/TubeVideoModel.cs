@@ -25,13 +25,13 @@ namespace Moviewer.Tube.Controls
             Counters.AddRange(Arr(_ViewCount, _LikeCount, _CommentCount));
         }
 
-        public TubeVideoModel(string id)
+        public TubeVideoModel(string id) : this()
         {
             ContentId = id;
             Status = VideoStatus.Delete;
         }
 
-        public TubeVideoModel(dynamic json)
+        public TubeVideoModel(dynamic json) : this()
         {
             ContentId = DynamicUtil.S(json, "id");
             Title = DynamicUtil.S(json, "snippet.title");

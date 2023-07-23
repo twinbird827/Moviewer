@@ -12,32 +12,36 @@ namespace Moviewer.Nico.Controls
 {
     public class NicoUserModel : UserModel
     {
-        public NicoUserModel()
+        public override void SetUserInfo(string id, string name = null, string url = null)
         {
-            AddOnPropertyChanged(this, async (sender, e) =>
+            if (!id.StartsWith("ch"))
             {
-                if (string.IsNullOrEmpty(Userid)) return;
+                var url0 = id;
+                var url1 = "https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon";
+                var url2 = 4 < url0.Length ? url0.Left(url0.Length - 4) : "0";
+                var url3 = url0;
+                url = $"{url1}/{url2}/{url3}.jpg";
+            }
+            else
+            {
+                url = $"https://secure-dcdn.cdn.nimg.jp/comch/channel-icon/128x128/{id}.jpg";
+            }
 
-                if (!Userid.StartsWith("ch"))
-                {
-                    Username = await GetNickname(Userid);
-                    var url0 = Userid;
-                    var url1 = "https://secure-dcdn.cdn.nimg.jp/nicoaccount/usericon";
-                    var url2 = 4 < url0.Length ? url0.Left(url0.Length - 4) : "0";
-                    var url3 = url0;
-                    ThumbnailUrl = $"{url1}/{url2}/{url3}.jpg";
-                }
-                else
-                {
-                    Username = Username ?? Userid;
-                    ThumbnailUrl = $"https://secure-dcdn.cdn.nimg.jp/comch/channel-icon/128x128/{Userid}.jpg";
-                }
-            }, nameof(Userid), false);
+            base.SetUserInfo(id, name, url);
         }
 
-        private async Task<string> GetNickname(string userid)
+        public static async Task<NicoUserModel> GetUserInfo(string id)
         {
-            using (await Locker.LockAsync(Lock))
+            var info = new NicoUserModel();
+
+            info.SetUserInfo(id, await GetNickname(id));
+
+            return info;
+        }
+
+        private static async Task<string> GetNickname(string userid)
+        {
+            using (await Locker.LockAsync(_nicknamelock))
             {
                 if (_nicknames.ContainsKey(userid)) return _nicknames[userid];
 
@@ -66,5 +70,6 @@ namespace Moviewer.Nico.Controls
         }
 
         private static Dictionary<string, string> _nicknames = new Dictionary<string, string>();
+        private static string _nicknamelock = Locker.GetNewLockKey();
     }
 }

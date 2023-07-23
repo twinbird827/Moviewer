@@ -45,9 +45,7 @@ namespace Moviewer.Tube.Core
 
             if (string.IsNullOrEmpty(TubeSetting.Instance.RefreshToken))
             {
-                var authorizationcode = await GetAuthorizationCode();
-
-                await SetToken(authorizationcode);
+                await SetToken();
             }
 
             if (string.IsNullOrEmpty(TubeSetting.Instance.AccessToken))
@@ -72,7 +70,7 @@ namespace Moviewer.Tube.Core
             }
         }
 
-        private static async Task<string> GetAuthorizationCode()
+        private static async Task SetToken()
         {
             using (var listener = new WebListener())
             {
@@ -100,7 +98,7 @@ namespace Moviewer.Tube.Core
                     //var body = @"<html><body onload=""open(location, '_self').close();""></body></html>";
                     await response.WriteAutoClose();
                 }
-                return parameters.Get("code");
+                await SetToken(parameters.Get("code"), listener.Prefix);
             }
         }
 
@@ -115,7 +113,7 @@ namespace Moviewer.Tube.Core
             "https://www.googleapis.com/auth/youtubepartner-channel-audit"
         };
 
-        private static async Task SetToken(string authorizationcode)
+        private static async Task SetToken(string authorizationcode, string prefix)
         {
             var url = "https://oauth2.googleapis.com/token";
             //var dic = new
@@ -132,7 +130,7 @@ namespace Moviewer.Tube.Core
                 { "client_secret", TubeSetting.Instance.ClientSecret },
                 { "code", authorizationcode },
                 { "grant_type", "authorization_code" },
-                { "redirect_uri", @"http://localhost" },
+                { "redirect_uri", prefix },
             };
             var urlparameter = dic.Select(x => $"{x.Key}={HttpUtility.UrlEncode(x.Value)}").GetString("&");
 

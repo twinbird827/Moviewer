@@ -12,8 +12,6 @@
         <ResourceDictionary Source="pack://application:,,,/Moviewer;component/Core.Controls/TagViewModel.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <system:Double x:Key="VideoViewModel.Height">140</system:Double>
-
     <Style x:Key="VideoViewModel.MenuItem.OnTemporaryAdd" TargetType="MenuItem" BasedOn="{StaticResource MahApps.Styles.MenuItem}">
         <Setter Property="Header" Value="追加" />
         <Setter Property="Command" Value="{Binding OnTemporaryAdd}" />
@@ -45,7 +43,7 @@
     </Style>
 
     <DataTemplate DataType="{x:Type moctrl:VideoViewModel}">
-        <DockPanel beha:FrameworkElementBehavior.Height="{StaticResource VideoViewModel.Height}"
+        <DockPanel beha:FrameworkElementBehavior.Height="161"
                    HorizontalAlignment="Stretch"
                    beha:FrameworkElementBehavior.Loaded="{Binding OnLoaded}">
 
@@ -55,15 +53,10 @@
                            Text="{Binding Status, Converter={StaticResource Enum2StringConverter}}" />
 
                 <ContentPresenter DockPanel.Dock="Left"
-                                  VerticalAlignment="Stretch"
+                                  beha:FrameworkElementBehavior.Width="188"
+                                  beha:FrameworkElementBehavior.Height="141"
                                   ContentTemplate="{DynamicResource Core.Thumbnail}"
                                   Content="{Binding Thumbnail}" />
-
-                <!--<ContentPresenter DockPanel.Dock="Left"
-                                  beha:FrameworkElementBehavior.Width="188"
-                                  beha:FrameworkElementBehavior.Height="{StaticResource VideoViewModel.Height}"
-                                  ContentTemplate="{DynamicResource Core.Thumbnail}"
-                                  Content="{Binding Thumbnail}" />-->
             </DockPanel>
 
             <!-- 最下段 -->
@@ -84,7 +77,8 @@
                     </ItemsControl>
                 </StackPanel>
 
-                <StackPanel DockPanel.Dock="Right">
+                <StackPanel DockPanel.Dock="Right"
+                            Orientation="Horizontal">
 
                     <TextBlock Visibility="{Binding TempTime, Converter={StaticResource Null2VisibilityCollapsedConverter}}"
                                Foreground="DarkBlue"

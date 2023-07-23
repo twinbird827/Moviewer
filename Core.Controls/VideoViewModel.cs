@@ -63,6 +63,7 @@ namespace Moviewer.Core.Controls
             m.AddOnPropertyChanged(this, (sender, e) =>
             {
                 UserInfo.SetUserInfo(m.UserInfo);
+                OnPropertyChanged(nameof(UserInfo));
             }, nameof(m.UserInfo), true);
 
             m.AddOnPropertyChanged(this, (sender, e) =>
@@ -71,6 +72,8 @@ namespace Moviewer.Core.Controls
             }, nameof(m.Status), true);
 
             Loaded.Add(SetThumbnail);
+            Loaded.Add(UserInfo.SetThumbnail);
+            Loaded.Add(() => OnPropertyChanged(nameof(UserInfo)));
 
             AddDisposed((sender, e) =>
             {
@@ -141,7 +144,12 @@ namespace Moviewer.Core.Controls
         }
         private TimeSpan _Duration;
 
-        public UserViewModel UserInfo { get; private set; }
+        public UserViewModel UserInfo
+        {
+            get => _UserInfo;
+            set => SetProperty(ref _UserInfo, value);
+        }
+        private UserViewModel _UserInfo;
 
         public BindableCollection<TagViewModel> Tags { get; private set; }
 

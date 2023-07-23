@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Automation;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using TBird.Core;
 using TBird.Wpf;
 
 namespace Moviewer.Core.Controls
@@ -19,6 +20,8 @@ namespace Moviewer.Core.Controls
             AddDisposed((sender, e) =>
             {
                 Thumbnail = null;
+
+                Source.TryDispose();
             });
         }
 
@@ -38,14 +41,14 @@ namespace Moviewer.Core.Controls
                 Username = m.Username;
             }, nameof(m.Username), true);
 
-            if (Loaded.IsDisposed)
-            {
-                SetThumbnail();
-            }
-            else
-            {
-                Loaded.Add(SetThumbnail);
-            }
+            //if (Loaded.IsDisposed)
+            //{
+            //    SetThumbnail();
+            //}
+            //else
+            //{
+            //    Loaded.Add(SetThumbnail);
+            //}
 
             return this;
         }
@@ -73,7 +76,7 @@ namespace Moviewer.Core.Controls
         }
         private BitmapImage _Thumbnail;
 
-        private void SetThumbnail()
+        public void SetThumbnail()
         {
             this.SetThumbnail(Source);
         }

@@ -28,7 +28,7 @@ namespace Moviewer.Core.Controls
         {
             m.AddOnPropertyChanged(tgt, async (sender, e) =>
             {
-                await tgt.SetThumbnail(m.ThumbnailUrl);
+                if (!string.IsNullOrEmpty(m.ThumbnailUrl)) await tgt.SetThumbnail(m.ThumbnailUrl);
             }, nameof(m.ThumbnailUrl), true);
         }
 

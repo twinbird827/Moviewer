@@ -19,7 +19,7 @@ namespace Moviewer.Tube.Core
     {
         public static string Url2Id(string url)
         {
-            return CoreUtil.Nvl(url).Split('/').Last().Split("v=").First();
+            return CoreUtil.Nvl(url).Split('/').Last().Split("v=").Last();
         }
 
         private static async Task<dynamic> GetResponse(string url, Dictionary<string, string> dic)

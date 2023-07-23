@@ -6,7 +6,7 @@
                     xmlns:beha="clr-namespace:TBird.Wpf.Behaviors;assembly=TBird.Wpf">
 
     <DataTemplate DataType="{x:Type local:NicoTemporaryViewModel}">
-        <DockPanel>
+        <DockPanel beha:FrameworkElementBehavior.Loaded="{Binding OnLoaded}">
 
             <DockPanel DockPanel.Dock="Top">
 
