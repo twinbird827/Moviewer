@@ -9,12 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TBird.Wpf.Collections;
+using TBird.Core;
 using TBird.Wpf;
 using System.Windows.Input;
 using Moviewer.Tube.Controls;
 using TBird.Wpf.Controls;
 using System.Windows;
 using Moviewer.Tube.Core;
+using WinCopies.Util;
 
 namespace Moviewer.Tube.Workspaces
 {
@@ -27,23 +29,32 @@ namespace Moviewer.Tube.Workspaces
             //VideoType = new ComboboxViewModel(NicoUtil.GetCombos("video_type"));
             //VideoType.SelectedItem = null;
 
-            Sources = VideoUtil.Temporaries
-                .ToBindableWhereCollection(x => x.Mode == MenuMode.Youtube)
-                .ToBindableSelectCollection(TubeVideoModel.FromHistory)
-                .ToBindableSelectCollection(x => new TubeVideoViewModel(this, x));
+            Loaded.Add(async () =>
+            {
+                Sources = VideoUtil.Temporaries
+                    .ToBindableWhereCollection(x => x.Mode == MenuMode.Youtube)
+                    .ToBindableSelectCollection(TubeVideoModel.FromHistory)
+                    .ToBindableSelectCollection(x => new TubeVideoViewModel(this, x));
 
-            Users = Sources
-                .ToBindableSelectCollection(x => x.UserInfo)
-                .ToBindableDistinctCollection(x => x.Userid, nameof(UserModel.Userid))
-                .ToBindableContextCollection();
+                var sources = await TubeUtil.GetVideosByIds(Sources.Select(x => x.ContentId).ToArray());
 
-            Videos = Sources
-                .ToBindableWhereCollection(x => SelectedUser == null || x.UserInfo.Userid == SelectedUser.Userid)
-                .AddOnRefreshCollection(this, nameof(SelectedUser))
-                //.ToBindableWhereCollection(x => VideoType.SelectedItem == null || x.ContentId.StartsWith(VideoType.SelectedItem.Value))
-                //.AddOnRefreshCollection(VideoType, nameof(VideoType.SelectedItem))
-                .ToBindableSortedCollection(x => x.TempTime, true)
-                .ToBindableContextCollection();
+                Sources
+                    .Select(x => (TubeVideoModel)x.Source)
+                    .ForEach(x => x.SetModel(sources.FirstOrDefault(y => y.ContentId == x.ContentId)));
+
+                Users = Sources
+                    .ToBindableSelectCollection(x => x.UserInfo)
+                    .ToBindableDistinctCollection(x => x.Userid, nameof(UserModel.Userid))
+                    .ToBindableContextCollection();
+
+                Videos = Sources
+                    .ToBindableWhereCollection(x => SelectedUser == null || x.UserInfo.Userid == SelectedUser.Userid)
+                    .AddOnRefreshCollection(this, nameof(SelectedUser))
+                    //.ToBindableWhereCollection(x => VideoType.SelectedItem == null || x.ContentId.StartsWith(VideoType.SelectedItem.Value))
+                    //.AddOnRefreshCollection(VideoType, nameof(VideoType.SelectedItem))
+                    .ToBindableSortedCollection(x => x.TempTime, true)
+                    .ToBindableContextCollection();
+            });
 
             AddDisposed((sender, e) =>
             {

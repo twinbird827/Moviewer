@@ -80,13 +80,18 @@ namespace Moviewer.Tube.Core
 
         public static async Task<IEnumerable<TubeVideoModel>> GetVideosByIds(params string[] ids)
         {
-            var dic = new Dictionary<string, string>()
+            var ret = await ids.Take(50).Select(arr =>
             {
-                { "part", "id,snippet,statistics,contentDetails" },
-                { "id", ids.GetString(",") },
-            };
+                var dic = new Dictionary<string, string>()
+                {
+                    { "part", "id,snippet,statistics,contentDetails" },
+                    { "id", arr.GetString(",") },
+                };
 
-            return await GetVideosByUrl("https://www.googleapis.com/youtube/v3/videos?", dic);
+                return GetVideosByUrl("https://www.googleapis.com/youtube/v3/videos?", dic);
+            }).WhenAll();
+
+            return ret.SelectMany(arr => arr);
         }
 
         public static async Task<IEnumerable<TubeVideoModel>> GetVideosByPopular(string category)
@@ -110,8 +115,8 @@ namespace Moviewer.Tube.Core
             if (!jsonMatch.Success) return Enumerable.Empty<TubeVideoModel>();
 
             dynamic json = DynamicJson.Parse(jsonMatch.Value);
-            var ids = GetVideosByHome(json);
-            return await GetVideosByHome(ids);
+            var ids = (IEnumerable<string>)GetVideosByHome(json);
+            return await GetVideosByIds(ids.ToArray());
         }
 
         private static IEnumerable<string> GetVideosByHome(dynamic json)
@@ -126,14 +131,5 @@ namespace Moviewer.Tube.Core
                 }
             }
         }
-
-        private static async Task<IEnumerable<TubeVideoModel>> GetVideosByHome(IEnumerable<string> arr)
-        {
-            return await arr.Chunk(50)
-                .Select(ids => GetVideosByIds(ids.ToArray()))
-                .WhenAll()
-                .ContinueWith(x => x.Result.SelectMany(x => x));
-        }
-
     }
 }

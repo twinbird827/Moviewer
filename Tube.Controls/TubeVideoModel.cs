@@ -29,6 +29,8 @@ namespace Moviewer.Tube.Controls
         {
             ContentId = id;
             Status = VideoStatus.Delete;
+
+            _beforedisplay = true;
         }
 
         public TubeVideoModel(dynamic json) : this()
@@ -54,6 +56,8 @@ namespace Moviewer.Tube.Controls
             );
 
             RefreshStatus();
+
+            _beforedisplay = false;
         }
 
         public long ViewCount
@@ -76,6 +80,36 @@ namespace Moviewer.Tube.Controls
             set => _CommentCount.Count = value;
         }
         private CounterModel _CommentCount = new CounterModel(CounterType.Comment, 0);
+
+        protected override async Task OnLoaded()
+        {
+            if (!_beforedisplay) return;
+
+            var m = await TubeUtil.GetVideo(ContentId);
+
+            SetModel(m);
+        }
+
+        private bool _beforedisplay = false;
+
+        public void SetModel(TubeVideoModel m)
+        {
+            Title = m.Title;
+            Description = m.Description;
+            ThumbnailUrl = m.ThumbnailUrl;
+            ViewCount = m.ViewCount;
+            LikeCount = m.LikeCount;
+            CommentCount = m.CommentCount;
+            StartTime = m.StartTime;
+            TempTime = m.TempTime;
+            Duration = m.Duration;
+            Tags.AddRange(m.Tags);
+            UserInfo.SetUserInfo(m.UserInfo);
+
+            RefreshStatus();
+
+            _beforedisplay = false;
+        }
 
         public static TubeVideoModel FromHistory(VideoHistoryModel m)
         {
