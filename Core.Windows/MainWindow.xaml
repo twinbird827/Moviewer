@@ -1,74 +1,74 @@
 ﻿<Controls:MetroWindow x:Class="Moviewer.Core.Windows.MainWindow"
-                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                      xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      xmlns:core="clr-namespace:Moviewer.Core"
-                      xmlns:corestyle="clr-namespace:Moviewer.Core.Styles"
-                      xmlns:local="clr-namespace:Moviewer.Core.Windows"
-                      Style="{StaticResource DefaultWindow}"
+					  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					  xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+					  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+					  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+					  xmlns:core="clr-namespace:Moviewer.Core"
+					  xmlns:corestyle="clr-namespace:Moviewer.Core.Styles"
+					  xmlns:local="clr-namespace:Moviewer.Core.Windows"
+					  Style="{StaticResource DefaultWindow}"
                       Icon="/Moviewer;component/Core.Windows/cinema.ico"
                       mc:Ignorable="d">
 
-    <Controls:MetroWindow.DataContext>
-        <local:MainViewModel />
-    </Controls:MetroWindow.DataContext>
+	<Controls:MetroWindow.DataContext>
+		<local:MainViewModel />
+	</Controls:MetroWindow.DataContext>
 
-    <Controls:MetroWindow.Resources>
-        <ResourceDictionary>
+	<Controls:MetroWindow.Resources>
+		<ResourceDictionary>
 
-            <!--<DataTemplate DataType="{x:Type local:WorkspaceViewModel}">
+			<!--<DataTemplate DataType="{x:Type local:WorkspaceViewModel}">
                 <local:WorkspaceControl />
             </DataTemplate>-->
 
-            <Style x:Key="MenuIconpacksButton" TargetType="corestyle:IconPacksButton">
-                <Setter Property="Orientation" Value="Vertical" />
-                <Setter Property="Padding" Value="5" />
-                <Setter Property="Margin" Value="{DynamicResource Margin.Header}" />
-                <Setter Property="MinWidth" Value="50" />
-                <Setter Property="VerticalAlignment" Value="Stretch" />
-                <Setter Property="FontSize" Value="{DynamicResource FontSize.M}" />
-                <Setter Property="Width" Value="90" />
-            </Style>
-        </ResourceDictionary>
-    </Controls:MetroWindow.Resources>
+			<Style x:Key="MenuIconpacksButton" TargetType="corestyle:IconPacksButton">
+				<Setter Property="Orientation" Value="Vertical" />
+				<Setter Property="Padding" Value="5" />
+				<Setter Property="Margin" Value="{DynamicResource Margin.Header}" />
+				<Setter Property="MinWidth" Value="50" />
+				<Setter Property="VerticalAlignment" Value="Stretch" />
+				<Setter Property="FontSize" Value="{DynamicResource FontSize.M}" />
+				<Setter Property="Width" Value="90" />
+			</Style>
+		</ResourceDictionary>
+	</Controls:MetroWindow.Resources>
 
-    <DockPanel>
+	<DockPanel>
 
-        <!-- ｽﾃｰﾀｽﾊﾞｰ -->
-        <StatusBar DockPanel.Dock="Bottom">
+		<!-- ｽﾃｰﾀｽﾊﾞｰ -->
+		<StatusBar DockPanel.Dock="Bottom">
 
-            <StatusBarItem DockPanel.Dock="Right">
-                <ItemsControl ItemsSource="{Binding Downloads}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Style="{StaticResource HorizontalStackPanel.Right}" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Controls:MetroProgressBar Width="50"
+			<StatusBarItem DockPanel.Dock="Right">
+				<ItemsControl ItemsSource="{Binding Downloads}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Style="{StaticResource HorizontalStackPanel.Right}" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Controls:MetroProgressBar Width="50"
                                                        Margin="5,0"
                                                        Minimum="{Binding Minimum}"
                                                        Maximum="{Binding Maximum}"
                                                        Value="{Binding Value}"
                                                        ToolTip="{Binding Title}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StatusBarItem>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</StatusBarItem>
 
-            <TextBlock Text="{Binding Now}" />
-        </StatusBar>
+			<TextBlock Text="{Binding Now}" />
+		</StatusBar>
 
-        <DockPanel DockPanel.Dock="Left">
+		<DockPanel DockPanel.Dock="Left">
 
-            <!-- 画面遷移ﾎﾞﾀﾝ -->
-            <StackPanel DockPanel.Dock="Bottom"
+			<!-- 画面遷移ﾎﾞﾀﾝ -->
+			<StackPanel DockPanel.Dock="Bottom"
                         Style="{StaticResource DefaultStackPanel}">
 
-                <corestyle:IconPacksButton
+				<corestyle:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
                         Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
                         Command="{Binding OnClickMode}"
@@ -76,19 +76,19 @@
                         Kind="AppleFinder"
                         Text="Niconico" />
 
-                <corestyle:IconPacksButton
+				<corestyle:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
                         Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Youtube}"
                         Command="{Binding OnClickMode}"
                         CommandParameter="{x:Static core:MenuMode.Niconico}"
                         Kind="Youtube"
                         Text="Youtube" />
-            </StackPanel>
+			</StackPanel>
 
-            <!-- 画面遷移ﾎﾞﾀﾝ -->
-            <StackPanel Style="{StaticResource DefaultStackPanel}">
+			<!-- 画面遷移ﾎﾞﾀﾝ -->
+			<StackPanel Style="{StaticResource DefaultStackPanel}">
 
-                <corestyle:IconPacksButton
+				<corestyle:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
                         Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
                         Command="{Binding OnClickMenu}"
@@ -96,7 +96,7 @@
                         Kind="Magnify"
                         Text="{Binding Source={x:Static core:MenuType.NicoSearch}, Converter={StaticResource Enum2StringConverter}}" />
 
-                <corestyle:IconPacksButton
+				<corestyle:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
                         Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
                         Command="{Binding OnClickMenu}"
@@ -104,7 +104,7 @@
                         Kind="Crown"
                         Text="{Binding Source={x:Static core:MenuType.NicoRanking}, Converter={StaticResource Enum2StringConverter}}" />
 
-                <corestyle:IconPacksButton
+				<corestyle:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
                         Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
                         Command="{Binding OnClickMenu}"
@@ -112,7 +112,7 @@
                         Kind="Star"
                         Text="{Binding NicoTemporaryCount, StringFormat=Temp[{0}]}" />
 
-                <corestyle:IconPacksButton
+				<corestyle:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
                         Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
                         Command="{Binding OnClickMenu}"
@@ -120,7 +120,7 @@
                         Kind="Archive"
                         Text="{Binding Source={x:Static core:MenuType.NicoFavorite}, Converter={StaticResource Enum2StringConverter}}" />
 
-                <corestyle:IconPacksButton
+				<corestyle:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
                         Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Niconico}"
                         Command="{Binding OnClickMenu}"
@@ -128,7 +128,7 @@
                         Kind="History"
                         Text="{Binding Source={x:Static core:MenuType.NicoHistory}, Converter={StaticResource Enum2StringConverter}}" />
 
-                <corestyle:IconPacksButton
+				<corestyle:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
                         Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Youtube}"
                         Command="{Binding OnClickMenu}"
@@ -136,7 +136,7 @@
                         Kind="ChartAreasplineVariant"
                         Text="{Binding Source={x:Static core:MenuType.TubePopular}, Converter={StaticResource Enum2StringConverter}}" />
 
-                <corestyle:IconPacksButton
+				<corestyle:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
                         Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Youtube}"
                         Command="{Binding OnClickMenu}"
@@ -144,7 +144,7 @@
                         Kind="Home"
                         Text="{Binding Source={x:Static core:MenuType.TubeHome}, Converter={StaticResource Enum2StringConverter}}" />
 
-                <corestyle:IconPacksButton
+				<corestyle:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
                         Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Youtube}"
                         Command="{Binding OnClickMenu}"
@@ -152,18 +152,18 @@
                         Kind="Star"
                         Text="{Binding TubeTemporaryCount, StringFormat=Temp[{0}]}" />
 
-                <corestyle:IconPacksButton
+				<corestyle:IconPacksButton
                         Style="{StaticResource MenuIconpacksButton}"
                         Visibility="{Binding MenuMode, Converter={StaticResource Enum2Boolean2VisibilityCollapsedConverter}, ConverterParameter=Youtube}"
                         Command="{Binding OnClickMenu}"
                         CommandParameter="{x:Static core:MenuType.TubeHistory}"
                         Kind="History"
                         Text="{Binding Source={x:Static core:MenuType.TubeHistory}, Converter={StaticResource Enum2StringConverter}}" />
-            </StackPanel>
-        </DockPanel>
+			</StackPanel>
+		</DockPanel>
 
-        <!-- ﾒｲﾝ領域 -->
-        <ContentPresenter Margin="3"
+		<!-- ﾒｲﾝ領域 -->
+		<ContentPresenter Margin="3"
                           Content="{Binding Current}" />
-    </DockPanel>
+	</DockPanel>
 </Controls:MetroWindow>

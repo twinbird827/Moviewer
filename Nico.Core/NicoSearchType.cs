@@ -1,13 +1,13 @@
 ﻿namespace Moviewer.Nico.Core
 {
-    public enum NicoSearchType
-    {
-        User,
+	public enum NicoSearchType
+	{
+		User,
 
-        Tag,
+		Tag,
 
-        Word,
+		Word,
 
-        Mylist,
-    }
+		Mylist,
+	}
 }

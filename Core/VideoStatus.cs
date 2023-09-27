@@ -1,15 +1,15 @@
 ﻿namespace Moviewer.Core
 {
-    public enum VideoStatus
-    {
-        None,
+	public enum VideoStatus
+	{
+		None,
 
-        Delete,
+		Delete,
 
-        Temporary,
+		Temporary,
 
-        New,
+		New,
 
-        See,
-    }
+		See,
+	}
 }

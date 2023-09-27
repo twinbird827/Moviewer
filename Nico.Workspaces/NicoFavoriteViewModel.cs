@@ -9,62 +9,62 @@ using TBird.Wpf.Collections;
 
 namespace Moviewer.Nico.Workspaces
 {
-    public class NicoFavoriteViewModel : WorkspaceViewModel, INicoSearchHistoryParentViewModel
-    {
-        public override MenuType Type => MenuType.NicoFavorite;
+	public class NicoFavoriteViewModel : WorkspaceViewModel, INicoSearchHistoryParentViewModel
+	{
+		public override MenuType Type => MenuType.NicoFavorite;
 
-        public NicoFavoriteViewModel()
-        {
-            Sources = new BindableCollection<NicoVideoModel>();
+		public NicoFavoriteViewModel()
+		{
+			Sources = new BindableCollection<NicoVideoModel>();
 
-            Videos = Sources
-                .ToBindableSelectCollection(x => new NicoVideoViewModel(this, x))
-                .ToBindableContextCollection();
+			Videos = Sources
+				.ToBindableSelectCollection(x => new NicoVideoViewModel(this, x))
+				.ToBindableContextCollection();
 
-            Orderby = new ComboboxViewModel(ComboUtil.GetNicos("order_by"));
-            Orderby.SelectedItem = Orderby.GetItemNotNull(NicoSetting.Instance.NicoFavoriteOrderby);
+			Orderby = new ComboboxViewModel(ComboUtil.GetNicos("order_by"));
+			Orderby.SelectedItem = Orderby.GetItemNotNull(NicoSetting.Instance.NicoFavoriteOrderby);
 
-            Favorites = NicoModel.Favorites
-                .ToBindableSortedCollection(x => x.Date, true)
-                .ToBindableSelectCollection(x => new NicoSearchHistoryViewModel(this, x))
-                .ToBindableContextCollection();
+			Favorites = NicoModel.Favorites
+				.ToBindableSortedCollection(x => x.Date, true)
+				.ToBindableSelectCollection(x => new NicoSearchHistoryViewModel(this, x))
+				.ToBindableContextCollection();
 
-            AddDisposed((sender, e) =>
-            {
-                NicoSetting.Instance.NicoFavoriteOrderby = Orderby.SelectedItem.Value;
-                NicoSetting.Instance.Save();
+			AddDisposed((sender, e) =>
+			{
+				NicoSetting.Instance.NicoFavoriteOrderby = Orderby.SelectedItem.Value;
+				NicoSetting.Instance.Save();
 
-                Orderby.Dispose();
-                Videos.Dispose();
-            });
-        }
+				Orderby.Dispose();
+				Videos.Dispose();
+			});
+		}
 
-        public ComboboxViewModel Orderby { get; private set; }
+		public ComboboxViewModel Orderby { get; private set; }
 
-        public BindableCollection<NicoVideoModel> Sources { get; private set; }
+		public BindableCollection<NicoVideoModel> Sources { get; private set; }
 
-        public BindableContextCollection<NicoVideoViewModel> Videos { get; private set; }
+		public BindableContextCollection<NicoVideoViewModel> Videos { get; private set; }
 
-        public BindableContextCollection<NicoSearchHistoryViewModel> Favorites { get; private set; }
+		public BindableContextCollection<NicoSearchHistoryViewModel> Favorites { get; private set; }
 
-        public ICommand OnSearch => _OnSearch = _OnSearch ?? RelayCommand.Create<NicoSearchHistoryViewModel>(async vm =>
-        {
-            await NicoUtil.GetVideoBySearchType(vm.Word, vm.Type, Orderby.SelectedItem.Value).ContinueWith(x =>
-            {
-                Sources.Clear();
-                Sources.AddRange(x.Result);
-            });
-        });
-        private ICommand _OnSearch;
+		public ICommand OnSearch => _OnSearch = _OnSearch ?? RelayCommand.Create<NicoSearchHistoryViewModel>(async vm =>
+		{
+			await NicoUtil.GetVideoBySearchType(vm.Word, vm.Type, Orderby.SelectedItem.Value).ContinueWith(x =>
+			{
+				Sources.Clear();
+				Sources.AddRange(x.Result);
+			});
+		});
+		private ICommand _OnSearch;
 
-        public void NicoSearchHistoryOnDoubleClick(NicoSearchHistoryViewModel vm)
-        {
-            OnSearch.Execute(vm);
-        }
+		public void NicoSearchHistoryOnDoubleClick(NicoSearchHistoryViewModel vm)
+		{
+			OnSearch.Execute(vm);
+		}
 
-        public void NicoSearchHistoryOnDelete(NicoSearchHistoryViewModel vm)
-        {
-            NicoModel.DelFavorite(vm.Word, vm.Type);
-        }
-    }
+		public void NicoSearchHistoryOnDelete(NicoSearchHistoryViewModel vm)
+		{
+			NicoModel.DelFavorite(vm.Word, vm.Type);
+		}
+	}
 }

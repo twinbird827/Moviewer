@@ -1,11 +1,4 @@
-﻿using Moviewer.Nico.Core;
-using Moviewer.Nico.Workspaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Automation;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using TBird.Core;
@@ -13,86 +6,86 @@ using TBird.Wpf;
 
 namespace Moviewer.Core.Controls
 {
-    public class UserViewModel : ControlViewModel, IThumbnail
-    {
-        public UserViewModel() : base(null)
-        {
-            AddDisposed((sender, e) =>
-            {
-                Thumbnail = null;
+	public class UserViewModel : ControlViewModel, IThumbnail
+	{
+		public UserViewModel() : base(null)
+		{
+			AddDisposed((sender, e) =>
+			{
+				Thumbnail = null;
 
-                Source.TryDispose();
-            });
-        }
+				Source.TryDispose();
+			});
+		}
 
-        public UserViewModel SetUserInfo(UserModel m)
-        {
-            if (m == null) return this;
+		public UserViewModel SetUserInfo(UserModel m)
+		{
+			if (m == null) return this;
 
-            Source = m;
+			Source = m;
 
-            m.AddOnPropertyChanged(this, (sender, e) =>
-            {
-                Userid = m.Userid;
-            }, nameof(m.Userid), true);
+			m.AddOnPropertyChanged(this, (sender, e) =>
+			{
+				Userid = m.Userid;
+			}, nameof(m.Userid), true);
 
-            m.AddOnPropertyChanged(this, (sender, e) =>
-            {
-                Username = m.Username;
-            }, nameof(m.Username), true);
+			m.AddOnPropertyChanged(this, (sender, e) =>
+			{
+				Username = m.Username;
+			}, nameof(m.Username), true);
 
-            //if (Loaded.IsDisposed)
-            //{
-            //    SetThumbnail();
-            //}
-            //else
-            //{
-            //    Loaded.Add(SetThumbnail);
-            //}
+			//if (Loaded.IsDisposed)
+			//{
+			//    SetThumbnail();
+			//}
+			//else
+			//{
+			//    Loaded.Add(SetThumbnail);
+			//}
 
-            return this;
-        }
+			return this;
+		}
 
-        public UserModel Source { get; private set; }
+		public UserModel Source { get; private set; }
 
-        public string Userid
-        {
-            get => _Userid;
-            set => SetProperty(ref _Userid, value);
-        }
-        private string _Userid = null;
+		public string Userid
+		{
+			get => _Userid;
+			set => SetProperty(ref _Userid, value);
+		}
+		private string _Userid = null;
 
-        public string Username
-        {
-            get => _Username;
-            set => SetProperty(ref _Username, value);
-        }
-        private string _Username = null;
+		public string Username
+		{
+			get => _Username;
+			set => SetProperty(ref _Username, value);
+		}
+		private string _Username = null;
 
-        public BitmapImage Thumbnail
-        {
-            get => _Thumbnail;
-            set => SetProperty(ref _Thumbnail, value);
-        }
-        private BitmapImage _Thumbnail;
+		public BitmapImage Thumbnail
+		{
+			get => _Thumbnail;
+			set => SetProperty(ref _Thumbnail, value);
+		}
+		private BitmapImage _Thumbnail;
 
-        public void SetThumbnail()
-        {
-            this.SetThumbnail(Source);
-        }
+		public void SetThumbnail()
+		{
+			this.SetThumbnail(Source);
+		}
 
-        public virtual async Task SetThumbnail(string url)
-        {
-            await this.SetThumbnail(Userid, url);
-        }
+		public virtual async Task SetThumbnail(string url)
+		{
+			await this.SetThumbnail(Userid, url);
+		}
 
-        public ICommand OnClickUsername =>
-            _OnClickUsername = _OnClickUsername ?? RelayCommand.Create(OnClickUsernameCommand);
-        private ICommand _OnClickUsername;
+		public ICommand OnClickUsername =>
+			_OnClickUsername = _OnClickUsername ?? RelayCommand.Create(OnClickUsernameCommand);
+		private ICommand _OnClickUsername;
 
-        protected virtual void OnClickUsernameCommand(object _)
-        {
+		protected virtual void OnClickUsernameCommand(object _)
+		{
 
-        }
-    }
+		}
+	}
 }

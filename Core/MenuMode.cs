@@ -1,9 +1,9 @@
 ﻿namespace Moviewer.Core
 {
-    public enum MenuMode
-    {
-        Youtube,
+	public enum MenuMode
+	{
+		Youtube,
 
-        Niconico,
-    }
+		Niconico,
+	}
 }

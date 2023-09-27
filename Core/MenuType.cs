@@ -1,34 +1,34 @@
 ﻿namespace Moviewer.Core
 {
-    public enum MenuType
-    {
-        NicoSearch,
+	public enum MenuType
+	{
+		NicoSearch,
 
-        NicoRanking,
+		NicoRanking,
 
-        NicoTemporary,
+		NicoTemporary,
 
-        NicoHistory,
+		NicoHistory,
 
-        NicoFavorite,
+		NicoFavorite,
 
-        NicoFavoriteDetail,
+		NicoFavoriteDetail,
 
-        NicoChromium,
+		NicoChromium,
 
-        TubeSearch,
+		TubeSearch,
 
-        TubeRanking,
+		TubeRanking,
 
-        TubePopular,
+		TubePopular,
 
-        TubeHome,
+		TubeHome,
 
-        TubeTemporary,
+		TubeTemporary,
 
-        TubeHistory,
+		TubeHistory,
 
-        TubeFavorite,
+		TubeFavorite,
 
-    }
+	}
 }

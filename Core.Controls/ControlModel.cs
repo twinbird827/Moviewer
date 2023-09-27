@@ -1,28 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using TBird.Wpf;
 
 namespace Moviewer.Core.Controls
 {
-    public class ControlModel : BindableBase
-    {
-        public Task OnLoadedModel()
-        {
-            if (_loaded) return Task.CompletedTask;
+	public class ControlModel : BindableBase
+	{
+		public Task OnLoadedModel()
+		{
+			if (_loaded) return Task.CompletedTask;
 
-            _loaded = true;
-            return OnLoaded();
-        }
+			_loaded = true;
+			return OnLoaded();
+		}
 
-        private bool _loaded = false;
+		private bool _loaded = false;
 
-        protected virtual Task OnLoaded()
-        {
-            return Task.CompletedTask;
-        }
+		protected virtual Task OnLoaded()
+		{
+			return Task.CompletedTask;
+		}
 
-    }
+	}
 }
