@@ -34,14 +34,7 @@ namespace Moviewer.Core.Controls
 				Username = m.Username;
 			}, nameof(m.Username), true);
 
-			//if (Loaded.IsDisposed)
-			//{
-			//    SetThumbnail();
-			//}
-			//else
-			//{
-			//    Loaded.Add(SetThumbnail);
-			//}
+			Loaded.Add(SetThumbnail);
 
 			return this;
 		}
