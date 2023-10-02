@@ -48,15 +48,15 @@ namespace Moviewer.Nico.Controls
 
 		protected override void DoubleClickCommand(object parameter)
 		{
-			// TODO 子画面出して追加するかどうかを決めたい
-			// TODO ﾘﾝｸも抽出したい
-			// TODO smだけじゃなくてsoとかも抽出したい
-			foreach (var videoid in Regex.Matches(Description, @"(?<id>sm[\d]+)").OfType<Match>()
-					.Select(m => m.Groups["id"].Value)
-					.Where(tmp => VideoUtil.Histories.GetModel(Source) == null)
+            // TODO 子画面出して追加するかどうかを決めたい
+            // TODO ﾘﾝｸも抽出したい
+            // TODO smだけじゃなくてsoとかも抽出したい
+            foreach (var videoid in Regex.Matches(Description, @"(?<id>sm[\d]+)").OfType<Match>()
+                    .Select(m => m.Groups["id"].Value)
+                    .Where(tmp => VideoUtil.Histories.GetModel(Source.Mode, tmp) == null)
 				)
-			{
-				VideoUtil.AddTemporary(Source.Mode, videoid);
+            {
+                VideoUtil.AddTemporary(Source.Mode, videoid);
 			}
 
 			base.DoubleClickCommand(parameter);

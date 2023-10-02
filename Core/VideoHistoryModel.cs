@@ -49,7 +49,12 @@ namespace Moviewer.Core
 			return arr.FirstOrDefault(x => x.Mode == m.Mode && x.ContentId == m.ContentId);
 		}
 
-		public static void AddModel(this BindableCollection<VideoHistoryModel> arr, MenuMode mode, string id)
+        public static VideoHistoryModel GetModel(this BindableCollection<VideoHistoryModel> arr, MenuMode mode, string id)
+        {
+            return arr.FirstOrDefault(x => x.Mode == mode && x.ContentId == id);
+        }
+
+        public static void AddModel(this BindableCollection<VideoHistoryModel> arr, MenuMode mode, string id)
 		{
 			var tmp = arr.FirstOrDefault(x => x.Mode == mode && x.ContentId == id);
 			if (tmp != null)
