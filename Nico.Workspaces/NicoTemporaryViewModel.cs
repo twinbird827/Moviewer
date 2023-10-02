@@ -3,8 +3,11 @@ using Moviewer.Core.Controls;
 using Moviewer.Core.Windows;
 using Moviewer.Nico.Controls;
 using Moviewer.Nico.Core;
+using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TBird.Core;
 using TBird.Wpf;
 using TBird.Wpf.Collections;
 using TBird.Wpf.Controls;
@@ -20,25 +23,40 @@ namespace Moviewer.Nico.Workspaces
 			VideoType = new ComboboxViewModel(ComboUtil.GetNicos("video_type"));
 			VideoType.SelectedItem = null;
 
-			Sources = VideoUtil.Temporaries
-				.ToBindableWhereCollection(x => x.Mode == MenuMode.Niconico)
-				.ToBindableSelectCollection(NicoVideoModel.FromHistory)
-				.ToBindableSelectCollection(x => new NicoVideoViewModel(this, x));
+			Loaded.Add(() =>
+			{
+				MessageService.AppendLogfile($"[{DateTime.Now}] Sources begin");
+				Sources = VideoUtil.Temporaries
+					.ToBindableWhereCollection(x => x.Mode == MenuMode.Niconico)
+					.ToBindableSelectCollection(NicoVideoModel.FromHistory)
+					.ToBindableSelectCollection(x => new NicoVideoViewModel(this, x));
+				MessageService.AppendLogfile($"[{DateTime.Now}] Sources end");
+			});
 
-			Users = Sources
-				.ToBindableSelectCollection(x => x.UserInfo)
-				.ToBindableDistinctCollection(x => x.Userid, nameof(UserViewModel.Userid))
-				.ToBindableContextCollection();
+			Loaded.Add(() =>
+			{
+				MessageService.AppendLogfile($"[{DateTime.Now}] Users begin");
+				Users = Sources
+					.ToBindableSelectCollection(x => x.UserInfo)
+					.ToBindableDistinctCollection(x => x.Userid, nameof(UserViewModel.Userid))
+					.ToBindableContextCollection();
+				MessageService.AppendLogfile($"[{DateTime.Now}] Users end");
+			});
 
-			Videos = Sources
-				.ToBindableWhereCollection(x =>
-					(SelectedUser == null || x.UserInfo.Userid == SelectedUser.Userid) &&
-					(VideoType.SelectedItem == null || x.ContentId.StartsWith(VideoType.SelectedItem.Value))
-				)
-				.AddOnRefreshCollection(this, nameof(SelectedUser))
-				.AddOnRefreshCollection(VideoType, nameof(VideoType.SelectedItem))
-				.ToBindableSortedCollection(x => x.TempTime, true)
-				.ToBindableContextCollection();
+			Loaded.Add(() =>
+			{
+				MessageService.AppendLogfile($"[{DateTime.Now}] Videos begin");
+				Videos = Sources
+					.ToBindableWhereCollection(x =>
+						(SelectedUser == null || x.UserInfo.Userid == SelectedUser.Userid) &&
+						(VideoType.SelectedItem == null || x.ContentId.StartsWith(VideoType.SelectedItem.Value))
+					)
+					.AddOnRefreshCollection(this, nameof(SelectedUser))
+					.AddOnRefreshCollection(VideoType, nameof(VideoType.SelectedItem))
+					.ToBindableSortedCollection(x => x.TempTime, true)
+					.ToBindableContextCollection();
+				MessageService.AppendLogfile($"[{DateTime.Now}] Videos end");
+			});
 
 			AddDisposed((sender, e) =>
 			{
@@ -61,28 +79,28 @@ namespace Moviewer.Nico.Workspaces
 			get => _Users;
 			set => SetProperty(ref _Users, value);
 		}
-		public BindableChildCollection<UserViewModel> _Users;
+		private BindableChildCollection<UserViewModel> _Users;
 
 		public UserViewModel SelectedUser
 		{
 			get => _SelectedUser;
 			set => SetProperty(ref _SelectedUser, value);
 		}
-		public UserViewModel _SelectedUser;
+		private UserViewModel _SelectedUser;
 
 		public BindableCollection<NicoVideoViewModel> Sources
 		{
 			get => _Sources;
 			set => SetProperty(ref _Sources, value);
 		}
-		public BindableCollection<NicoVideoViewModel> _Sources;
+		private BindableCollection<NicoVideoViewModel> _Sources;
 
 		public BindableContextCollection<NicoVideoViewModel> Videos
 		{
 			get => _Videos;
 			set => SetProperty(ref _Videos, value);
 		}
-		public BindableContextCollection<NicoVideoViewModel> _Videos;
+		private BindableContextCollection<NicoVideoViewModel> _Videos;
 
 		public ICommand OnDeleteSelectedUser => _OnDeleteSelectedUser = _OnDeleteSelectedUser ?? RelayCommand.Create(_ =>
 		{
