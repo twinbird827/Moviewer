@@ -12,7 +12,6 @@
 	<Style x:Key="UserViewModel.Thumbnail" TargetType="ContentControl">
 		<Setter Property="ContentTemplate" Value="{DynamicResource Core.Thumbnail}" />
 		<Setter Property="Content" Value="{Binding Thumbnail}" />
-		<Setter Property="beha:FrameworkElementBehavior.Loaded" Value="{Binding OnLoaded}" />
 	</Style>
 
 	<Style x:Key="My.UserViewModel.TextBlock" TargetType="TextBlock">
@@ -30,9 +29,9 @@
 		<DockPanel beha:FrameworkElementBehavior.Width="200">
 
 			<ContentControl DockPanel.Dock="Left"
-                              beha:FrameworkElementBehavior.Width="30"
-                              beha:FrameworkElementBehavior.Height="30"
-                              Style="{StaticResource UserViewModel.Thumbnail}" />
+                            beha:FrameworkElementBehavior.Width="30"
+                            beha:FrameworkElementBehavior.Height="30"
+                            Style="{StaticResource UserViewModel.Thumbnail}" />
 
 			<TextBlock Style="{StaticResource My.UserViewModel.UsernameTextBlock}"
                        FontSize="{DynamicResource FontSize.M}" />
@@ -40,12 +39,13 @@
 	</DataTemplate>
 
 	<DataTemplate x:Key="UserViewModel.Video" DataType="{x:Type moctrl:UserViewModel}">
-		<DockPanel MinWidth="200">
+		<DockPanel MinWidth="200"
+				   beha:FrameworkElementBehavior.Loaded="{Binding OnLoaded}">
 
 			<ContentControl DockPanel.Dock="Left"
-                              beha:FrameworkElementBehavior.Width="35"
-                              beha:FrameworkElementBehavior.Height="35"
-                              Style="{StaticResource UserViewModel.Thumbnail}" />
+                            beha:FrameworkElementBehavior.Width="35"
+                            beha:FrameworkElementBehavior.Height="35"
+                            Style="{StaticResource UserViewModel.Thumbnail}" />
 
 			<mocore:LinkedTextBlock Margin="4,2"
                                     Command="{Binding OnClickUsername}"
@@ -54,7 +54,7 @@
 	</DataTemplate>
 
 	<DataTemplate x:Key="UserViewModel.Search" DataType="{x:Type moctrl:UserViewModel}">
-		<DockPanel>
+		<DockPanel beha:FrameworkElementBehavior.Loaded="{Binding OnLoaded}">
 
 			<!--<Grid DockPanel.Dock="Left"
                   beha:FrameworkElementBehavior.Width="50"
@@ -64,9 +64,9 @@
             </Grid>-->
 
 			<ContentControl DockPanel.Dock="Left"
-                              beha:FrameworkElementBehavior.Width="50"
-                              beha:FrameworkElementBehavior.Height="50"
-                              Style="{StaticResource UserViewModel.Thumbnail}" />
+                            beha:FrameworkElementBehavior.Width="50"
+                            beha:FrameworkElementBehavior.Height="50"
+                            Style="{StaticResource UserViewModel.Thumbnail}" />
 
 			<TextBlock DockPanel.Dock="Top"
                        Style="{StaticResource My.UserViewModel.TextBlock}"
